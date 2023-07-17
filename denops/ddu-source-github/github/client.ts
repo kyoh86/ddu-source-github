@@ -1,5 +1,11 @@
 import { restoreAuthentication, storeAuthentication } from "./auth.ts";
-import { Octokit } from "https://esm.sh/octokit@3.0.0?dts";
+import { Octokit as OctokitCore } from "https://esm.sh/@octokit/core@5.0.0?dts";
+import { restEndpointMethods } from "https://esm.sh/@octokit/plugin-rest-endpoint-methods@9.0.0?dts";
+import { paginateRest } from "https://esm.sh/@octokit/plugin-paginate-rest@v8.0.0?dts";
+
+export const Octokit = OctokitCore.plugin(restEndpointMethods).plugin(
+  paginateRest,
+);
 import {
   createOAuthDeviceAuth,
   GitHubAppStrategyOptions,
@@ -43,5 +49,5 @@ export async function getClient() {
       ...options,
       authentication,
     },
-  }) as Octokit;
+  });
 }
