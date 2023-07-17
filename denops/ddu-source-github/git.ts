@@ -1,4 +1,4 @@
-import { dirname, join } from "https://deno.land/std@0.193.0/path/mod.ts";
+import { dirname, join } from "https://deno.land/std@0.194.0/path/mod.ts";
 import { decode } from "https://deno.land/x/ini@v2.1.0/mod.ts";
 
 export async function gitdir(path: string) {
