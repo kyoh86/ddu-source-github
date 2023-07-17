@@ -45,31 +45,35 @@ export class Source extends BaseSource<Params, ActionData> {
   ): ReadableStream<Item<ActionData>[]> {
     return new ReadableStream({
       async start(controller) {
-        const repo = await githubRepo(denops, sourceParams);
-        if (repo === undefined) {
-          console.error(
-            `invalid param: ${JSON.stringify(sourceParams)}`,
+        try {
+          const repo = await githubRepo(denops, sourceParams);
+          if (repo === undefined) {
+            console.error(
+              `invalid param: ${JSON.stringify(sourceParams)}`,
+            );
+            return;
+          }
+          const client = await getClient();
+          const iterator = client.paginate.iterator(
+            client.rest.issues.listForRepo,
+            {
+              owner: repo.owner,
+              repo: repo.name,
+              per_page: 100,
+            },
           );
-          return;
-        }
-        const client = await getClient();
-        const iterator = client.paginate.iterator(
-          client.rest.issues.listForRepo,
-          {
-            owner: repo.owner,
-            repo: repo.name,
-            per_page: 100,
-          },
-        );
 
-        // iterate through each response
-        for await (const { data: issues } of iterator) {
-          controller.enqueue(issues.map((issue) => {
-            return {
-              action: issue,
-              word: `${issue.number} ${issue.title}`,
-            };
-          }));
+          // iterate through each response
+          for await (const { data: issues } of iterator) {
+            controller.enqueue(issues.map((issue) => {
+              return {
+                action: issue,
+                word: `${issue.number} ${issue.title}`,
+              };
+            }));
+          }
+        } finally {
+          controller.close();
         }
       },
     });

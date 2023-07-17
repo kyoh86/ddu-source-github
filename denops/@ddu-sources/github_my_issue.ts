@@ -15,23 +15,27 @@ export class Source extends BaseSource<Params, ActionData> {
   ): ReadableStream<Item<ActionData>[]> {
     return new ReadableStream({
       async start(controller) {
-        const client = await getClient();
-        const iterator = client.paginate.iterator(
-          client.rest.issues.list,
-          {
-            filter: sourceParams.role,
-            per_page: 100,
-          },
-        );
+        try {
+          const client = await getClient();
+          const iterator = client.paginate.iterator(
+            client.rest.issues.list,
+            {
+              filter: sourceParams.role,
+              per_page: 100,
+            },
+          );
 
-        // iterate through each response
-        for await (const { data: issues } of iterator) {
-          controller.enqueue(issues.map((issue) => {
-            return {
-              action: issue,
-              word: `${issue.number} ${issue.title}`,
-            };
-          }));
+          // iterate through each response
+          for await (const { data: issues } of iterator) {
+            controller.enqueue(issues.map((issue) => {
+              return {
+                action: issue,
+                word: `${issue.number} ${issue.title}`,
+              };
+            }));
+          }
+        } finally {
+          controller.close();
         }
       },
     });
