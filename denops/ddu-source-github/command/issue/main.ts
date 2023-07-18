@@ -1,0 +1,30 @@
+import type { Denops } from "https://deno.land/x/denops_std@v5.0.1/mod.ts";
+import { ensure, is } from "https://deno.land/x/unknownutil@v3.2.0/mod.ts";
+import { getClient } from "../../github/client.ts";
+import {
+  getbufline,
+  setbufvar,
+} from "https://deno.land/x/denops_std@v5.0.1/function/mod.ts";
+
+export function main(denops: Denops): void {
+  denops.dispatcher = {
+    ...denops.dispatcher,
+    "issue:write": async (unknownBufnr, unknownUrl) => {
+      const bufnr = ensure(unknownBufnr, is.Number, {
+        message: "bufnr must be number",
+      });
+      const url = ensure(unknownUrl, is.String, {
+        message: "url must be string",
+      });
+
+      const bodyLines = await getbufline(denops, bufnr, 1, "$");
+      const client = await getClient();
+      await client.request({
+        url,
+        method: "patch",
+        body: bodyLines.join("\n"),
+      });
+      await setbufvar(denops, bufnr, "&modified", 0);
+    },
+  };
+}

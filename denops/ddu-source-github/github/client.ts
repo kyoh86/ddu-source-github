@@ -42,6 +42,8 @@ export async function getClient() {
         systemopen(verification.verification_uri);
         console.info("Open", verification.verification_uri);
         console.info("Enter code:", verification.user_code);
+        // TODO: If it does not inistalled, ddu-source-github should be installed.
+        // https://github.com/settings/apps/ddu-source-github/installations
       },
     }),
   });
