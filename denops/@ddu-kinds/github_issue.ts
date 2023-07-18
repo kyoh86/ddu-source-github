@@ -31,6 +31,7 @@ export class Kind extends BaseKind<Params> {
       return Promise.resolve({
         kind: "nofile",
         contents: action.body.split(/\r?\n/),
+        syntax: "markdown",
       });
     } else {
       return Promise.resolve({
