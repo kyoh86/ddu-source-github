@@ -19,7 +19,7 @@ async function getAuthentication(options: GitHubAppStrategyOptions) {
   const stored = await restoreAuthentication();
   if (stored && "expiresAt" in stored) {
     const withExpiration = stored as GitHubAppAuthenticationWithExpiration;
-    if (withExpiration.expiresAt > new Date().toISOString()) {
+    if (withExpiration.refreshTokenExpiresAt > new Date().toISOString()) {
       return stored;
     }
   }
@@ -38,8 +38,8 @@ export async function getClient() {
     clientId: ClientID,
     onVerification: (verification) => {
       systemopen(verification.verification_uri);
-      console.log("Open %s", verification.verification_uri);
-      console.log("Enter code: %s", verification.user_code);
+      console.log("Open", verification.verification_uri);
+      console.log("Enter code:", verification.user_code);
     },
   };
   const authentication = await getAuthentication(options);
