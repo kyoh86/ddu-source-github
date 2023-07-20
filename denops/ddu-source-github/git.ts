@@ -87,62 +87,44 @@ export async function parseConfig(gitdir: string) {
   return config;
 }
 
-function parseRepoPathname(path: string) {
-  const [prefix, owner, name, ...rest] = path.replace(/\.git$/, "").split("/");
-  if (prefix != "" || rest.length > 0) {
+function parseGitHubURLLike(urlLike?: string) {
+  const repo = splitGitHubURLLike(urlLike);
+  if (
+    !repo || repo.length != 3 ||
+    repo[0] == "" || repo[1] == "" || repo[2] == "" ||
+    !URL.canParse(`https://${repo[0]}/${repo[1]}/${repo[2]}`)
+  ) {
     return;
   }
   return {
-    owner,
-    name,
+    hostname: repo[0],
+    owner: repo[1],
+    name: repo[2],
   };
 }
 
-export function parseGitHubURLLike(urlLike?: string) {
+function splitGitHubURLLike(urlLike?: string) {
   if (!urlLike) {
     return;
   }
-  if (/^https:/.test(urlLike)) {
-    if (!URL.canParse(urlLike)) return;
+  if (/^https:/.test(urlLike) && !URL.canParse(urlLike)) {
     const url = new URL(urlLike);
-    const repoName = parseRepoPathname(url.pathname);
-    return repoName
-      ? {
-        hostname: url.hostname,
-        ...repoName,
-      }
-      : undefined;
+    const [_, ...parts] = url.pathname.replace(/\.git$/, "").split("/");
+    return [url.hostname, ...parts];
   }
   if (/^git@/.test(urlLike)) {
-    const [hostname, owner, name, ...rest] = urlLike
-      .replaceAll(/^git@|\.git$/g, "")
-      .split(/[\/:]/);
-    return rest.length > 0 ? undefined : {
-      hostname,
-      owner,
-      name,
-    };
+    return urlLike.replaceAll(/^git@|\.git$/g, "").split(/[\/:]/);
   }
   if (/^ssh:\/\//.test(urlLike)) {
-    const [hostname, owner, name, ...rest] = urlLike.replaceAll(
-      /^ssh:\/\/(git@)?|\.git$/g,
-      "",
-    )
-      .split("/");
-    return rest.length > 0 ? undefined : {
-      hostname,
-      owner,
-      name,
-    };
+    return urlLike.replaceAll(/^ssh:\/\/(git@)?|\.git$/g, "").split("/");
   }
+  return;
 }
 
 export async function parseGitHubRepo(gitdir: string, remote: string) {
-  const config = await parseConfig(gitdir);
-  // UNDONE: support other remotes (other of "origin")
+  const conf = await parseConfig(gitdir);
   // UNDONE: support GitHub enterprise
-  // UNDONE: more safety
-  const remotes = config["remote"];
-  if (!remotes) return;
-  return parseGitHubURLLike((remotes[remote] as { url: string })?.url);
+  return parseGitHubURLLike(
+    (conf["remote"]?.[remote] as { url?: string } | undefined)?.url,
+  );
 }
