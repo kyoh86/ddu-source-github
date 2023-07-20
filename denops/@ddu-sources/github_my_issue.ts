@@ -4,6 +4,7 @@ import { getClient } from "../ddu-source-github/github/client.ts";
 import { ActionData } from "../@ddu-kinds/github_issue.ts";
 
 type Params = {
+  hostname: string;
   role: "created" | "assigned" | "mentioned";
 };
 
@@ -16,7 +17,7 @@ export class Source extends BaseSource<Params, ActionData> {
     return new ReadableStream({
       async start(controller) {
         try {
-          const client = await getClient();
+          const client = await getClient(sourceParams.hostname);
           const iterator = client.paginate.iterator(
             client.rest.issues.list,
             {
@@ -42,6 +43,6 @@ export class Source extends BaseSource<Params, ActionData> {
   }
 
   override params(): Params {
-    return { role: "assigned" };
+    return { hostname: "github.com", role: "assigned" };
   }
 }

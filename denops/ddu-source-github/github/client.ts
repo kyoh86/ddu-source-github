@@ -12,8 +12,8 @@ import {
 } from "https://esm.sh/@octokit/auth-oauth-device@6.0.0?dts";
 import { systemopen } from "https://deno.land/x/systemopen@v0.2.0/mod.ts";
 
-async function getOptions(options: GitHubAppStrategyOptions) {
-  const stored = await restoreAuthentication();
+async function getOptions(hostname: string, options: GitHubAppStrategyOptions) {
+  const stored = await restoreAuthentication(hostname);
   if (stored) {
     return {
       ...options,
@@ -23,7 +23,7 @@ async function getOptions(options: GitHubAppStrategyOptions) {
   const auth = createOAuthDeviceAuth(options);
 
   const newone = await auth({ type: "oauth" });
-  storeAuthentication(newone);
+  storeAuthentication(hostname, newone);
   return {
     ...options,
     authentication: newone,
@@ -32,10 +32,10 @@ async function getOptions(options: GitHubAppStrategyOptions) {
 
 const ClientID = "Iv1.784dcbad252102e3";
 
-export async function getClient() {
+export async function getClient(hostname: string) {
   return new Octokit({
     authStrategy: createOAuthDeviceAuth,
-    auth: await getOptions({
+    auth: await getOptions(hostname, {
       clientType: "github-app",
       clientId: ClientID,
       onVerification: (verification) => {

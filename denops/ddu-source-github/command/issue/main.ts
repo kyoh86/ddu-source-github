@@ -18,7 +18,8 @@ export function main(denops: Denops): void {
       });
 
       const bodyLines = await getbufline(denops, bufnr, 1, "$");
-      const client = await getClient();
+      const u = new URL(url);
+      const client = await getClient(u.hostname);
       await client.request({
         url,
         method: "patch",

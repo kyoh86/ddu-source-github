@@ -12,6 +12,7 @@ type Params = {
   path?: string;
 } | {
   source: "repo";
+  hostname: string;
   owner: string;
   name: string;
 };
@@ -24,16 +25,11 @@ async function githubRepo(denops: Denops, params: Params) {
       if (dir === undefined) {
         return;
       }
-      const repo = await parseGitHubRepo(dir?.gitdir, params.remoteName);
-      return repo
-        ? {
-          owner: repo.owner,
-          name: repo.name,
-        }
-        : undefined;
+      return await parseGitHubRepo(dir?.gitdir, params.remoteName);
     }
     case "repo":
       return {
+        hostname: params.hostname,
         owner: params.owner,
         name: params.name,
       };
@@ -56,7 +52,7 @@ export class Source extends BaseSource<Params, ActionData> {
             );
             return;
           }
-          const client = await getClient();
+          const client = await getClient(repo.hostname);
           const iterator = client.paginate.iterator(
             client.rest.issues.listForRepo,
             {
@@ -83,6 +79,6 @@ export class Source extends BaseSource<Params, ActionData> {
   }
 
   override params(): Params {
-    return { source: "cwd", remoteName:"origin" };
+    return { source: "cwd", remoteName: "origin" };
   }
 }

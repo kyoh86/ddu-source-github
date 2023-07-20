@@ -5,27 +5,42 @@ import type {
   GitHubAppAuthentication,
 } from "https://esm.sh/@octokit/auth-oauth-device@6.0.0?dts";
 
+type Format = {
+  [hostname: string]: GitHubAppAuthentication | undefined;
+};
+
 async function ensureSessionFilePath() {
   const dir = join(xdg.state(), "ddu-source-github");
   await ensureDir(dir);
   return join(dir, "github-session.json");
 }
 
-export async function restoreAuthentication() {
+async function loadSafely() {
+  const path = await ensureSessionFilePath();
   try {
-    return JSON.parse(
-      await Deno.readTextFile(await ensureSessionFilePath()),
-    ) as GitHubAppAuthentication;
+    const stored = JSON.parse(await Deno.readTextFile(path));
+    if (typeof stored !== "object") {
+      return {} as Format;
+    }
+    return stored as Format;
   } catch {
-    return undefined;
+    return {} as Format;
   }
 }
 
+export async function restoreAuthentication(hostname: string) {
+  const stored = await loadSafely();
+  return stored[hostname];
+}
+
 export async function storeAuthentication(
+  hostname: string,
   authentication: GitHubAppAuthentication,
 ) {
+  const stored = await loadSafely() || {} as Format;
+  stored[hostname] = authentication;
   await Deno.writeTextFile(
     await ensureSessionFilePath(),
-    JSON.stringify(authentication),
+    JSON.stringify(stored),
   );
 }

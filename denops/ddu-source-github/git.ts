@@ -123,7 +123,6 @@ function splitGitHubURLLike(urlLike?: string) {
 
 export async function parseGitHubRepo(gitdir: string, remote: string) {
   const conf = await parseConfig(gitdir);
-  // UNDONE: support GitHub enterprise
   return parseGitHubURLLike(
     (conf["remote"]?.[remote] as { url?: string } | undefined)?.url,
   );
