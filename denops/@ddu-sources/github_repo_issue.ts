@@ -8,6 +8,7 @@ import { ActionData } from "../@ddu-kinds/github_issue.ts";
 
 type Params = {
   source: "cwd";
+  remoteName: string;
   path?: string;
 } | {
   source: "repo";
@@ -23,7 +24,7 @@ async function githubRepo(denops: Denops, params: Params) {
       if (dir === undefined) {
         return;
       }
-      const repo = await parseGitHubRepo(dir?.gitdir);
+      const repo = await parseGitHubRepo(dir?.gitdir, params.remoteName);
       return repo
         ? {
           owner: repo.owner,
@@ -82,6 +83,6 @@ export class Source extends BaseSource<Params, ActionData> {
   }
 
   override params(): Params {
-    return { source: "cwd" };
+    return { source: "cwd", remoteName:"origin" };
   }
 }

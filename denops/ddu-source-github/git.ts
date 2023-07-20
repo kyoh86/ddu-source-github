@@ -75,7 +75,7 @@ export async function parseConfig(gitdir: string) {
   const keys = Object.keys(config);
   for (const key of keys) {
     const m = /(\w+) "([^"]+)"/.exec(key);
-    if (!m) {
+    if (!m || !m[1] || !m[2]) {
       continue;
     }
     Object.assign(config, {
@@ -137,10 +137,12 @@ export function parseGitHubURLLike(urlLike?: string) {
   }
 }
 
-export async function parseGitHubRepo(gitdir: string) {
+export async function parseGitHubRepo(gitdir: string, remote: string) {
   const config = await parseConfig(gitdir);
   // UNDONE: support other remotes (other of "origin")
   // UNDONE: support GitHub enterprise
   // UNDONE: more safety
-  return parseGitHubURLLike((config.remote?.origin as { url: string })?.url);
+  const remotes = config["remote"];
+  if (!remotes) return;
+  return parseGitHubURLLike((remotes[remote] as { url: string })?.url);
 }
