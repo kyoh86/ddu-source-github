@@ -1,28 +1,57 @@
-*ddu-source-github.txt*           A source for ddu.vim to manipulaate GitHub.
-=============================================================================
-ddu-source-github~
+*ddu-source-github.txt*	A source for ddu.vim to manipulaate GitHub.
 
-A source for ddu.vim to manipulaate GitHub.
-
-WARN: this is work in progress project, very fragile and unstable
+WARN: THIS IS WORK IN PROGRESS PROJECT, VERY FRAGILE AND UNSTABLE
 
 Author: kyoh86 <me@kyoh86.dev>
 License: MIT
 URL: https://github.com/apps/ddu-source-github
 
+==============================================================================
 Contents ~
-                                                 *ddu-source-github-contents*
+                                                  *ddu-source-github-contents*
 
 Install						|ddu-source-github-install|
 Examples					|ddu-source-github-examples|
-Params						|ddu-source-github-params|
+Sources						|ddu-source-github-sources|
+SourceParams					|ddu-source-github-params|
 Actions						|ddu-source-github-actions|
+Kinds						|ddu-kind-github-kinds|
+KindParams					|ddu-kind-github-params|
 
+
+==============================================================================
 Install ~
                                                   *ddu-source-github-install*
 
+It depends on "|ddu|.vim" and "|denops.vim|".
+
+https://github.com/Shougo/ddu.vim
+https://github.com/vim-denops/denops.vim
+
+And you should install the GitHub App for your user and your organizations if
+you need:
+https://github.com/apps/ddu-source-github
+
+If you do not install it, you cannot do below with this plugin.
+
+- Read something in the private repositories
+- Update something
+
+==============================================================================
 Examples ~
                                                  *ddu-source-github-examples*
+
+>
+	" Use GitHub Issue source.
+	call ddu#start(#{
+	  \    sources: [#{ name: "github_issue" }],
+	  \    kindOptions: #{
+	  \        github_issue: #{
+	  \            defaultAction: "open",
+	  \        }
+	  \    }
+	  \ })
+<
 
 
 vim:tw=78:ts=8:noet:ft=help:norl:
