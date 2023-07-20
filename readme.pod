@@ -1,0 +1,32 @@
+---
+name: ddu-source-github
+description: A source for ddu.vim to manipulaate GitHub.
+---
+
+=pod
+
+
+=head1 ddu-source-github
+
+A source for ddu.vim to manipulaate GitHub.
+
+WARN: this is work in progress project, very fragile and unstable
+
+Author: kyoh86 <me@kyoh86.dev>
+License: MIT
+URL: https://github.com/apps/ddu-source-github
+
+
+=head2 Contents X<ddu-source-github-contents>
+
+Install						L<ddu-source-github-install>
+Examples					L<ddu-source-github-examples>
+Params						L<ddu-source-github-params>
+Actions						L<ddu-source-github-actions>
+
+
+=head2 Install X<ddu-source-github-install>
+
+=head2 Examples X<ddu-source-github-examples>
+
+=cut
