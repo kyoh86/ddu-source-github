@@ -87,17 +87,60 @@ export async function parseConfig(gitdir: string) {
   return config;
 }
 
-export async function parseGitHubRepo(gitdir: string) {
-  const config = await parseConfig(gitdir);
-  // UNDONE: support other remotes (other of "origin")
-  // UNDONE: support ssh:// and git: format
-  // UNDONE: support GitHub enterprise
-  // UNDONE: more safety
-  const url = new URL((config.remote?.origin as { url: string }).url);
-  const [_, owner, name] = url.pathname.split("/");
+function parseRepoPathname(path: string) {
+  const [prefix, owner, name, ...rest] = path.replace(/\.git$/, "").split("/");
+  if (prefix != "" || rest.length > 0) {
+    return;
+  }
   return {
-    ...url,
     owner,
     name,
   };
+}
+
+export function parseGitHubURLLike(urlLike?: string) {
+  if (!urlLike) {
+    return;
+  }
+  if (/^https:/.test(urlLike)) {
+    if (!URL.canParse(urlLike)) return;
+    const url = new URL(urlLike);
+    const repoName = parseRepoPathname(url.pathname);
+    return repoName
+      ? {
+        hostname: url.hostname,
+        ...repoName,
+      }
+      : undefined;
+  }
+  if (/^git@/.test(urlLike)) {
+    const [hostname, owner, name, ...rest] = urlLike
+      .replaceAll(/^git@|\.git$/g, "")
+      .split(/[\/:]/);
+    return rest.length > 0 ? undefined : {
+      hostname,
+      owner,
+      name,
+    };
+  }
+  if (/^ssh:\/\//.test(urlLike)) {
+    const [hostname, owner, name, ...rest] = urlLike.replaceAll(
+      /^ssh:\/\/(git@)?|\.git$/g,
+      "",
+    )
+      .split("/");
+    return rest.length > 0 ? undefined : {
+      hostname,
+      owner,
+      name,
+    };
+  }
+}
+
+export async function parseGitHubRepo(gitdir: string) {
+  const config = await parseConfig(gitdir);
+  // UNDONE: support other remotes (other of "origin")
+  // UNDONE: support GitHub enterprise
+  // UNDONE: more safety
+  return parseGitHubURLLike((config.remote?.origin as { url: string })?.url);
 }

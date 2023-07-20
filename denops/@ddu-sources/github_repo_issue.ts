@@ -24,10 +24,12 @@ async function githubRepo(denops: Denops, params: Params) {
         return;
       }
       const repo = await parseGitHubRepo(dir?.gitdir);
-      return {
-        owner: repo.owner,
-        name: repo.name,
-      };
+      return repo
+        ? {
+          owner: repo.owner,
+          name: repo.name,
+        }
+        : undefined;
     }
     case "repo":
       return {
