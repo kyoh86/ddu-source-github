@@ -9,7 +9,7 @@ import {
 export function main(denops: Denops): void {
   denops.dispatcher = {
     ...denops.dispatcher,
-    "issue:write": async (unknownBufnr, unknownUrl) => {
+    "github:patch_body_from_buffer": async (unknownBufnr, unknownUrl) => {
       const bufnr = ensure(unknownBufnr, is.Number, {
         message: "bufnr must be number",
       });

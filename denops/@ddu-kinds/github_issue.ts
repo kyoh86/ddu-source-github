@@ -58,7 +58,7 @@ async function editIssue(
             "<buffer>",
             "call denops#request(" +
               "'ddu-source-github'," +
-              "'issue:write'," +
+              "'github:patch_body_from_buffer'," +
               "[" +
               `  ${newBuffer.bufnr},` +
               `  "${action.url}",` +

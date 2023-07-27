@@ -107,7 +107,7 @@ function splitGitHubURLLike(urlLike?: string) {
   if (!urlLike) {
     return;
   }
-  if (/^https:/.test(urlLike) && !URL.canParse(urlLike)) {
+  if (/^https:/.test(urlLike) && URL.canParse(urlLike)) {
     const url = new URL(urlLike);
     const [_, ...parts] = url.pathname.replace(/\.git$/, "").split("/");
     return [url.hostname, ...parts];
