@@ -4,16 +4,11 @@ import {
 } from "https://deno.land/x/ddu_vim@v3.4.2/types.ts";
 import type {
   Actions,
-  DduItem,
   Previewer,
 } from "https://deno.land/x/ddu_vim@v3.4.2/types.ts";
 import type { Issue } from "../ddu-source-github/github/types.ts";
+import { editContent } from "../ddu-kind-github/edit_content.ts";
 import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.4.2/base/kind.ts";
-import type { Denops } from "https://deno.land/x/denops_std@v5.0.1/mod.ts";
-import * as buffer from "https://deno.land/x/denops_std@v5.0.1/buffer/mod.ts";
-import * as option from "https://deno.land/x/denops_std@v5.0.1/option/mod.ts";
-import * as autocmd from "https://deno.land/x/denops_std@v5.0.1/autocmd/mod.ts";
-import { batch } from "https://deno.land/x/denops_std@v5.0.1/batch/mod.ts";
 import {
   ensure,
   is,
@@ -23,55 +18,6 @@ import {
 export type ActionData = Issue;
 
 type Params = Record<never, never>;
-
-async function editIssue(
-  denops: Denops,
-  item: DduItem,
-  opener: string,
-  mods?: string,
-  bang?: boolean,
-) {
-  const action = item.action as ActionData;
-  const bufname = `githubissue://${action.url}`;
-  const newBuffer = await buffer.open(denops, bufname, {
-    opener: opener,
-    mods: mods,
-    bang: bang,
-  });
-  if (action.body) {
-    await buffer.replace(denops, newBuffer.bufnr, action.body.split("\n"));
-  }
-  await buffer.concrete(denops, newBuffer.bufnr);
-  await buffer.ensure(denops, newBuffer.bufnr, async () => {
-    await batch(denops, async (denops) => {
-      await option.swapfile.setLocal(denops, false);
-      await option.bufhidden.setLocal(denops, "unload");
-      await option.buftype.setLocal(denops, "acwrite");
-      await option.filetype.setLocal(denops, "markdown");
-      await autocmd.group(
-        denops,
-        "ddu_kind_github_issue_edit_internal",
-        (helper) => {
-          helper.remove("*", "<buffer>");
-          helper.define(
-            "BufWriteCmd",
-            "<buffer>",
-            "call denops#request(" +
-              "'ddu-source-github'," +
-              "'github:patch_body_from_buffer'," +
-              "[" +
-              `  ${newBuffer.bufnr},` +
-              `  "${action.url}",` +
-              `])`,
-            {
-              nested: true,
-            },
-          );
-        },
-      );
-    });
-  });
-}
 
 export class Kind extends BaseKind<Params> {
   override actions: Actions<Params> = {
@@ -97,7 +43,7 @@ export class Kind extends BaseKind<Params> {
 
       const mods = maybe(params["mods"], is.String);
       const bang = maybe(params["bang"], is.Boolean);
-      await editIssue(denops, items[0], opener, mods, bang);
+      await editContent(denops, items[0].action as ActionData, opener, mods, bang);
       return ActionFlags.None;
     },
   };
