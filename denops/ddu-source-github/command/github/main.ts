@@ -9,7 +9,8 @@ import {
 export function main(denops: Denops): void {
   denops.dispatcher = {
     ...denops.dispatcher,
-    "github:patch_body_from_buffer": async (unknownBufnr, unknownUrl) => {
+
+    "github:patch_body": async (unknownBufnr, unknownUrl) => {
       const bufnr = ensure(unknownBufnr, is.Number, {
         message: "bufnr must be number",
       });
@@ -26,6 +27,7 @@ export function main(denops: Denops): void {
         body: bodyLines.join("\n"),
       });
       await setbufvar(denops, bufnr, "&modified", 0);
+      return url;
     },
   };
 }

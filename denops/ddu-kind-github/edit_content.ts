@@ -32,19 +32,16 @@ export async function editContent(
       await option.filetype.setLocal(denops, "markdown");
       await autocmd.group(
         denops,
-        "ddu_kind_github_issue_edit_internal",
+        "ddu_kind_github_edit_content",
         (helper) => {
           helper.remove("*", "<buffer>");
           helper.define(
             "BufWriteCmd",
             "<buffer>",
-            "call denops#request(" +
-              "'ddu-source-github'," +
-              "'github:patch_body_from_buffer'," +
-              "[" +
-              `  ${newBuffer.bufnr},` +
-              `  "${content.url}",` +
-              `])`,
+            "call ddu#kind#github#request#patch_body(" +
+              `${newBuffer.bufnr},` +
+              `"${content.url}",` +
+              ")",
             {
               nested: true,
             },
@@ -54,5 +51,3 @@ export async function editContent(
     });
   });
 }
-
-

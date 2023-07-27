@@ -29,16 +29,18 @@ async function loadSafely() {
 }
 
 export async function restoreAuthentication(hostname: string) {
+  const host = hostname === "api.github.com" ? "github.com" : hostname;
   const stored = await loadSafely();
-  return stored[hostname];
+  return stored[host];
 }
 
 export async function storeAuthentication(
   hostname: string,
   authentication: GitHubAppAuthentication,
 ) {
+  const host = hostname === "api.github.com" ? "github.com" : hostname;
   const stored = await loadSafely() || {} as Format;
-  stored[hostname] = authentication;
+  stored[host] = authentication;
   await Deno.writeTextFile(
     await ensureSessionFilePath(),
     JSON.stringify(stored),
