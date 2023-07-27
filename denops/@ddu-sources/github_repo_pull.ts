@@ -4,7 +4,7 @@ import { getcwd } from "https://deno.land/x/denops_std@v5.0.1/function/mod.ts";
 import { BaseSource, Item } from "https://deno.land/x/ddu_vim@v3.4.4/types.ts";
 import { getClient } from "../ddu-source-github/github/client.ts";
 import { gitdir, parseGitHubRepo } from "../ddu-source-github/git.ts";
-import { ActionData } from "../@ddu-kinds/github_issue.ts";
+import { ActionData } from "../@ddu-kinds/github_pull.ts";
 
 type Params = {
   source: "cwd";
@@ -37,7 +37,7 @@ async function githubRepo(denops: Denops, params: Params) {
 }
 
 export class Source extends BaseSource<Params, ActionData> {
-  override kind = "github_issue";
+  override kind = "github_pull";
 
   override gather(
     { denops, sourceParams }: GatherArguments<Params>,
@@ -54,7 +54,7 @@ export class Source extends BaseSource<Params, ActionData> {
           }
           const client = await getClient(repo.hostname);
           const iterator = client.paginate.iterator(
-            client.rest.issues.listForRepo,
+            client.rest.pulls.list,
             {
               owner: repo.owner,
               repo: repo.name,
@@ -63,13 +63,14 @@ export class Source extends BaseSource<Params, ActionData> {
           );
 
           // iterate through each response
-          for await (const { data: issues } of iterator) {
-            controller.enqueue(issues.map((issue) => {
+          for await (const { data: pulls } of iterator) {
+            const chunk = pulls.map((pull) => {
               return {
-                action: issue,
-                word: `${issue.number} ${issue.title}`,
+                action: pull,
+                word: `${pull.number} ${pull.title}`,
               };
-            }));
+            });
+            controller.enqueue(chunk);
           }
         } finally {
           controller.close();

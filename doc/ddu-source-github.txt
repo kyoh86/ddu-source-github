@@ -23,7 +23,7 @@ KindParams					|ddu-kind-github-params|
 Install ~
                                                   *ddu-source-github-install*
 
-It depends on "|ddu|.vim" and "|denops.vim|".
+It depends on "|ddu|.vim", "|denops.vim|" and "|ddu-kind-file|".
 
 https://github.com/Shougo/ddu.vim
 https://github.com/vim-denops/denops.vim

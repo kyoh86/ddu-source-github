@@ -1,6 +1,6 @@
 import { BaseKind } from "https://deno.land/x/ddu_vim@v3.4.4/types.ts";
 import type { Actions } from "https://deno.land/x/ddu_vim@v3.4.4/types.ts";
-import type { Issue } from "../ddu-source-github/github/types.ts";
+import type { PullRequest } from "../ddu-source-github/github/types.ts";
 import {
   editContent,
   getPreviewer,
@@ -8,14 +8,14 @@ import {
 } from "../ddu-kind-github/issue_like.ts";
 import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.4.4/base/kind.ts";
 
-export type ActionData = Issue;
+export type ActionData = PullRequest;
 
 type Params = Record<never, never>;
 
 export class Kind extends BaseKind<Params> {
   override actions: Actions<Params> = {
-    open: openUrl<Params, Issue>,
-    edit: editContent<Params, Issue>,
+    open: openUrl<Params, PullRequest>,
+    edit: editContent<Params, PullRequest>,
   };
 
   override getPreviewer(args: GetPreviewerArguments) {
