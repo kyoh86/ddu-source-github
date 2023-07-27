@@ -10,18 +10,18 @@ URL: https://github.com/apps/ddu-source-github
 Contents ~
                                                   *ddu-source-github-contents*
 
-Install						|ddu-source-github-install|
-Examples					|ddu-source-github-examples|
-Sources						|ddu-source-github-sources|
-SourceParams					|ddu-source-github-params|
-Actions						|ddu-source-github-actions|
-Kinds						|ddu-kind-github-kinds|
-KindParams					|ddu-kind-github-params|
+Install					|ddu-source-github-install|
+Examples				|ddu-source-github-examples|
+Sources					|ddu-source-github-sources|
+SourceParams				|ddu-source-github-source-params|
+Kinds					|ddu-kind-github-kinds|
+Actions					|ddu-kind-github-actions|
+KindParams				|ddu-kind-github-kind-params|
 
 
 ==============================================================================
 Install ~
-                                                  *ddu-source-github-install*
+                                                   *ddu-source-github-install*
 
 It depends on "|ddu|.vim", "|denops.vim|" and "|ddu-kind-file|".
 
@@ -39,7 +39,7 @@ If you do not install it, you cannot do below with this plugin.
 
 ==============================================================================
 Examples ~
-                                                 *ddu-source-github-examples*
+                                                  *ddu-source-github-examples*
 
 >
 	" Use GitHub Issue source.
@@ -54,4 +54,80 @@ Examples ~
 <
 
 
+==============================================================================
+Sources ~
+                                                   *ddu-source-github-sources*
+
+github_my_issue
+github_repo_issue
+github_repo_pull
+github_repo_search
+
+
+==============================================================================
+SourceParams ~
+                                             *ddu-source-github-source-params*
+
+github_my_issue
+  hostname: string;
+  role: "created" | "assigned" | "mentioned";
+
+github_repo_issue
+  source: "cwd";
+  remoteName: string;
+  path?: string;
+} | {
+  source: "repo";
+  hostname: string;
+  owner: string;
+  name: string;
+
+github_repo_pull
+  source: "cwd";
+  remoteName: string;
+  path?: string;
+} | {
+  source: "repo";
+  hostname: string;
+  owner: string;
+  name: string;
+
+github_repo_search
+  hostname: string;
+  query: string;
+
+
+==============================================================================
+Kinds ~
+                                                       *ddu-kind-github-kinds*
+
+github_issue
+github_pull
+github_repo
+
+
+==============================================================================
+Actions ~
+                                                     *ddu-kind-github-actions*
+
+github_issue
+  open
+  edit
+
+github_pull
+  open
+  edit
+
+github_repo
+  open
+
+
+==============================================================================
+KindParams ~
+                                                 *ddu-kind-github-kind-params*
+
+There's no params for all |ddu-kind-github-kinds|.
+
+
+==============================================================================
 vim:tw=78:ts=8:noet:ft=help:norl:
