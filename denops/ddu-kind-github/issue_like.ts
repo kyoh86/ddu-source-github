@@ -31,19 +31,6 @@ async function ensureOnlyOneItem(denops: Denops, items: DduItem[]) {
   return items[0];
 }
 
-export async function openUrl<
-  T extends BaseActionParams,
-  U extends IssueLike,
->(
-  { denops, items }: ActionArguments<T>,
-): Promise<ActionFlags | ActionResult> {
-  for (const item of items) {
-    const action = item?.action as U;
-    await denops.call("ddu#kind#file#open", action.html_url);
-  }
-  return ActionFlags.None;
-}
-
 export async function editContent<
   T extends BaseActionParams,
   U extends IssueLike,
