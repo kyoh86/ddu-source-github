@@ -1,6 +1,4 @@
-*ddu-source-github.txt*	A source for ddu.vim to manipulaate GitHub.
-
-WARN: THIS IS WORK IN PROGRESS PROJECT, VERY FRAGILE AND UNSTABLE
+*ddu-source-github.txt*	A source for ddu.vim to manipulate GitHub.
 
 Author: kyoh86 <me@kyoh86.dev>
 License: MIT
