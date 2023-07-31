@@ -4,20 +4,25 @@ WARN: THIS IS WORK IN PROGRESS PROJECT, VERY FRAGILE AND UNSTABLE
 
 Author: kyoh86 <me@kyoh86.dev>
 License: MIT
-URL: https://github.com/apps/ddu-source-github
+
 
 ==============================================================================
 Contents ~
                                                   *ddu-source-github-contents*
 
+Introduction				|ddu-source-github-introduction|
 Install					|ddu-source-github-install|
 Examples				|ddu-source-github-examples|
 Sources					|ddu-source-github-sources|
-SourceParams				|ddu-source-github-source-params|
-Kinds					|ddu-kind-github-kinds|
 Actions					|ddu-kind-github-actions|
-KindParams				|ddu-kind-github-kind-params|
 
+
+==============================================================================
+Introduction ~
+                                              *ddu-source-github-introduction*
+
+ddu.vim source collecting GitHub issues and pulls or searches GitHub
+repositories.
 
 ==============================================================================
 Install ~
@@ -42,9 +47,9 @@ Examples ~
                                                   *ddu-source-github-examples*
 
 >
-	" Use GitHub Issue source.
+	" Show GitHub issue source.
 	call ddu#start(#{
-	  \    sources: [#{ name: "github_issue" }],
+	  \    sources: [#{ name: "github_my_issue" }],
 	  \    kindOptions: #{
 	  \        github_issue: #{
 	  \            defaultAction: "open",
@@ -57,69 +62,186 @@ Examples ~
 ==============================================================================
 Sources ~
                                                    *ddu-source-github-sources*
-
-github_my_issue
-github_repo_issue
-github_repo_pull
-github_repo_search
-
-
-==============================================================================
-SourceParams ~
                                              *ddu-source-github-source-params*
 
 github_my_issue
-  hostname: string;
-  role: "created" | "assigned" | "mentioned";
+                                                  *ddu-source-github_my_issue*
+	A source to collect your issues from GitHub.
+	It returns items for the kind |ddu-kind-github_issue|.
+	You can specify your role on issues.
+
+	Parameter:
+                                           *ddu-source-github_my_issue-params*
+
+	hostname
+		(string)
+		A GitHub hostname.
+
+		Default: "github.com"
+
+	role
+		(string)
+		A your role on issues.
+		You can set "created", "assigned" or "mentioned".
+
+		Default: "assigned"
 
 github_repo_issue
-  source: "cwd";
-  remoteName: string;
-  path?: string;
-} | {
-  source: "repo";
-  hostname: string;
-  owner: string;
-  name: string;
+                                                *ddu-source-github_repo_issue*
+
+	A source to collect issues from a repository in GitHub.
+	It returns items for the kind |ddu-kind-github_issue|.
+
+	Parameter:
+                                         *ddu-source-github_repo_issue-params*
+
+	source
+		(string)
+		A source type to specify a repository.
+
+		If you set "cwd" (default), repository is guessed by remote
+		URL in the local git config of current working directory.
+
+		If you set "repo", you must tell the repository by parameters,
+		`hostname`, `owner` and `name`.
+
+		Default: "cwd"
+
+	remoteName
+		(string)
+		A remote name used to guess the repo name in the git config
+		when `source` is "cwd".
+
+		Default: "origin"
+
+	path
+		(string or null)
+		Get git config as if git is called in the path instead of the
+		current working directory (like `git -C`).
+
+		Default: (null)
+
+	hostname
+		(string)
+		A hostname of the repository for "repo" source type.
+
+		Default: (null)
+
+	owner
+		(string)
+		A owner of the repository for "repo" source type.
+
+		Default: (null)
+	name
+		(string)
+		A name of the repository for "repo" source type.
+
+		Default: (null)
+
 
 github_repo_pull
-  source: "cwd";
-  remoteName: string;
-  path?: string;
-} | {
-  source: "repo";
-  hostname: string;
-  owner: string;
-  name: string;
+                                                 *ddu-source-github_repo_pull*
 
-github_repo_search
-  hostname: string;
-  query: string;
+	A source to collect pulls from a repository in GitHub.
+	It returns items for the kind |ddu-kind-github_pull|.
+
+	Parameter:
+                                          *ddu-source-github_repo_pull-params*
+
+	source
+		(string)
+		A source type to specify a repository.
+
+		If you set "cwd" (default), repository is guessed by remote
+		URL in the local git config of current working directory.
+
+		If you set "repo", you must tell the repository by parameters,
+		`hostname`, `owner` and `name`.
+
+		Default: "cwd"
+
+	remoteName
+		(string)
+		A remote name used to guess the repo name in the git config
+		when `source` is "cwd".
+
+		Default: "origin"
+
+	path
+		(string or null)
+		Get git config as if git is called in the path instead of the
+		current working directory (like `git -C`).
+
+		Default: (null)
+
+	hostname
+		(string)
+		A hostname of the repository for "repo" source type.
+
+		Default: (null)
+
+	owner
+		(string)
+		A owner of the repository for "repo" source type.
+
+		Default: (null)
+	name
+		(string)
+		A name of the repository for "repo" source type.
+
+		Default: (null)
 
 
-==============================================================================
-Kinds ~
-                                                       *ddu-kind-github-kinds*
+github_search_repo
+                                               *ddu-source-github_search_repo*
 
-github_issue
-github_pull
-github_repo
+	A source to search repositories from GitHub.
+	It returns items for the kind |ddu-kind-github_repo|.
+
+	Parameters:
+                                        *ddu-source-github_search_repo-params*
+
+	hostname
+		(string)
+		A hostname of GitHub you searches repositories from.
+
+		Default: "github.com"
+
+	query
+		(string)
+		Search query.
+
+		See "Searching for repositories" in the GitHub Docs:
+
+https://docs.github.com/en/search-github/searching-on-github/searching-for-repositories
 
 
 ==============================================================================
 Actions ~
+                                                             *ddu-kind-github*
                                                      *ddu-kind-github-actions*
 
-github_issue
-  open
-  edit
+kind: github_issue
+                                                *ddu-kind-github_github_issue*
+                                        *ddu-kind-github-actions_github_issue*
+	open
+		Open the issue in your browser.
+	edit
+		Edit the issue.
 
-github_pull
-  open
-  edit
+kind: github_pull
+                                                 *ddu-kind-github_github_pull*
+                                         *ddu-kind-github-actions_github_pull*
+	open
+		Open the pull request in your browser.
+	edit
+		Edit the pull request.
 
-github_repo
-  open
+kind: github_repo
+                                                 *ddu-kind-github_github_repo*
+                                         *ddu-kind-github-actions_github_repo*
+	open
+		Open the repository in your browser.
 
 
 ==============================================================================
