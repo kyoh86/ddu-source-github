@@ -103,6 +103,10 @@ async function checkout(args: ActionArguments<Params>) {
         args: ["remote", "add", "--fetch", repo.owner, url],
         cwd,
       });
+      await pipe(args.denops, "git", {
+        args: ["fetch", repo.owner, pr.head.ref],
+        cwd,
+      });
       return repo.owner;
     })();
 
@@ -110,10 +114,6 @@ async function checkout(args: ActionArguments<Params>) {
 
   const localBranch = pr.head.ref;
   const remoteBranch = `${remoteName}/${localBranch}`;
-  await pipe(args.denops, "git", {
-    args: ["fetch", remoteName],
-    cwd,
-  });
   const existance = await findBranch(
     args.denops,
     cwd,
