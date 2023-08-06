@@ -1,4 +1,3 @@
-import type { Denops } from "https://deno.land/x/denops_std@v5.0.1/mod.ts";
 import type { GatherArguments } from "https://deno.land/x/ddu_vim@v3.4.4/base/source.ts";
 import { getcwd } from "https://deno.land/x/denops_std@v5.0.1/function/mod.ts";
 import { BaseSource, Item } from "https://deno.land/x/ddu_vim@v3.4.4/types.ts";
@@ -17,25 +16,6 @@ type Params = {
   name: string;
 };
 
-async function githubRepo(denops: Denops, params: Params) {
-  switch (params.source) {
-    case "cwd": {
-      const path = params.path ?? await getcwd(denops);
-      const dir = await gitdir(path);
-      if (dir === undefined) {
-        return;
-      }
-      return await parseGitHubRepo(dir?.gitdir, params.remoteName);
-    }
-    case "repo":
-      return {
-        hostname: params.hostname,
-        owner: params.owner,
-        name: params.name,
-      };
-  }
-}
-
 export class Source extends BaseSource<Params, ActionData> {
   override kind = "github_pull";
 
@@ -45,11 +25,27 @@ export class Source extends BaseSource<Params, ActionData> {
     return new ReadableStream({
       async start(controller) {
         try {
-          const repo = await githubRepo(denops, sourceParams);
+          let cwd: string | undefined;
+          let repo:
+            | { hostname: string; owner: string; name: string }
+            | undefined;
+          switch (sourceParams.source) {
+            case "cwd": {
+              cwd = sourceParams.path ?? await getcwd(denops);
+              const dir = await gitdir(cwd);
+              if (dir === undefined) {
+                break;
+              }
+              repo = await parseGitHubRepo(dir.gitdir, sourceParams.remoteName);
+              break;
+            }
+            case "repo": {
+              repo = sourceParams;
+              break;
+            }
+          }
           if (repo === undefined) {
-            console.error(
-              `invalid param: ${JSON.stringify(sourceParams)}`,
-            );
+            console.error(`invalid param: ${JSON.stringify(sourceParams)}`);
             return;
           }
           const client = await getClient(repo.hostname);
@@ -66,7 +62,10 @@ export class Source extends BaseSource<Params, ActionData> {
           for await (const { data: pulls } of iterator) {
             const chunk = pulls.map((pull) => {
               return {
-                action: pull,
+                action: {
+                  ...pull,
+                  cwd,
+                },
                 word: `${pull.number} ${pull.title}`,
               };
             });

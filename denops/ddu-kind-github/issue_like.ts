@@ -19,7 +19,7 @@ import type { DduItem } from "https://deno.land/x/ddu_vim@v3.4.4/types.ts";
 import type { Previewer } from "https://deno.land/x/ddu_vim@v3.4.4/types.ts";
 import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.4.4/base/kind.ts";
 
-async function ensureOnlyOneItem(denops: Denops, items: DduItem[]) {
+export async function ensureOnlyOneItem(denops: Denops, items: DduItem[]) {
   if (items.length != 1) {
     await denops.call(
       "ddu#util#print_error",

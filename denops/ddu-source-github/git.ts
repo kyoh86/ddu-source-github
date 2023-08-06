@@ -1,5 +1,6 @@
 import { dirname, join } from "https://deno.land/std@0.196.0/path/mod.ts";
 import { decode } from "https://deno.land/x/ini@v2.1.0/mod.ts";
+import { is, maybe } from "https://deno.land/x/unknownutil@v3.4.0/mod.ts";
 
 async function pathType(path: string) {
   try {
@@ -87,7 +88,7 @@ export async function parseConfig(gitdir: string) {
   return config;
 }
 
-function parseGitHubURLLike(urlLike?: string) {
+export function parseGitHubURLLike(urlLike?: string) {
   const repo = splitGitHubURLLike(urlLike);
   if (
     !repo || repo.length != 3 ||
@@ -126,4 +127,35 @@ export async function parseGitHubRepo(gitdir: string, remote: string) {
   return parseGitHubURLLike(
     (conf["remote"]?.[remote] as { url?: string } | undefined)?.url,
   );
+}
+
+export async function findRemoteByRepo(
+  gitdir: string,
+  repo: {
+    hostname: string;
+    owner: string;
+    name: string;
+  },
+) {
+  const { remote } = await parseConfig(gitdir);
+  for (const name in remote) {
+    const value = maybe(remote[name], is.Record);
+    if (!value) {
+      continue;
+    }
+    const url = maybe(value["url"], is.String);
+    if (!url) {
+      continue;
+    }
+    const cand = parseGitHubURLLike(url);
+    if (
+      cand &&
+      repo.hostname === cand.hostname &&
+      repo.owner == cand.owner &&
+      repo.name && cand.name
+    ) {
+      return name;
+    }
+  }
+  return;
 }
