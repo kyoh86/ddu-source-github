@@ -15,11 +15,7 @@ import { ErrorStream, pipe } from "../ddu-kind-github/message.ts";
 import { openUrl } from "../ddu-kind-github/browsable.ts";
 import type { Denops } from "https://deno.land/x/denops_std@v5.0.1/mod.ts";
 import { getcwd } from "https://deno.land/x/denops_std@v5.0.1/function/mod.ts";
-import {
-  ensure,
-  is,
-  maybe,
-} from "https://deno.land/x/unknownutil@v3.4.0/mod.ts";
+import { is, maybe } from "https://deno.land/x/unknownutil@v3.4.0/mod.ts";
 import {
   findRemoteByRepo,
   gitdir,
@@ -27,7 +23,9 @@ import {
 } from "../ddu-source-github/git.ts";
 import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.4.4/base/kind.ts";
 
-export type ActionData = PullRequest;
+export type ActionData = PullRequest & {
+  cwd?: string;
+};
 
 type Params = Record<never, never>;
 
@@ -82,8 +80,7 @@ async function checkout(args: ActionArguments<Params>) {
     return ActionFlags.None;
   }
   const pr = item.action as ActionData;
-  const params = ensure(args.actionParams, is.Record);
-  const cwd = maybe(params["cwd"], is.String) ?? await getcwd(args.denops);
+  const cwd = pr.cwd ?? await getcwd(args.denops);
   const dir = await gitdir(cwd);
   if (!dir) {
     console.error("not a git repository (or any of the parent directories)");
@@ -96,14 +93,26 @@ async function checkout(args: ActionArguments<Params>) {
     return ActionFlags.None;
   }
 
-  const remoteName = await findRemoteByRepo(dir.gitdir, repo) ||
+  checkoutCore(args.denops, cwd, dir.gitdir, repo, url, pr);
+  return ActionFlags.None;
+}
+
+async function checkoutCore(
+  denops: Denops,
+  cwd: string,
+  gitdir: string,
+  repo: { hostname: string; owner: string; name: string },
+  url: string,
+  pr: ActionData,
+) {
+  const remoteName = await findRemoteByRepo(gitdir, repo) ||
     await (async () => {
       console.log(`create remote ${repo.owner} for ${repo.hostname}`);
-      await pipe(args.denops, "git", {
+      await pipe(denops, "git", {
         args: ["remote", "add", "--fetch", repo.owner, url],
         cwd,
       });
-      await pipe(args.denops, "git", {
+      await pipe(denops, "git", {
         args: ["fetch", repo.owner, pr.head.ref],
         cwd,
       });
@@ -115,32 +124,28 @@ async function checkout(args: ActionArguments<Params>) {
   const localBranch = pr.head.ref;
   const remoteBranch = `${remoteName}/${localBranch}`;
   const existance = await findBranch(
-    args.denops,
+    denops,
     cwd,
     localBranch,
     remoteBranch,
   );
   switch (existance) {
     case "tracking":
-      await pipe(args.denops, "git", {
-        args: ["switch", localBranch],
-        cwd,
-      });
+      await pipe(denops, "git", { args: ["switch", localBranch], cwd });
       break;
     case "conflict":
-      await pipe(args.denops, "git", {
+      await pipe(denops, "git", {
         args: ["switch", "-c", `${repo.owner}/${localBranch}`, remoteBranch],
         cwd,
       });
       break;
     case "none":
-      await pipe(args.denops, "git", {
+      await pipe(denops, "git", {
         args: ["switch", "-c", localBranch, remoteBranch],
         cwd,
       });
       break;
   }
-  return ActionFlags.None;
 }
 
 export class Kind extends BaseKind<Params> {
