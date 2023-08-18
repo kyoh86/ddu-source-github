@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.196.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.198.0/testing/asserts.ts";
 import { parseGitHubURLLike } from "./git.ts";
 
 Deno.test("parse GitHub URL #1 - undefined", () => {
