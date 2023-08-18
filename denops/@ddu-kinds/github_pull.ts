@@ -27,7 +27,7 @@ export type ActionData = PullRequest & {
   cwd?: string;
 };
 
-type Params = Record<never, never>;
+type Params = Record<PropertyKey, never>;
 
 async function findBranch(
   denops: Denops,
