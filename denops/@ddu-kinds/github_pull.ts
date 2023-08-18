@@ -15,7 +15,6 @@ import { ErrorStream, pipe } from "../ddu-kind-github/message.ts";
 import { openUrl } from "../ddu-kind-github/browsable.ts";
 import type { Denops } from "https://deno.land/x/denops_std@v5.0.1/mod.ts";
 import { getcwd } from "https://deno.land/x/denops_std@v5.0.1/function/mod.ts";
-import { is, maybe } from "https://deno.land/x/unknownutil@v3.4.0/mod.ts";
 import {
   findRemoteByRepo,
   gitdir,
