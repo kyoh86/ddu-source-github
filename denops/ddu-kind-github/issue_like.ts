@@ -14,10 +14,10 @@ import {
   ActionFlags,
   ActionResult,
   BaseActionParams,
-} from "https://deno.land/x/ddu_vim@v3.5.1/types.ts";
-import type { DduItem } from "https://deno.land/x/ddu_vim@v3.5.1/types.ts";
-import type { Previewer } from "https://deno.land/x/ddu_vim@v3.5.1/types.ts";
-import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.5.1/base/kind.ts";
+} from "https://deno.land/x/ddu_vim@v3.6.0/types.ts";
+import type { DduItem } from "https://deno.land/x/ddu_vim@v3.6.0/types.ts";
+import type { Previewer } from "https://deno.land/x/ddu_vim@v3.6.0/types.ts";
+import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.6.0/base/kind.ts";
 
 export async function ensureOnlyOneItem(denops: Denops, items: DduItem[]) {
   if (items.length != 1) {
