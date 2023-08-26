@@ -5,7 +5,7 @@ import {
 } from "https://deno.land/x/ddu_vim@v3.5.1/types.ts";
 import type { Actions } from "https://deno.land/x/ddu_vim@v3.5.1/types.ts";
 import type { PullRequest } from "../ddu-source-github/github/types.ts";
-import { TextLineStream } from "https://deno.land/std@0.198.0/streams/text_line_stream.ts";
+import { TextLineStream } from "https://deno.land/std@0.200.0/streams/text_line_stream.ts";
 import {
   editContent,
   ensureOnlyOneItem,
