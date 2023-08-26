@@ -2,8 +2,8 @@ import {
   ActionArguments,
   ActionFlags,
   BaseKind,
-} from "https://deno.land/x/ddu_vim@v3.5.1/types.ts";
-import type { Actions } from "https://deno.land/x/ddu_vim@v3.5.1/types.ts";
+} from "https://deno.land/x/ddu_vim@v3.6.0/types.ts";
+import type { Actions } from "https://deno.land/x/ddu_vim@v3.6.0/types.ts";
 import type { PullRequest } from "../ddu-source-github/github/types.ts";
 import { TextLineStream } from "https://deno.land/std@0.200.0/streams/text_line_stream.ts";
 import {
@@ -20,7 +20,7 @@ import {
   gitdir,
   parseGitHubURLLike,
 } from "../ddu-source-github/git.ts";
-import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.5.1/base/kind.ts";
+import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.6.0/base/kind.ts";
 
 export type ActionData = PullRequest & {
   cwd?: string;
