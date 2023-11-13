@@ -5,7 +5,7 @@ import {
 } from "https://deno.land/x/ddu_vim@v3.6.0/types.ts";
 import type { Actions } from "https://deno.land/x/ddu_vim@v3.6.0/types.ts";
 import type { PullRequest } from "../ddu-source-github/github/types.ts";
-import { TextLineStream } from "https://deno.land/std@0.203.0/streams/text_line_stream.ts";
+import { TextLineStream } from "https://deno.land/std@0.206.0/streams/text_line_stream.ts";
 import {
   editContent,
   ensureOnlyOneItem,
@@ -13,8 +13,8 @@ import {
 } from "../ddu-kind-github/issue_like.ts";
 import { ErrorStream, pipe } from "../ddu-kind-github/message.ts";
 import { openUrl } from "../ddu-kind-github/browsable.ts";
-import type { Denops } from "https://deno.land/x/denops_std@v5.0.1/mod.ts";
-import { getcwd } from "https://deno.land/x/denops_std@v5.0.1/function/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v5.0.2/mod.ts";
+import { getcwd } from "https://deno.land/x/denops_std@v5.0.2/function/mod.ts";
 import {
   findRemoteByRepo,
   gitdir,

@@ -1,14 +1,14 @@
-import type { Denops } from "https://deno.land/x/denops_std@v5.0.1/mod.ts";
-import * as buffer from "https://deno.land/x/denops_std@v5.0.1/buffer/mod.ts";
-import * as option from "https://deno.land/x/denops_std@v5.0.1/option/mod.ts";
-import * as autocmd from "https://deno.land/x/denops_std@v5.0.1/autocmd/mod.ts";
-import { batch } from "https://deno.land/x/denops_std@v5.0.1/batch/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v5.0.2/mod.ts";
+import * as buffer from "https://deno.land/x/denops_std@v5.0.2/buffer/mod.ts";
+import * as option from "https://deno.land/x/denops_std@v5.0.2/option/mod.ts";
+import * as autocmd from "https://deno.land/x/denops_std@v5.0.2/autocmd/mod.ts";
+import { batch } from "https://deno.land/x/denops_std@v5.0.2/batch/mod.ts";
 import type { IssueLike } from "../ddu-source-github/github/types.ts";
 import {
   ensure,
   is,
   maybe,
-} from "https://deno.land/x/unknownutil@v3.9.0/mod.ts";
+} from "https://deno.land/x/unknownutil@v3.10.0/mod.ts";
 import {
   ActionArguments,
   ActionFlags,
