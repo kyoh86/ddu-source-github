@@ -1,5 +1,5 @@
-import { BaseKind } from "https://deno.land/x/ddu_vim@v3.6.0/types.ts";
-import type { Actions } from "https://deno.land/x/ddu_vim@v3.6.0/types.ts";
+import { BaseKind } from "https://deno.land/x/ddu_vim@v3.8.1/types.ts";
+import type { Actions } from "https://deno.land/x/ddu_vim@v3.8.1/types.ts";
 import type { Repository } from "../ddu-source-github/github/types.ts";
 import { openUrl } from "../ddu-kind-github/browsable.ts";
 

@@ -2,10 +2,10 @@ import {
   ActionArguments,
   ActionFlags,
   BaseKind,
-} from "https://deno.land/x/ddu_vim@v3.6.0/types.ts";
-import type { Actions } from "https://deno.land/x/ddu_vim@v3.6.0/types.ts";
+} from "https://deno.land/x/ddu_vim@v3.8.1/types.ts";
+import type { Actions } from "https://deno.land/x/ddu_vim@v3.8.1/types.ts";
 import type { PullRequest } from "../ddu-source-github/github/types.ts";
-import { TextLineStream } from "https://deno.land/std@0.206.0/streams/text_line_stream.ts";
+import { TextLineStream } from "https://deno.land/std@0.208.0/streams/text_line_stream.ts";
 import {
   editContent,
   ensureOnlyOneItem,
@@ -13,14 +13,14 @@ import {
 } from "../ddu-kind-github/issue_like.ts";
 import { ErrorStream, pipe } from "../ddu-kind-github/message.ts";
 import { openUrl } from "../ddu-kind-github/browsable.ts";
-import type { Denops } from "https://deno.land/x/denops_std@v5.0.2/mod.ts";
-import { getcwd } from "https://deno.land/x/denops_std@v5.0.2/function/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v5.1.0/mod.ts";
+import { getcwd } from "https://deno.land/x/denops_std@v5.1.0/function/mod.ts";
 import {
   findRemoteByRepo,
   gitdir,
   parseGitHubURLLike,
 } from "../ddu-source-github/git.ts";
-import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.6.0/base/kind.ts";
+import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.8.1/base/kind.ts";
 
 export type ActionData = PullRequest & {
   cwd?: string;
