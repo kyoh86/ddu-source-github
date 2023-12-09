@@ -4,7 +4,7 @@ import {
   ActionFlags,
   ActionResult,
   BaseActionParams,
-} from "https://deno.land/x/ddu_vim@v3.6.0/types.ts";
+} from "https://deno.land/x/ddu_vim@v3.8.1/types.ts";
 
 export async function openUrl<
   T extends BaseActionParams,

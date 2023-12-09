@@ -1,23 +1,23 @@
-import type { Denops } from "https://deno.land/x/denops_std@v5.0.2/mod.ts";
-import * as buffer from "https://deno.land/x/denops_std@v5.0.2/buffer/mod.ts";
-import * as option from "https://deno.land/x/denops_std@v5.0.2/option/mod.ts";
-import * as autocmd from "https://deno.land/x/denops_std@v5.0.2/autocmd/mod.ts";
-import { batch } from "https://deno.land/x/denops_std@v5.0.2/batch/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v5.1.0/mod.ts";
+import * as buffer from "https://deno.land/x/denops_std@v5.1.0/buffer/mod.ts";
+import * as option from "https://deno.land/x/denops_std@v5.1.0/option/mod.ts";
+import * as autocmd from "https://deno.land/x/denops_std@v5.1.0/autocmd/mod.ts";
+import { batch } from "https://deno.land/x/denops_std@v5.1.0/batch/mod.ts";
 import type { IssueLike } from "../ddu-source-github/github/types.ts";
 import {
   ensure,
   is,
   maybe,
-} from "https://deno.land/x/unknownutil@v3.10.0/mod.ts";
+} from "https://deno.land/x/unknownutil@v3.11.0/mod.ts";
 import {
   ActionArguments,
   ActionFlags,
   ActionResult,
   BaseActionParams,
-} from "https://deno.land/x/ddu_vim@v3.6.0/types.ts";
-import type { DduItem } from "https://deno.land/x/ddu_vim@v3.6.0/types.ts";
-import type { Previewer } from "https://deno.land/x/ddu_vim@v3.6.0/types.ts";
-import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.6.0/base/kind.ts";
+} from "https://deno.land/x/ddu_vim@v3.8.1/types.ts";
+import type { DduItem } from "https://deno.land/x/ddu_vim@v3.8.1/types.ts";
+import type { Previewer } from "https://deno.land/x/ddu_vim@v3.8.1/types.ts";
+import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.8.1/base/kind.ts";
 
 export async function ensureOnlyOneItem(denops: Denops, items: DduItem[]) {
   if (items.length != 1) {
