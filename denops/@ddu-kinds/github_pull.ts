@@ -7,14 +7,24 @@ import type { Actions } from "https://deno.land/x/ddu_vim@v3.8.1/types.ts";
 import type { PullRequest } from "../ddu-source-github/github/types.ts";
 import { TextLineStream } from "https://deno.land/std@0.208.0/streams/text_line_stream.ts";
 import {
+  appendNumber,
+  appendTitle,
+  appendUrl,
   editContent,
   ensureOnlyOneItem,
   getPreviewer,
+  insertNumber,
+  insertTitle,
+  insertUrl,
+  yankNumber,
+  yankTitle,
+  yankUrl,
 } from "../ddu-kind-github/issue_like.ts";
-import { ErrorStream, pipe } from "../ddu-kind-github/message.ts";
 import { openUrl } from "../ddu-kind-github/browsable.ts";
 import type { Denops } from "https://deno.land/x/denops_std@v5.1.0/mod.ts";
 import { getcwd } from "https://deno.land/x/denops_std@v5.1.0/function/mod.ts";
+import { EchomsgStream } from "https://denopkg.com/kyoh86/denops_util@v0.0.1/echomsg_stream.ts";
+import { pipe } from "https://denopkg.com/kyoh86/denops_util@v0.0.1/pipe.ts";
 import {
   findRemoteByRepo,
   gitdir,
@@ -55,7 +65,7 @@ async function findBranch(
       stderr
         .pipeThrough(new TextDecoderStream())
         .pipeThrough(new TextLineStream())
-        .pipeTo(new ErrorStream(denops));
+        .pipeTo(new EchomsgStream(denops, "ErrorMsg"));
     }
   });
 
@@ -150,8 +160,17 @@ async function checkoutCore(
 export class Kind extends BaseKind<Params> {
   override actions: Actions<Params> = {
     open: openUrl<Params, ActionData>,
-    edit: editContent<Params, ActionData>,
+    edit: editContent<Params>,
     checkout,
+    yankNumber: yankNumber<Params>,
+    yankUrl: yankUrl<Params>,
+    yankTitle: yankTitle<Params>,
+    appendNumber: appendNumber<Params>,
+    appendUrl: appendUrl<Params>,
+    appendTitle: appendTitle<Params>,
+    insertNumber: insertNumber<Params>,
+    insertUrl: insertUrl<Params>,
+    insertTitle: insertTitle<Params>,
   };
 
   override getPreviewer(args: GetPreviewerArguments) {

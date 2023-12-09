@@ -18,6 +18,8 @@ import {
 import type { DduItem } from "https://deno.land/x/ddu_vim@v3.8.1/types.ts";
 import type { Previewer } from "https://deno.land/x/ddu_vim@v3.8.1/types.ts";
 import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.8.1/base/kind.ts";
+import { yank } from "https://denopkg.com/kyoh86/denops_util@v0.0.1/yank.ts";
+import { put } from "https://denopkg.com/kyoh86/denops_util@v0.0.1/put.ts";
 
 export async function ensureOnlyOneItem(denops: Denops, items: DduItem[]) {
   if (items.length != 1) {
@@ -31,10 +33,88 @@ export async function ensureOnlyOneItem(denops: Denops, items: DduItem[]) {
   return items[0];
 }
 
-export async function editContent<
-  T extends BaseActionParams,
-  U extends IssueLike,
->(
+export async function appendNumber<T extends BaseActionParams>(
+  args: ActionArguments<T>,
+): Promise<ActionFlags | ActionResult> {
+  return await putAny(true, "number", args);
+}
+
+export async function appendUrl<T extends BaseActionParams>(
+  args: ActionArguments<T>,
+): Promise<ActionFlags | ActionResult> {
+  return await putAny(true, "html_url", args);
+}
+
+export async function appendTitle<T extends BaseActionParams>(
+  args: ActionArguments<T>,
+): Promise<ActionFlags | ActionResult> {
+  return await putAny(true, "title", args);
+}
+
+export async function insertNumber<T extends BaseActionParams>(
+  args: ActionArguments<T>,
+): Promise<ActionFlags | ActionResult> {
+  return await putAny(false, "number", args);
+}
+
+export async function insertUrl<T extends BaseActionParams>(
+  args: ActionArguments<T>,
+): Promise<ActionFlags | ActionResult> {
+  return await putAny(false, "html_url", args);
+}
+
+export async function insertTitle<T extends BaseActionParams>(
+  args: ActionArguments<T>,
+): Promise<ActionFlags | ActionResult> {
+  return await putAny(false, "title", args);
+}
+
+async function putAny<T extends BaseActionParams>(
+  after: boolean,
+  property: keyof IssueLike,
+  { denops, items }: ActionArguments<T>,
+): Promise<ActionFlags | ActionResult> {
+  const action = (await ensureOnlyOneItem(denops, items))?.action as IssueLike;
+  const value = action[property];
+  if (!value) {
+    return ActionFlags.None;
+  }
+  await put(denops, value.toString(), after);
+  return ActionFlags.None;
+}
+
+export async function yankNumber<T extends BaseActionParams>(
+  args: ActionArguments<T>,
+): Promise<ActionFlags | ActionResult> {
+  return await yankAny("number", args);
+}
+
+export async function yankUrl<T extends BaseActionParams>(
+  args: ActionArguments<T>,
+): Promise<ActionFlags | ActionResult> {
+  return await yankAny("html_url", args);
+}
+
+export async function yankTitle<T extends BaseActionParams>(
+  args: ActionArguments<T>,
+): Promise<ActionFlags | ActionResult> {
+  return await yankAny("title", args);
+}
+
+async function yankAny<T extends BaseActionParams>(
+  property: keyof IssueLike,
+  { denops, items }: ActionArguments<T>,
+): Promise<ActionFlags | ActionResult> {
+  const action = (await ensureOnlyOneItem(denops, items))?.action as IssueLike;
+  const value = action[property];
+  if (!value) {
+    return ActionFlags.None;
+  }
+  await yank(denops, value.toString());
+  return ActionFlags.None;
+}
+
+export async function editContent<T extends BaseActionParams>(
   { denops, items, actionParams }: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   const item = await ensureOnlyOneItem(denops, items);
@@ -49,7 +129,7 @@ export async function editContent<
     return ActionFlags.None;
   }
 
-  const content = item.action as U;
+  const content = item.action as IssueLike;
   const mods = maybe(params["mods"], is.String);
   const bang = maybe(params["bang"], is.Boolean);
   const bufname = `githubissue://${content.url}`;

@@ -10,5 +10,7 @@ export type SimpleUser =
   | components["schemas"]["private-user"]
   | components["schemas"]["public-user"];
 
-export type IssueLike = { url: string; body?: string | null } & Browsable;
+export type IssueLike =
+  & { number: number; title: string; url: string; body?: string | null }
+  & Browsable;
 export type Browsable = { html_url: string };
