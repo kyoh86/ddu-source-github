@@ -5,7 +5,7 @@ import {
 } from "https://deno.land/x/ddu_vim@v3.8.1/types.ts";
 import type { Actions } from "https://deno.land/x/ddu_vim@v3.8.1/types.ts";
 import type { PullRequest } from "../ddu-source-github/github/types.ts";
-import { TextLineStream } from "https://deno.land/std@0.209.0/streams/text_line_stream.ts";
+import { TextLineStream } from "https://deno.land/std@0.210.0/streams/text_line_stream.ts";
 import {
   appendNumber,
   appendTitle,
