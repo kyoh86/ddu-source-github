@@ -14,10 +14,10 @@ import {
   ActionFlags,
   ActionResult,
   BaseActionParams,
-} from "https://deno.land/x/ddu_vim@v3.8.1/types.ts";
-import type { DduItem } from "https://deno.land/x/ddu_vim@v3.8.1/types.ts";
-import type { Previewer } from "https://deno.land/x/ddu_vim@v3.8.1/types.ts";
-import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.8.1/base/kind.ts";
+} from "https://deno.land/x/ddu_vim@v3.9.0/types.ts";
+import type { DduItem } from "https://deno.land/x/ddu_vim@v3.9.0/types.ts";
+import type { Previewer } from "https://deno.land/x/ddu_vim@v3.9.0/types.ts";
+import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.9.0/base/kind.ts";
 import { yank } from "https://denopkg.com/kyoh86/denops_util@v0.0.1/yank.ts";
 import { put } from "https://denopkg.com/kyoh86/denops_util@v0.0.1/put.ts";
 
