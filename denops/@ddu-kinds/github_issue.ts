@@ -1,5 +1,5 @@
-import { BaseKind } from "https://deno.land/x/ddu_vim@v3.8.1/types.ts";
-import type { Actions } from "https://deno.land/x/ddu_vim@v3.8.1/types.ts";
+import { BaseKind } from "https://deno.land/x/ddu_vim@v3.9.0/types.ts";
+import type { Actions } from "https://deno.land/x/ddu_vim@v3.9.0/types.ts";
 import type { Issue } from "../ddu-source-github/github/types.ts";
 import {
   appendNumber,
@@ -15,7 +15,7 @@ import {
   yankUrl,
 } from "../ddu-kind-github/issue_like.ts";
 import { openUrl } from "../ddu-kind-github/browsable.ts";
-import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.8.1/base/kind.ts";
+import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.9.0/base/kind.ts";
 
 export type ActionData = Issue;
 
