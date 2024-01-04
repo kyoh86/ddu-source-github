@@ -23,8 +23,11 @@ import {
 import { openUrl } from "../ddu-kind-github/browsable.ts";
 import type { Denops } from "https://deno.land/x/denops_std@v5.2.0/mod.ts";
 import { getcwd } from "https://deno.land/x/denops_std@v5.2.0/function/mod.ts";
-import { EchomsgStream } from "https://denopkg.com/kyoh86/denops_util@v0.0.1/echomsg_stream.ts";
-import { pipe } from "https://denopkg.com/kyoh86/denops_util@v0.0.1/pipe.ts";
+import {
+  echoallCommand,
+  echoerrCommand,
+} from "https://denopkg.com/kyoh86/denops_util@v0.0.2/command.ts";
+
 import {
   findRemoteByRepo,
   gitdir,
@@ -44,7 +47,7 @@ async function findBranch(
   localBranch: string,
   remoteBranch: string,
 ) {
-  const { status, stderr, stdout } = new Deno.Command("git", {
+  const { wait, stdout } = echoerrCommand(denops, "git", {
     args: [
       "for-each-ref",
       "--omit-empty",
@@ -56,31 +59,24 @@ async function findBranch(
       ].join(""),
     ],
     cwd,
-    stdin: "null",
-    stderr: "piped",
-    stdout: "piped",
-  }).spawn();
-  status.then((stat) => {
-    if (!stat.success) {
-      stderr
-        .pipeThrough(new TextDecoderStream())
-        .pipeThrough(new TextLineStream())
-        .pipeTo(new EchomsgStream(denops, "ErrorMsg"));
-    }
   });
 
-  for await (
-    const remote of stdout
-      .pipeThrough(new TextDecoderStream())
-      .pipeThrough(new TextLineStream())
-      .values()
-  ) {
-    if (remote == `refs/remotes/${remoteBranch}`) {
-      return "tracking";
+  try {
+    for await (
+      const remote of stdout
+        .pipeThrough(new TextLineStream())
+        .values()
+    ) {
+      if (remote == `refs/remotes/${remoteBranch}`) {
+        return "tracking";
+      }
+      return "conflict";
     }
-    return "conflict";
+    await wait;
+    return "none";
+  } finally {
+    await wait;
   }
-  return "none";
 }
 
 async function checkout(args: ActionArguments<Params>) {
@@ -117,11 +113,11 @@ async function checkoutCore(
   const remoteName = await findRemoteByRepo(gitdir, repo) ||
     await (async () => {
       console.log(`create remote ${repo.owner} for ${repo.hostname}`);
-      await pipe(denops, "git", {
+      await echoallCommand(denops, "git", {
         args: ["remote", "add", "--fetch", repo.owner, url],
         cwd,
       });
-      await pipe(denops, "git", {
+      await echoallCommand(denops, "git", {
         args: ["fetch", repo.owner, pr.head.ref],
         cwd,
       });
@@ -140,16 +136,19 @@ async function checkoutCore(
   );
   switch (existance) {
     case "tracking":
-      await pipe(denops, "git", { args: ["switch", localBranch], cwd });
+      await echoallCommand(denops, "git", {
+        args: ["switch", localBranch],
+        cwd,
+      });
       break;
     case "conflict":
-      await pipe(denops, "git", {
+      await echoallCommand(denops, "git", {
         args: ["switch", "-c", `${repo.owner}/${localBranch}`, remoteBranch],
         cwd,
       });
       break;
     case "none":
-      await pipe(denops, "git", {
+      await echoallCommand(denops, "git", {
         args: ["switch", "-c", localBranch, remoteBranch],
         cwd,
       });
