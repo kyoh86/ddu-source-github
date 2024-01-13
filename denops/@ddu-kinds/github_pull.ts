@@ -5,7 +5,7 @@ import {
 } from "https://deno.land/x/ddu_vim@v3.9.0/types.ts";
 import type { Actions } from "https://deno.land/x/ddu_vim@v3.9.0/types.ts";
 import type { PullRequest } from "../ddu-source-github/github/types.ts";
-import { TextLineStream } from "https://deno.land/std@0.211.0/streams/text_line_stream.ts";
+import { TextLineStream } from "https://deno.land/std@0.212.0/streams/text_line_stream.ts";
 import {
   appendNumber,
   appendTitle,
@@ -26,7 +26,7 @@ import { getcwd } from "https://deno.land/x/denops_std@v5.2.0/function/mod.ts";
 import {
   echoallCommand,
   echoerrCommand,
-} from "https://denopkg.com/kyoh86/denops-util@v0.0.3/command.ts";
+} from "https://denopkg.com/kyoh86/denops-util@v0.0.5/command.ts";
 
 import {
   findRemoteByRepo,
@@ -47,7 +47,7 @@ async function findBranch(
   localBranch: string,
   remoteBranch: string,
 ) {
-  const { wait, stdout } = echoerrCommand(denops, "git", {
+  const { waitErr, pipeOut, finalize } = echoerrCommand(denops, "git", {
     args: [
       "for-each-ref",
       "--omit-empty",
@@ -63,7 +63,7 @@ async function findBranch(
 
   try {
     for await (
-      const remote of stdout
+      const remote of pipeOut
         .pipeThrough(new TextLineStream())
         .values()
     ) {
@@ -72,10 +72,10 @@ async function findBranch(
       }
       return "conflict";
     }
-    await wait;
     return "none";
   } finally {
-    await wait;
+    await waitErr;
+    await finalize();
   }
 }
 
