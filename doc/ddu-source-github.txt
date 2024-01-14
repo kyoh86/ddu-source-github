@@ -236,6 +236,7 @@ kind: github_pull
                                          *ddu-kind-github-actions_github_pull*
 	open
 		Open the pull request in your browser.
+		Parameters:
 			opener
 				An external command name to open it.
 				e.g. "xdg-open", "wslview", etc.
@@ -247,6 +248,7 @@ kind: github_repo
                                          *ddu-kind-github-actions_github_repo*
 	open
 		Open the repository in your browser.
+		Parameters:
 			opener
 				An external command name to open it.
 				e.g. "xdg-open", "wslview", etc.
