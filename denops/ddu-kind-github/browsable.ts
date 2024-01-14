@@ -1,18 +1,26 @@
+import {
+  ensure,
+  is,
+  maybe,
+} from "https://deno.land/x/unknownutil@v3.14.0/mod.ts";
 import type { Browsable } from "../ddu-source-github/github/types.ts";
 import {
   ActionArguments,
   ActionFlags,
-  ActionResult,
   BaseActionParams,
 } from "https://deno.land/x/ddu_vim@v3.9.0/types.ts";
-import { systemopen } from "https://deno.land/x/systemopen@v0.2.0/mod.ts";
 
 export async function openUrl<T extends BaseActionParams, U extends Browsable>(
-  { items }: ActionArguments<T>,
-): Promise<ActionFlags | ActionResult> {
+  { denops, items, actionParams }: ActionArguments<T>,
+) {
+  const params = ensure(actionParams, is.Record);
+  const opener = maybe(params.opener, is.String);
   for (const item of items) {
     const action = item?.action as U;
-    await systemopen(action.html_url);
+    await denops.call("denops#notify", "ddu-kind-github", "open", [
+      action.html_url,
+      opener,
+    ]);
   }
   return ActionFlags.None;
 }
