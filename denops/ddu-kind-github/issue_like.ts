@@ -1,5 +1,6 @@
 import type { Denops } from "https://deno.land/x/denops_std@v5.2.0/mod.ts";
 import * as buffer from "https://deno.land/x/denops_std@v5.2.0/buffer/mod.ts";
+import * as fn from "https://deno.land/x/denops_std@v5.2.0/function/mod.ts";
 import * as option from "https://deno.land/x/denops_std@v5.2.0/option/mod.ts";
 import * as autocmd from "https://deno.land/x/denops_std@v5.2.0/autocmd/mod.ts";
 import { batch } from "https://deno.land/x/denops_std@v5.2.0/batch/mod.ts";
@@ -18,11 +19,12 @@ import {
 import type { DduItem } from "https://deno.land/x/ddu_vim@v3.9.0/types.ts";
 import type { Previewer } from "https://deno.land/x/ddu_vim@v3.9.0/types.ts";
 import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.9.0/base/kind.ts";
-import { yank } from "https://denopkg.com/kyoh86/denops-util@v0.0.5/yank.ts";
+import { yank as yankCore } from "https://denopkg.com/kyoh86/denops-util@v0.0.5/yank.ts";
 import { put } from "https://denopkg.com/kyoh86/denops-util@v0.0.5/put.ts";
 
 export async function ensureOnlyOneItem(denops: Denops, items: DduItem[]) {
   if (items.length != 1) {
+    denops.cmd;
     await denops.call(
       "ddu#util#print_error",
       "invalid action calling: it can accept only one item",
@@ -31,6 +33,12 @@ export async function ensureOnlyOneItem(denops: Denops, items: DduItem[]) {
     return;
   }
   return items[0];
+}
+
+export async function append<T extends BaseActionParams>(
+  args: ActionArguments<T>,
+): Promise<ActionFlags | ActionResult> {
+  return await putFormat(true, args);
 }
 
 export async function appendNumber<T extends BaseActionParams>(
@@ -51,6 +59,19 @@ export async function appendTitle<T extends BaseActionParams>(
   return await putAny(true, "title", args);
 }
 
+export async function insert<T extends BaseActionParams>(
+  args: ActionArguments<T>,
+): Promise<ActionFlags | ActionResult> {
+  return await putFormat(false, args);
+}
+
+export async function insertFormat<T extends BaseActionParams>(
+  args: ActionArguments<T>,
+): Promise<ActionFlags | ActionResult> {
+  const format = await fn.input(args.denops, "Format: ");
+  return await putFormat(false, args, format);
+}
+
 export async function insertNumber<T extends BaseActionParams>(
   args: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
@@ -69,6 +90,33 @@ export async function insertTitle<T extends BaseActionParams>(
   return await putAny(false, "title", args);
 }
 
+export function evalFormat(context: Record<string, unknown>, format: string) {
+  const render: () => string = new Function("return `" + format + "`").bind(
+    context,
+  );
+  return render();
+}
+
+async function putFormat<T extends BaseActionParams>(
+  after: boolean,
+  { denops, items, actionParams }: ActionArguments<T>,
+): Promise<ActionFlags | ActionResult> {
+  const item = await ensureOnlyOneItem(denops, items);
+  if (!item) {
+    return ActionFlags.None;
+  }
+  const params = maybe(actionParams, is.Record);
+  const format = maybe(params?.format, is.String) ||
+    await fn.input(denops, "Format: ");
+  const action = item.action as IssueLike;
+  const value = evalFormat(action, format);
+  if (!value) {
+    return ActionFlags.None;
+  }
+  await put(denops, value, after);
+  return ActionFlags.None;
+}
+
 async function putAny<T extends BaseActionParams>(
   after: boolean,
   property: keyof IssueLike,
@@ -80,6 +128,25 @@ async function putAny<T extends BaseActionParams>(
     return ActionFlags.None;
   }
   await put(denops, value.toString(), after);
+  return ActionFlags.None;
+}
+
+export async function yank<T extends BaseActionParams>(
+  { denops, items, actionParams }: ActionArguments<T>,
+): Promise<ActionFlags | ActionResult> {
+  const item = await ensureOnlyOneItem(denops, items);
+  if (!item) {
+    return ActionFlags.None;
+  }
+  const params = maybe(actionParams, is.Record);
+  const format = maybe(params?.format, is.String) ||
+    await fn.input(denops, "Format: ");
+  const action = item.action as IssueLike;
+  const value = evalFormat(action, format);
+  if (!value) {
+    return ActionFlags.None;
+  }
+  await yankCore(denops, value);
   return ActionFlags.None;
 }
 
@@ -110,7 +177,7 @@ async function yankAny<T extends BaseActionParams>(
   if (!value) {
     return ActionFlags.None;
   }
-  await yank(denops, value.toString());
+  await yankCore(denops, value.toString());
   return ActionFlags.None;
 }
 

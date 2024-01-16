@@ -219,29 +219,59 @@ Actions ~
                                                              *ddu-kind-github*
                                                      *ddu-kind-github-actions*
 
-kind: github_issue
+kind: github_issue, github_pull
                                                 *ddu-kind-github_github_issue*
                                         *ddu-kind-github-actions_github_issue*
-	open
-		Open the issue in your browser.
-		Parameters:
-			opener
-				An external command name to open it.
-				e.g. "xdg-open", "wslview", etc.
-	edit
-		Edit the issue.
-
-kind: github_pull
                                                  *ddu-kind-github_github_pull*
                                          *ddu-kind-github-actions_github_pull*
 	open
-		Open the pull request in your browser.
+		Open the issue/pull-request in your browser.
 		Parameters:
 			opener
 				An external command name to open it.
 				e.g. "xdg-open", "wslview", etc.
 	edit
-		Edit the pull request.
+		Edit the issue/pull-request.
+	append
+		Place the contents of an issue/pull_request after the cursor
+		as per the format.
+		Parameters:
+			format
+				The format string. You can place some values
+				like literal string of the Type Script.
+				`this` should be specified as an action value.
+				Example: `"${this.number}: ${this.title}"`
+
+				Supported properties:
+				- number
+				- title
+				- url
+				- body
+
+				If it's not specified, prompts for user input. 
+
+		Example: >
+		call ddu#ui#do_action("itemAction", {
+		  \   "name": "append",
+		  \   "params": {
+		  \     "format": "${this.number}: ${this.title}"
+		  \   }
+		  \ })
+<
+			It may put a number and title of the issue like below:
+			`78: Doesn't work well`
+	insert
+		Same action as `append`, but puts the string before the cursor
+		instead of after it.
+	yank
+		Same action as `append`, but yank the string instead of
+		putting it.
+	appendNumber/appendTitle/appendUrl
+		Shorthands for `append`.
+	insertNumber/insertTitle/insertUrl
+		Shorthands for `insert`.
+	yankNumber/yankTitle/yankUrl
+		Shorthands for `yank`.
 
 kind: github_repo
                                                  *ddu-kind-github_github_repo*
