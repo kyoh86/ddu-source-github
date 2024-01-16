@@ -245,7 +245,7 @@ kind: github_issue, github_pull
 				Supported properties:
 				- number
 				- title
-				- url
+				- html_url
 				- body
 
 				If it's not specified, prompts for user input. 
