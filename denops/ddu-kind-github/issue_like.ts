@@ -9,7 +9,7 @@ import {
   ensure,
   is,
   maybe,
-} from "https://deno.land/x/unknownutil@v3.14.0/mod.ts";
+} from "https://deno.land/x/unknownutil@v3.14.1/mod.ts";
 import {
   ActionArguments,
   ActionFlags,
@@ -63,13 +63,6 @@ export async function insert<T extends BaseActionParams>(
   args: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   return await putFormat(false, args);
-}
-
-export async function insertFormat<T extends BaseActionParams>(
-  args: ActionArguments<T>,
-): Promise<ActionFlags | ActionResult> {
-  const format = await fn.input(args.denops, "Format: ");
-  return await putFormat(false, args, format);
 }
 
 export async function insertNumber<T extends BaseActionParams>(
