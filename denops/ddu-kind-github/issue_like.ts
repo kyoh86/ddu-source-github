@@ -19,8 +19,8 @@ import {
 import type { DduItem } from "https://deno.land/x/ddu_vim@v3.9.0/types.ts";
 import type { Previewer } from "https://deno.land/x/ddu_vim@v3.9.0/types.ts";
 import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.9.0/base/kind.ts";
-import { yank as yankCore } from "https://denopkg.com/kyoh86/denops-util@v0.0.5/yank.ts";
-import { put } from "https://denopkg.com/kyoh86/denops-util@v0.0.5/put.ts";
+import { yank as yankCore } from "https://denopkg.com/kyoh86/denops-util@v0.0.6/yank.ts";
+import { put } from "https://denopkg.com/kyoh86/denops-util@v0.0.6/put.ts";
 
 export async function ensureOnlyOneItem(denops: Denops, items: DduItem[]) {
   if (items.length != 1) {

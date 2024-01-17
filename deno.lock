@@ -580,6 +580,8 @@
     "https://deno.land/x/unknownutil@v3.2.0/util.ts": "5d50435cb2ebfc8b1e49c571c5bcdcf9694e87f99aa51b670baf47f58e0e9248",
     "https://deno.land/x/unreachable@v0.1.0/mod.ts": "95a2ac02cbc97e9af486b6309d4bdf9507fb1dec540852c99aeef304014a2109",
     "https://denopkg.com/kyoh86/denops-util@v0.0.5/put.ts": "d5f5e23ad35e5c0a7e2240f1481f90c70f1b0c17ce2dd221db583bd624ac81b6",
-    "https://denopkg.com/kyoh86/denops-util@v0.0.5/yank.ts": "9249fecc34e2fd32aa758a8da90b27d771d05b149d22dd5856b4c6b7b4679859"
+    "https://denopkg.com/kyoh86/denops-util@v0.0.5/yank.ts": "9249fecc34e2fd32aa758a8da90b27d771d05b149d22dd5856b4c6b7b4679859",
+    "https://denopkg.com/kyoh86/denops-util@v0.0.6/put.ts": "d5f5e23ad35e5c0a7e2240f1481f90c70f1b0c17ce2dd221db583bd624ac81b6",
+    "https://denopkg.com/kyoh86/denops-util@v0.0.6/yank.ts": "9249fecc34e2fd32aa758a8da90b27d771d05b149d22dd5856b4c6b7b4679859"
   }
 }
