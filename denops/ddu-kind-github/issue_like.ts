@@ -1,9 +1,9 @@
-import type { Denops } from "https://deno.land/x/denops_std@v5.3.0/mod.ts";
-import * as buffer from "https://deno.land/x/denops_std@v5.3.0/buffer/mod.ts";
-import * as fn from "https://deno.land/x/denops_std@v5.3.0/function/mod.ts";
-import * as option from "https://deno.land/x/denops_std@v5.3.0/option/mod.ts";
-import * as autocmd from "https://deno.land/x/denops_std@v5.3.0/autocmd/mod.ts";
-import { batch } from "https://deno.land/x/denops_std@v5.3.0/batch/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v6.0.1/mod.ts";
+import * as buffer from "https://deno.land/x/denops_std@v6.0.1/buffer/mod.ts";
+import * as fn from "https://deno.land/x/denops_std@v6.0.1/function/mod.ts";
+import * as option from "https://deno.land/x/denops_std@v6.0.1/option/mod.ts";
+import * as autocmd from "https://deno.land/x/denops_std@v6.0.1/autocmd/mod.ts";
+import { batch } from "https://deno.land/x/denops_std@v6.0.1/batch/mod.ts";
 import type { IssueLike } from "../ddu-source-github/github/types.ts";
 import {
   ensure,
@@ -15,10 +15,10 @@ import {
   ActionFlags,
   ActionResult,
   BaseActionParams,
-} from "https://deno.land/x/ddu_vim@v3.10.0/types.ts";
-import type { DduItem } from "https://deno.land/x/ddu_vim@v3.10.0/types.ts";
-import type { Previewer } from "https://deno.land/x/ddu_vim@v3.10.0/types.ts";
-import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.10.0/base/kind.ts";
+} from "https://deno.land/x/ddu_vim@v3.10.2/types.ts";
+import type { DduItem } from "https://deno.land/x/ddu_vim@v3.10.2/types.ts";
+import type { Previewer } from "https://deno.land/x/ddu_vim@v3.10.2/types.ts";
+import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.10.2/base/kind.ts";
 import { yank as yankCore } from "https://denopkg.com/kyoh86/denops-util@v0.0.6/yank.ts";
 import { put } from "https://denopkg.com/kyoh86/denops-util@v0.0.6/put.ts";
 
