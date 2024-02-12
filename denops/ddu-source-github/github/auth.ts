@@ -1,6 +1,6 @@
 import xdg from "https://deno.land/x/xdg@v10.6.0/src/mod.deno.ts";
-import { join } from "https://deno.land/std@0.214.0/path/mod.ts";
-import { ensureDir } from "https://deno.land/std@0.214.0/fs/mod.ts";
+import { join } from "https://deno.land/std@0.215.0/path/mod.ts";
+import { ensureDir } from "https://deno.land/std@0.215.0/fs/mod.ts";
 import type {
   GitHubAppAuthentication,
 } from "https://esm.sh/@octokit/auth-oauth-device@6.0.0?dts";
