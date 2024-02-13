@@ -1,5 +1,5 @@
 import type { Denops } from "https://deno.land/x/denops_std@v6.0.1/mod.ts";
-import { ensure, is } from "https://deno.land/x/unknownutil@v3.16.0/mod.ts";
+import { ensure, is } from "https://deno.land/x/unknownutil@v3.16.1/mod.ts";
 import { getClient } from "../../github/client.ts";
 import {
   getbufline,

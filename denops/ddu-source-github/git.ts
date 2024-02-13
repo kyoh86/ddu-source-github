@@ -1,6 +1,6 @@
 import { dirname, join } from "https://deno.land/std@0.215.0/path/mod.ts";
 import { decode } from "https://deno.land/x/ini@v2.1.0/mod.ts";
-import { is, maybe } from "https://deno.land/x/unknownutil@v3.16.0/mod.ts";
+import { is, maybe } from "https://deno.land/x/unknownutil@v3.16.1/mod.ts";
 
 async function pathType(path: string) {
   try {
