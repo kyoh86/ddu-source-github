@@ -5,7 +5,7 @@ import {
 } from "https://deno.land/x/ddu_vim@v3.10.2/types.ts";
 import type { Actions } from "https://deno.land/x/ddu_vim@v3.10.2/types.ts";
 import type { PullRequest } from "../ddu-source-github/github/types.ts";
-import { TextLineStream } from "https://deno.land/std@0.216.0/streams/text_line_stream.ts";
+import { TextLineStream } from "https://deno.land/std@0.217.0/streams/text_line_stream.ts";
 import {
   append,
   appendNumber,
@@ -24,8 +24,8 @@ import {
   yankUrl,
 } from "../ddu-kind-github/issue_like.ts";
 import { openUrl } from "../ddu-kind-github/browsable.ts";
-import type { Denops } from "https://deno.land/x/denops_std@v6.0.1/mod.ts";
-import { getcwd } from "https://deno.land/x/denops_std@v6.0.1/function/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v6.1.0/mod.ts";
+import { getcwd } from "https://deno.land/x/denops_std@v6.1.0/function/mod.ts";
 import {
   echoallCommand,
   echoerrCommand,

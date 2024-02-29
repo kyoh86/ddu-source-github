@@ -1,10 +1,10 @@
-import type { Denops } from "https://deno.land/x/denops_std@v6.0.1/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v6.1.0/mod.ts";
 import { ensure, is } from "https://deno.land/x/unknownutil@v3.16.3/mod.ts";
 import { getClient } from "../../github/client.ts";
 import {
   getbufline,
   setbufvar,
-} from "https://deno.land/x/denops_std@v6.0.1/function/mod.ts";
+} from "https://deno.land/x/denops_std@v6.1.0/function/mod.ts";
 
 export function main(denops: Denops): void {
   denops.dispatcher = {
