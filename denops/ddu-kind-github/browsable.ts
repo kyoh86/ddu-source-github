@@ -2,13 +2,13 @@ import {
   ensure,
   is,
   maybe,
-} from "https://deno.land/x/unknownutil@v3.16.3/mod.ts";
+} from "https://deno.land/x/unknownutil@v3.17.0/mod.ts";
 import type { Browsable } from "../ddu-source-github/github/types.ts";
 import {
   ActionArguments,
   ActionFlags,
   BaseActionParams,
-} from "https://deno.land/x/ddu_vim@v3.10.2/types.ts";
+} from "https://deno.land/x/ddu_vim@v3.10.3/types.ts";
 
 export async function openUrl<T extends BaseActionParams, U extends Browsable>(
   { denops, items, actionParams }: ActionArguments<T>,

@@ -1,24 +1,24 @@
-import type { Denops } from "https://deno.land/x/denops_std@v6.1.0/mod.ts";
-import * as buffer from "https://deno.land/x/denops_std@v6.1.0/buffer/mod.ts";
-import * as fn from "https://deno.land/x/denops_std@v6.1.0/function/mod.ts";
-import * as option from "https://deno.land/x/denops_std@v6.1.0/option/mod.ts";
-import * as autocmd from "https://deno.land/x/denops_std@v6.1.0/autocmd/mod.ts";
-import { batch } from "https://deno.land/x/denops_std@v6.1.0/batch/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v6.4.0/mod.ts";
+import * as buffer from "https://deno.land/x/denops_std@v6.4.0/buffer/mod.ts";
+import * as fn from "https://deno.land/x/denops_std@v6.4.0/function/mod.ts";
+import * as option from "https://deno.land/x/denops_std@v6.4.0/option/mod.ts";
+import * as autocmd from "https://deno.land/x/denops_std@v6.4.0/autocmd/mod.ts";
+import { batch } from "https://deno.land/x/denops_std@v6.4.0/batch/mod.ts";
 import type { IssueLike } from "../ddu-source-github/github/types.ts";
 import {
   ensure,
   is,
   maybe,
-} from "https://deno.land/x/unknownutil@v3.16.3/mod.ts";
+} from "https://deno.land/x/unknownutil@v3.17.0/mod.ts";
 import {
   ActionArguments,
   ActionFlags,
   ActionResult,
   BaseActionParams,
-} from "https://deno.land/x/ddu_vim@v3.10.2/types.ts";
-import type { DduItem } from "https://deno.land/x/ddu_vim@v3.10.2/types.ts";
-import type { Previewer } from "https://deno.land/x/ddu_vim@v3.10.2/types.ts";
-import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.10.2/base/kind.ts";
+} from "https://deno.land/x/ddu_vim@v3.10.3/types.ts";
+import type { DduItem } from "https://deno.land/x/ddu_vim@v3.10.3/types.ts";
+import type { Previewer } from "https://deno.land/x/ddu_vim@v3.10.3/types.ts";
+import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.10.3/base/kind.ts";
 import { yank as yankCore } from "https://denopkg.com/kyoh86/denops-util@v0.0.6/yank.ts";
 import { put } from "https://denopkg.com/kyoh86/denops-util@v0.0.6/put.ts";
 

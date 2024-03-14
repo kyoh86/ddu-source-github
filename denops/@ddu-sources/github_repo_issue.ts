@@ -1,7 +1,7 @@
-import type { Denops } from "https://deno.land/x/denops_std@v6.1.0/mod.ts";
-import type { GatherArguments } from "https://deno.land/x/ddu_vim@v3.10.2/base/source.ts";
-import { getcwd } from "https://deno.land/x/denops_std@v6.1.0/function/mod.ts";
-import { BaseSource, Item } from "https://deno.land/x/ddu_vim@v3.10.2/types.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v6.4.0/mod.ts";
+import type { GatherArguments } from "https://deno.land/x/ddu_vim@v3.10.3/base/source.ts";
+import { getcwd } from "https://deno.land/x/denops_std@v6.4.0/function/mod.ts";
+import { BaseSource, Item } from "https://deno.land/x/ddu_vim@v3.10.3/types.ts";
 import { getClient } from "../ddu-source-github/github/client.ts";
 import { gitdir, parseGitHubRepo } from "../ddu-source-github/git.ts";
 import { ActionData } from "../@ddu-kinds/github_issue.ts";
