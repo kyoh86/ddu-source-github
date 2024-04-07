@@ -3,8 +3,8 @@ import {
   ensure,
   is,
   maybe,
-} from "https://deno.land/x/unknownutil@v3.17.0/mod.ts";
-import { systemopen } from "https://deno.land/x/systemopen@v0.2.0/mod.ts";
+} from "https://deno.land/x/unknownutil@v3.17.2/mod.ts";
+import { systemopen } from "https://deno.land/x/systemopen@v1.0.0/mod.ts";
 
 export function main(denops: Denops) {
   denops.dispatcher = {
