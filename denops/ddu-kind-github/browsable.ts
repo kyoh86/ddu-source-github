@@ -2,7 +2,7 @@ import {
   ensure,
   is,
   maybe,
-} from "https://deno.land/x/unknownutil@v3.17.2/mod.ts";
+} from "https://deno.land/x/unknownutil@v3.17.3/mod.ts";
 import type { Browsable } from "../ddu-source-github/github/types.ts";
 import {
   ActionArguments,
