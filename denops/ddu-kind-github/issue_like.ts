@@ -20,7 +20,7 @@ import type { DduItem } from "https://deno.land/x/ddu_vim@v3.10.3/types.ts";
 import type { Previewer } from "https://deno.land/x/ddu_vim@v3.10.3/types.ts";
 import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.10.3/base/kind.ts";
 import { yank as yankCore } from "https://denopkg.com/kyoh86/denops-util@v0.0.7/yank.ts";
-import { put } from "https://denopkg.com/kyoh86/denops-util@v0.0.7/put.ts";
+import { putWithSpacing } from "https://denopkg.com/kyoh86/denops-util@v0.0.9/put.ts";
 
 export async function ensureOnlyOneItem(denops: Denops, items: DduItem[]) {
   if (items.length != 1) {
@@ -90,6 +90,15 @@ export function evalFormat(context: Record<string, unknown>, format: string) {
   return render();
 }
 
+/**
+ * Puts the formatted issue after the cursor.
+ * @param after If true, put text after the cursor
+ * @param {ActionArguments<T>} obj The arguments for the action.
+ * @param {Denops} obj.denops The Denops instance to interact with Vim/Neovim.
+ * @param {DduItem[]} obj.items The items to act on.
+ * @param {unknown} obj.actionParams The parameters for the action.
+ * @returns The result of the action.
+ */
 async function putFormat<T extends BaseActionParams>(
   after: boolean,
   { denops, items, actionParams }: ActionArguments<T>,
@@ -106,21 +115,49 @@ async function putFormat<T extends BaseActionParams>(
   if (!value) {
     return ActionFlags.None;
   }
-  await put(denops, value, after);
+  const avoid = maybe(
+    params?.avoid,
+    is.UnionOf([
+      is.LiteralOf("identifier"),
+      is.LiteralOf("keyword"),
+      is.LiteralOf("filename"),
+      is.LiteralOf("printable"),
+    ]),
+  );
+  await putWithSpacing(denops, value, after, avoid);
   return ActionFlags.None;
 }
 
+/**
+ * Puts the specified property of the issue after the cursor.
+ * @param {booolean} after If true, put text after the cursor
+ * @param {keyof IssueLike} property The property to put
+ * @param {ActionArguments<T>} obj The arguments for the action.
+ * @param {Denops} obj.denops The Denops instance to interact with Vim/Neovim.
+ * @param {DduItem[]} obj.items The items to act on.
+ * @returns The result of the action.
+ */
 async function putAny<T extends BaseActionParams>(
   after: boolean,
   property: keyof IssueLike,
-  { denops, items }: ActionArguments<T>,
+  { denops, items, actionParams }: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   const action = (await ensureOnlyOneItem(denops, items))?.action as IssueLike;
+  const params = maybe(actionParams, is.Record);
+  const avoid = maybe(
+    params?.avoid,
+    is.UnionOf([
+      is.LiteralOf("identifier"),
+      is.LiteralOf("keyword"),
+      is.LiteralOf("filename"),
+      is.LiteralOf("printable"),
+    ]),
+  );
   const value = action[property];
   if (!value) {
     return ActionFlags.None;
   }
-  await put(denops, value.toString(), after);
+  await putWithSpacing(denops, value.toString(), after, avoid);
   return ActionFlags.None;
 }
 

@@ -250,6 +250,23 @@ kind: github_issue, github_pull
 
 				If it's not specified, prompts for user input. 
 
+			avoid
+				Avoid direct adjacency with characters of the
+				specified class. 
+
+				Supported values:
+				- "identifier"
+				- "keyword"
+				- "filename"
+				- "printable"
+
+				Pastes text with optional spacing based on
+				the neighboring characters and a specified
+				class to avoid direct adjacency with
+				characters of that class. 
+
+				Default: (null) that means no avoidance.
+
 		Example: >
 		call ddu#ui#do_action("itemAction", {
 		  \   "name": "append",
