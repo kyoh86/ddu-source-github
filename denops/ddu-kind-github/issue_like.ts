@@ -9,16 +9,16 @@ import {
   ensure,
   is,
   maybe,
-} from "https://deno.land/x/unknownutil@v3.17.3/mod.ts";
+} from "https://deno.land/x/unknownutil@v3.18.0/mod.ts";
 import {
   ActionArguments,
   ActionFlags,
   ActionResult,
   BaseActionParams,
-} from "https://deno.land/x/ddu_vim@v3.10.3/types.ts";
-import type { DduItem } from "https://deno.land/x/ddu_vim@v3.10.3/types.ts";
-import type { Previewer } from "https://deno.land/x/ddu_vim@v3.10.3/types.ts";
-import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.10.3/base/kind.ts";
+} from "https://deno.land/x/ddu_vim@v4.0.0/types.ts";
+import type { DduItem } from "https://deno.land/x/ddu_vim@v4.0.0/types.ts";
+import type { Previewer } from "https://deno.land/x/ddu_vim@v4.0.0/types.ts";
+import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v4.0.0/base/kind.ts";
 import { yank as yankCore } from "https://denopkg.com/kyoh86/denops-util@v0.0.7/yank.ts";
 import { put } from "https://denopkg.com/kyoh86/denops-util@v0.0.7/put.ts";
 

@@ -1,5 +1,5 @@
-import type { GatherArguments } from "https://deno.land/x/ddu_vim@v3.10.3/base/source.ts";
-import { BaseSource, Item } from "https://deno.land/x/ddu_vim@v3.10.3/types.ts";
+import type { GatherArguments } from "https://deno.land/x/ddu_vim@v4.0.0/base/source.ts";
+import { BaseSource, Item } from "https://deno.land/x/ddu_vim@v4.0.0/types.ts";
 import { getClient } from "../ddu-source-github/github/client.ts";
 import { ActionData } from "../@ddu-kinds/github_issue.ts";
 
