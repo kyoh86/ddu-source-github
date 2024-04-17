@@ -3,7 +3,7 @@ import {
   ensure,
   is,
   maybe,
-} from "https://deno.land/x/unknownutil@v3.17.3/mod.ts";
+} from "https://deno.land/x/unknownutil@v3.18.0/mod.ts";
 import { systemopen } from "https://deno.land/x/systemopen@v1.0.0/mod.ts";
 
 export function main(denops: Denops) {

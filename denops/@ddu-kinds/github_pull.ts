@@ -2,10 +2,10 @@ import {
   ActionArguments,
   ActionFlags,
   BaseKind,
-} from "https://deno.land/x/ddu_vim@v3.10.3/types.ts";
-import type { Actions } from "https://deno.land/x/ddu_vim@v3.10.3/types.ts";
+} from "https://deno.land/x/ddu_vim@v4.0.0/types.ts";
+import type { Actions } from "https://deno.land/x/ddu_vim@v4.0.0/types.ts";
 import type { PullRequest } from "../ddu-source-github/github/types.ts";
-import { TextLineStream } from "https://deno.land/std@0.222.1/streams/text_line_stream.ts";
+import { TextLineStream } from "https://deno.land/std@0.223.0/streams/text_line_stream.ts";
 import {
   append,
   appendNumber,
@@ -36,7 +36,7 @@ import {
   gitdir,
   parseGitHubURLLike,
 } from "../ddu-source-github/git.ts";
-import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v3.10.3/base/kind.ts";
+import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v4.0.0/base/kind.ts";
 
 export type ActionData = PullRequest & {
   cwd?: string;
