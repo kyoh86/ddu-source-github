@@ -56,9 +56,9 @@ async function findBranch(
       "--omit-empty",
       "--format",
       [
-        /**/ `%(if:equals=refs/heads/${localBranch})%(refname)%(then)`,
-        /*  */ "%(upstream)",
-        /**/ "%(end)",
+        /* */ `%(if:equals=refs/heads/${localBranch})%(refname)%(then)`,
+        /*   */ "%(upstream)",
+        /* */ "%(end)",
       ].join(""),
     ],
     cwd,
@@ -75,9 +75,9 @@ async function findBranch(
       }
       return "conflict";
     }
-    await wait;
     return "none";
   } finally {
+    await wait;
     await finalize();
   }
 }
