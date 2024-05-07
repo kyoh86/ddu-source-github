@@ -1,9 +1,9 @@
-import type { Denops } from "https://deno.land/x/denops_std@v6.4.0/mod.ts";
-import * as buffer from "https://deno.land/x/denops_std@v6.4.0/buffer/mod.ts";
-import * as fn from "https://deno.land/x/denops_std@v6.4.0/function/mod.ts";
-import * as option from "https://deno.land/x/denops_std@v6.4.0/option/mod.ts";
-import * as autocmd from "https://deno.land/x/denops_std@v6.4.0/autocmd/mod.ts";
-import { batch } from "https://deno.land/x/denops_std@v6.4.0/batch/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v6.4.1/mod.ts";
+import * as buffer from "https://deno.land/x/denops_std@v6.4.1/buffer/mod.ts";
+import * as fn from "https://deno.land/x/denops_std@v6.4.1/function/mod.ts";
+import * as option from "https://deno.land/x/denops_std@v6.4.1/option/mod.ts";
+import * as autocmd from "https://deno.land/x/denops_std@v6.4.1/autocmd/mod.ts";
+import { batch } from "https://deno.land/x/denops_std@v6.4.1/batch/mod.ts";
 import type { IssueLike } from "../ddu-source-github/github/types.ts";
 import {
   ensure,
