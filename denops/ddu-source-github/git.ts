@@ -1,4 +1,4 @@
-import { dirname, join } from "https://deno.land/std@0.223.0/path/mod.ts";
+import { dirname, join } from "https://deno.land/std@0.224.0/path/mod.ts";
 import { decode } from "https://deno.land/x/ini@v2.1.0/mod.ts";
 import { is, maybe } from "https://deno.land/x/unknownutil@v3.18.0/mod.ts";
 
