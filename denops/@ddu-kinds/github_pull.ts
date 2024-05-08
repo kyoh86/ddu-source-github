@@ -29,7 +29,7 @@ import { getcwd } from "https://deno.land/x/denops_std@v6.4.2/function/mod.ts";
 import {
   echoallCommand,
   echoerrCommand,
-} from "https://denopkg.com/kyoh86/denops-util@v0.0.10/command.ts";
+} from "https://denopkg.com/kyoh86/denops-util@master/command.ts";
 
 import {
   findRemoteByRepo,
