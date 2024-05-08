@@ -1,5 +1,5 @@
 import { restoreAuthentication, storeAuthentication } from "./auth.ts";
-import { Octokit as OctokitCore } from "https://esm.sh/@octokit/core@5.0.0?dts";
+import { Octokit as OctokitCore } from "https://esm.sh/@octokit/core@6.1.2";
 import { restEndpointMethods } from "https://esm.sh/@octokit/plugin-rest-endpoint-methods@9.0.0?dts";
 import { paginateRest } from "https://esm.sh/@octokit/plugin-paginate-rest@v8.0.0?dts";
 
