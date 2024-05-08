@@ -9,7 +9,7 @@ export const Octokit = OctokitCore.plugin(restEndpointMethods).plugin(
 import {
   createOAuthDeviceAuth,
   GitHubAppStrategyOptions,
-} from "https://esm.sh/@octokit/auth-oauth-device@6.0.0?dts";
+} from "https://esm.sh/@octokit/auth-oauth-device@7.1.1";
 import { systemopen } from "https://deno.land/x/systemopen@v1.0.0/mod.ts";
 
 async function getOptions(hostname: string, options: GitHubAppStrategyOptions) {

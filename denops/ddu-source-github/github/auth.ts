@@ -3,7 +3,7 @@ import { join } from "https://deno.land/std@0.224.0/path/mod.ts";
 import { ensureDir } from "https://deno.land/std@0.224.0/fs/mod.ts";
 import type {
   GitHubAppAuthentication,
-} from "https://esm.sh/@octokit/auth-oauth-device@6.0.0?dts";
+} from "https://esm.sh/@octokit/auth-oauth-device@7.1.1";
 
 type Format = {
   [hostname: string]: GitHubAppAuthentication | undefined;
