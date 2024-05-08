@@ -24,8 +24,8 @@ import {
   yankUrl,
 } from "../ddu-kind-github/issue_like.ts";
 import { openUrl } from "../ddu-kind-github/browsable.ts";
-import type { Denops } from "https://deno.land/x/denops_std@v6.4.0/mod.ts";
-import { getcwd } from "https://deno.land/x/denops_std@v6.4.0/function/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v6.4.2/mod.ts";
+import { getcwd } from "https://deno.land/x/denops_std@v6.4.2/function/mod.ts";
 import {
   echoallCommand,
   echoerrCommand,
