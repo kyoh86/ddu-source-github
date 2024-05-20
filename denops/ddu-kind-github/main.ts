@@ -1,9 +1,9 @@
-import { Denops } from "https://deno.land/x/denops_std@v6.4.2/mod.ts";
+import { Denops } from "https://deno.land/x/denops_std@v6.5.0/mod.ts";
 import {
   ensure,
   is,
   maybe,
-} from "https://deno.land/x/unknownutil@v3.18.0/mod.ts";
+} from "https://deno.land/x/unknownutil@v3.18.1/mod.ts";
 import { systemopen } from "https://deno.land/x/systemopen@v1.0.0/mod.ts";
 
 export function main(denops: Denops) {
