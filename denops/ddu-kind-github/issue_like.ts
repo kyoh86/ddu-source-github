@@ -17,8 +17,8 @@ import {
   BaseActionParams,
   type DduItem,
   type Previewer,
-} from "https://deno.land/x/ddu_vim@v4.1.0/types.ts";
-import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v4.1.0/base/kind.ts";
+} from "https://deno.land/x/ddu_vim@v4.1.1/types.ts";
+import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v4.1.1/base/kind.ts";
 import { yank as yankCore } from "https://denopkg.com/kyoh86/denops-util@master/yank.ts";
 import { putWithSpacing } from "https://denopkg.com/kyoh86/denops-util@master/put.ts";
 
