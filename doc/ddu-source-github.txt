@@ -83,6 +83,13 @@ github_my_issue
 		You can set "created", "assigned" or "mentioned".
 
 		Default: "assigned"
+	
+	state
+		(string)
+		A state of issues.
+		You can set "open", "closed" or "all".
+
+		Default: "open"
 
 github_repo_issue
                                                 *ddu-source-github_repo_issue*
@@ -136,6 +143,13 @@ github_repo_issue
 
 		Default: (null)
 
+	state
+		(string)
+		A state of issues.
+		You can set "open", "closed" or "all".
+
+		Default: "open"
+
 
 github_repo_pull
                                                  *ddu-source-github_repo_pull*
@@ -188,6 +202,13 @@ github_repo_pull
 		A name of the repository for "repo" source type.
 
 		Default: (null)
+
+	state
+		(string)
+		A state of issues.
+		You can set "open", "closed" or "all".
+
+		Default: "open"
 
 
 github_search_repo

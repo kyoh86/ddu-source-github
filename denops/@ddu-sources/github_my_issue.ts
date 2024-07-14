@@ -6,6 +6,7 @@ import { ActionData } from "../@ddu-kinds/github_issue.ts";
 type Params = {
   hostname: string;
   role: "created" | "assigned" | "mentioned";
+  state: "open" | "closed" | "all";
 };
 
 export class Source extends BaseSource<Params, ActionData> {
@@ -23,6 +24,7 @@ export class Source extends BaseSource<Params, ActionData> {
             {
               filter: sourceParams.role,
               per_page: 100,
+              state: sourceParams.state,
             },
           );
 
@@ -43,6 +45,6 @@ export class Source extends BaseSource<Params, ActionData> {
   }
 
   override params(): Params {
-    return { hostname: "github.com", role: "assigned" };
+    return { hostname: "github.com", role: "assigned", state: "open" };
   }
 }

@@ -6,16 +6,20 @@ import { getClient } from "../ddu-source-github/github/client.ts";
 import { gitdir, parseGitHubRepo } from "../ddu-source-github/git.ts";
 import { ActionData } from "../@ddu-kinds/github_issue.ts";
 
-type Params = {
-  source: "cwd";
-  remoteName: string;
-  path?: string;
-} | {
-  source: "repo";
-  hostname: string;
-  owner: string;
-  name: string;
-};
+type Params =
+  & ({
+    source: "cwd";
+    remoteName: string;
+    path?: string;
+  } | {
+    source: "repo";
+    hostname: string;
+    owner: string;
+    name: string;
+  })
+  & {
+    state: "open" | "closed" | "all";
+  };
 
 async function githubRepo(denops: Denops, params: Params) {
   switch (params.source) {
@@ -59,6 +63,7 @@ export class Source extends BaseSource<Params, ActionData> {
               owner: repo.owner,
               repo: repo.name,
               per_page: 100,
+              state: sourceParams.state,
             },
           );
 
@@ -79,6 +84,6 @@ export class Source extends BaseSource<Params, ActionData> {
   }
 
   override params(): Params {
-    return { source: "cwd", remoteName: "origin" };
+    return { source: "cwd", remoteName: "origin", state: "open" };
   }
 }
