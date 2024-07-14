@@ -30,12 +30,14 @@ export class Source extends BaseSource<Params, ActionData> {
 
           // iterate through each response
           for await (const { data: issues } of iterator) {
-            controller.enqueue(issues.map((issue) => {
-              return {
-                action: issue,
-                word: `${issue.number} ${issue.title}`,
-              };
-            }));
+            controller.enqueue(
+              issues.filter((issue) => !issue.pull_request).map((issue) => {
+                return {
+                  action: issue,
+                  word: `${issue.number} ${issue.title}`,
+                };
+              }),
+            );
           }
         } finally {
           controller.close();
