@@ -34,7 +34,8 @@ export class Source extends BaseSource<Params, ActionData> {
               issues.filter((issue) => !issue.pull_request).map((issue) => {
                 return {
                   action: issue,
-                  word: `${issue.number} ${issue.title}`,
+                  word:
+                    `${issue.repository?.full_name}#${issue.number} ${issue.title}`,
                 };
               }),
             );
