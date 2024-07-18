@@ -8,7 +8,7 @@ import {
   ActionArguments,
   ActionFlags,
   BaseActionParams,
-} from "https://deno.land/x/ddu_vim@v4.1.1/types.ts";
+} from "https://deno.land/x/ddu_vim@v4.2.0/types.ts";
 
 export async function openUrl<T extends BaseActionParams, U extends Browsable>(
   { denops, items, actionParams }: ActionArguments<T>,
