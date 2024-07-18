@@ -11,10 +11,10 @@ import {
   maybe,
 } from "https://deno.land/x/unknownutil@v3.18.1/mod.ts";
 import {
-  ActionArguments,
+  type ActionArguments,
   ActionFlags,
-  ActionResult,
-  BaseActionParams,
+  type ActionResult,
+  type BaseActionParams,
   type DduItem,
   type Previewer,
 } from "https://deno.land/x/ddu_vim@v4.1.1/types.ts";

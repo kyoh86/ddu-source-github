@@ -1,8 +1,11 @@
 import type { GatherArguments } from "https://deno.land/x/ddu_vim@v4.1.1/base/source.ts";
-import { BaseSource, Item } from "https://deno.land/x/ddu_vim@v4.1.1/types.ts";
+import {
+  BaseSource,
+  type Item,
+} from "https://deno.land/x/ddu_vim@v4.1.1/types.ts";
 import { getClient } from "../ddu-source-github/github/client.ts";
 import { githubRepo, type RepoParams } from "../ddu-source-github/git.ts";
-import { ActionData } from "../@ddu-kinds/github_pull.ts";
+import type { ActionData } from "../@ddu-kinds/github_pull.ts";
 
 type Params = RepoParams & {
   state: "open" | "closed" | "all";
@@ -39,7 +42,7 @@ export class Source extends BaseSource<Params, ActionData> {
               return {
                 action: {
                   ...pull,
-                  ...(repo.cwd ? { cwd: repo.cwd } : {}),
+                  ...("cwd" in repo ? { cwd: repo.cwd } : {}),
                 },
                 word: `${pull.number} ${pull.title}`,
               };

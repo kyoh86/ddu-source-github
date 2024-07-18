@@ -1,5 +1,5 @@
 import {
-  ActionArguments,
+  type ActionArguments,
   ActionFlags,
   type Actions,
   BaseKind,
