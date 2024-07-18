@@ -1,87 +1,68 @@
-import type { Denops } from "https://deno.land/x/denops_std@v6.5.0/mod.ts";
 import type { GatherArguments } from "https://deno.land/x/ddu_vim@v4.1.1/base/source.ts";
-import { getcwd } from "https://deno.land/x/denops_std@v6.5.0/function/mod.ts";
 import { BaseSource, Item } from "https://deno.land/x/ddu_vim@v4.1.1/types.ts";
 import { getClient } from "../ddu-source-github/github/client.ts";
-import { gitdir, parseGitHubRepo } from "../ddu-source-github/git.ts";
 import { ActionData } from "../@ddu-kinds/github_issue.ts";
+import { debounce } from "https://deno.land/std@0.224.0/async/mod.ts";
+import { githubRepo, type RepoParams } from "../ddu-source-github/git.ts";
 
-type Params = {
-  repo?: {
-    source: "cwd";
-    remoteName: string;
-    path?: string;
-  } | {
-    source: "repo";
-    hostname: string;
-    owner: string;
-    name: string;
-  };
+type Params = RepoParams & {
+  query: string;
 };
 
-async function githubRepo(denops: Denops, params: Params) {
-  switch (params.repo?.source) {
-    case "cwd": {
-      const path = params.repo.path ?? await getcwd(denops);
-      const dir = await gitdir(path);
-      if (dir === undefined) {
-        return;
+function starter(
+  { denops, sourceParams }: GatherArguments<Params>,
+  controller: ReadableStreamDefaultController,
+) {
+  return async function () {
+    try {
+      const repo = await githubRepo(denops, sourceParams);
+      const client = await getClient(repo?.hostname ?? "github.com");
+      const q = [
+        "is:issue",
+        ...(repo ? [`repo:${repo.owner}/${repo.name}`] : []),
+        ...(sourceParams.query ? [sourceParams.query] : []),
+      ].join(" ");
+      const iterator = client.paginate.iterator(
+        client.rest.search.issuesAndPullRequests,
+        { q },
+      );
+
+      // iterate through each response
+      for await (const { data: issues } of iterator) {
+        controller.enqueue(
+          issues.filter((issue) => !issue.pull_request).map(
+            (issue) => {
+              return {
+                action: issue,
+                word: `${issue.number} ${issue.title}`,
+              };
+            },
+          ),
+        );
       }
-      return await parseGitHubRepo(dir?.gitdir, params.repo.remoteName);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      controller.close();
     }
-    case "repo":
-      return {
-        hostname: params.repo.hostname,
-        owner: params.repo.owner,
-        name: params.repo.name,
-      };
-  }
+  };
 }
 
 export class Source extends BaseSource<Params, ActionData> {
   override kind = "github_issue";
 
   override gather(
-    { denops, sourceParams, input }: GatherArguments<Params>,
+    args: GatherArguments<Params>,
   ): ReadableStream<Item<ActionData>[]> {
     return new ReadableStream({
-      async start(controller) {
-        try {
-          const repo = await githubRepo(denops, sourceParams);
-          if (repo === undefined) {
-            console.error(
-              `invalid param: ${JSON.stringify(sourceParams)}`,
-            );
-            return;
-          }
-          const client = await getClient(repo.hostname);
-          const iterator = client.paginate.iterator(
-            client.rest.search.issuesAndPullRequests,
-            {
-              q: `${repo ? `repo:${repo.owner}/${repo.name}` : ""} ${input}`,
-              per_page: 100,
-            },
-          );
-
-          // iterate through each response
-          for await (const { data: issues } of iterator) {
-            controller.enqueue(
-              issues.filter((issue) => !issue.pull_request).map((issue) => {
-                return {
-                  action: issue,
-                  word: `${issue.number} ${issue.title}`,
-                };
-              }),
-            );
-          }
-        } finally {
-          controller.close();
-        }
+      start(controller) {
+        const f = debounce(starter(args, controller), 1000);
+        f();
       },
     });
   }
 
   override params(): Params {
-    return { repo: { source: "cwd", remoteName: "origin" } };
+    return { source: "cwd", remoteName: "origin", query: "" };
   }
 }

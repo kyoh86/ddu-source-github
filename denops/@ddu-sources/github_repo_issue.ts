@@ -1,44 +1,12 @@
-import type { Denops } from "https://deno.land/x/denops_std@v6.5.0/mod.ts";
 import type { GatherArguments } from "https://deno.land/x/ddu_vim@v4.1.1/base/source.ts";
-import { getcwd } from "https://deno.land/x/denops_std@v6.5.0/function/mod.ts";
 import { BaseSource, Item } from "https://deno.land/x/ddu_vim@v4.1.1/types.ts";
 import { getClient } from "../ddu-source-github/github/client.ts";
-import { gitdir, parseGitHubRepo } from "../ddu-source-github/git.ts";
+import { githubRepo, type RepoParams } from "../ddu-source-github/git.ts";
 import { ActionData } from "../@ddu-kinds/github_issue.ts";
 
-type Params =
-  & ({
-    source: "cwd";
-    remoteName: string;
-    path?: string;
-  } | {
-    source: "repo";
-    hostname: string;
-    owner: string;
-    name: string;
-  })
-  & {
-    state: "open" | "closed" | "all";
-  };
-
-async function githubRepo(denops: Denops, params: Params) {
-  switch (params.source) {
-    case "cwd": {
-      const path = params.path ?? await getcwd(denops);
-      const dir = await gitdir(path);
-      if (dir === undefined) {
-        return;
-      }
-      return await parseGitHubRepo(dir?.gitdir, params.remoteName);
-    }
-    case "repo":
-      return {
-        hostname: params.hostname,
-        owner: params.owner,
-        name: params.name,
-      };
-  }
-}
+type Params = RepoParams & {
+  state: "open" | "closed" | "all";
+};
 
 export class Source extends BaseSource<Params, ActionData> {
   override kind = "github_issue";

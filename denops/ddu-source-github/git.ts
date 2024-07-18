@@ -1,6 +1,42 @@
 import { dirname, join } from "https://deno.land/std@0.224.0/path/mod.ts";
+import { getcwd } from "https://deno.land/x/denops_std@v6.5.0/function/mod.ts";
+import { Denops } from "https://deno.land/x/denops_std@v6.5.0/mod.ts";
 import { decode } from "https://deno.land/x/ini@v2.1.0/mod.ts";
 import { is, maybe } from "https://deno.land/x/unknownutil@v3.18.1/mod.ts";
+
+export type RepoParams = {
+  source: "cwd";
+  remoteName: string;
+  path?: string;
+} | {
+  source: "repo";
+  hostname: string;
+  owner: string;
+  name: string;
+};
+
+export async function githubRepo(denops: Denops, params: RepoParams) {
+  switch (params.source) {
+    case "cwd": {
+      const cwd = params.path ?? await getcwd(denops);
+      const dir = await gitdir(cwd);
+      if (dir === undefined) {
+        return;
+      }
+      const repo = await parseGitHubRepo(dir.gitdir, params.remoteName);
+      if (repo === undefined) {
+        return;
+      }
+      return { cwd, ...repo };
+    }
+    case "repo":
+      return {
+        hostname: params.hostname,
+        owner: params.owner,
+        name: params.name,
+      };
+  }
+}
 
 async function pathType(path: string) {
   try {

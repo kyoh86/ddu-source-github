@@ -1,24 +1,12 @@
 import type { GatherArguments } from "https://deno.land/x/ddu_vim@v4.1.1/base/source.ts";
-import { getcwd } from "https://deno.land/x/denops_std@v6.5.0/function/mod.ts";
 import { BaseSource, Item } from "https://deno.land/x/ddu_vim@v4.1.1/types.ts";
 import { getClient } from "../ddu-source-github/github/client.ts";
-import { gitdir, parseGitHubRepo } from "../ddu-source-github/git.ts";
+import { githubRepo, type RepoParams } from "../ddu-source-github/git.ts";
 import { ActionData } from "../@ddu-kinds/github_pull.ts";
 
-type Params =
-  & ({
-    source: "cwd";
-    remoteName: string;
-    path?: string;
-  } | {
-    source: "repo";
-    hostname: string;
-    owner: string;
-    name: string;
-  })
-  & {
-    state: "open" | "closed" | "all";
-  };
+type Params = RepoParams & {
+  state: "open" | "closed" | "all";
+};
 
 export class Source extends BaseSource<Params, ActionData> {
   override kind = "github_pull";
@@ -29,25 +17,7 @@ export class Source extends BaseSource<Params, ActionData> {
     return new ReadableStream({
       async start(controller) {
         try {
-          let cwd: string | undefined;
-          let repo:
-            | { hostname: string; owner: string; name: string }
-            | undefined;
-          switch (sourceParams.source) {
-            case "cwd": {
-              cwd = sourceParams.path ?? await getcwd(denops);
-              const dir = await gitdir(cwd);
-              if (dir === undefined) {
-                break;
-              }
-              repo = await parseGitHubRepo(dir.gitdir, sourceParams.remoteName);
-              break;
-            }
-            case "repo": {
-              repo = sourceParams;
-              break;
-            }
-          }
+          const repo = await githubRepo(denops, sourceParams);
           if (repo === undefined) {
             console.error(`invalid param: ${JSON.stringify(sourceParams)}`);
             return;
@@ -69,7 +39,7 @@ export class Source extends BaseSource<Params, ActionData> {
               return {
                 action: {
                   ...pull,
-                  cwd,
+                  ...(repo.cwd ? { cwd: repo.cwd } : {}),
                 },
                 word: `${pull.number} ${pull.title}`,
               };
