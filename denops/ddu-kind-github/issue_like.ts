@@ -103,28 +103,28 @@ async function putFormat<T extends BaseActionParams>(
   after: boolean,
   { denops, items, actionParams }: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
-  const item = await ensureOnlyOneItem(denops, items);
-  if (!item) {
-    return ActionFlags.None;
-  }
   const params = maybe(actionParams, is.Record);
   const format = maybe(params?.format, is.String) ||
     await fn.input(denops, "Format: ");
-  const action = item.action as IssueLike;
-  const value = evalFormat(action, format);
-  if (!value) {
-    return ActionFlags.None;
+  let nl = "";
+  for (const item of items) {
+    const action = item.action as IssueLike;
+    const value = evalFormat(action, format);
+    if (!value) {
+      continue;
+    }
+    const avoid = maybe(
+      params?.avoid,
+      is.UnionOf([
+        is.LiteralOf("identifier"),
+        is.LiteralOf("keyword"),
+        is.LiteralOf("filename"),
+        is.LiteralOf("printable"),
+      ]),
+    );
+    await putWithSpacing(denops, `${nl}${value}`, after, avoid);
+    nl = "\n";
   }
-  const avoid = maybe(
-    params?.avoid,
-    is.UnionOf([
-      is.LiteralOf("identifier"),
-      is.LiteralOf("keyword"),
-      is.LiteralOf("filename"),
-      is.LiteralOf("printable"),
-    ]),
-  );
-  await putWithSpacing(denops, value, after, avoid);
   return ActionFlags.None;
 }
 
@@ -142,7 +142,6 @@ async function putAny<T extends BaseActionParams>(
   property: keyof IssueLike,
   { denops, items, actionParams }: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
-  const action = (await ensureOnlyOneItem(denops, items))?.action as IssueLike;
   const params = maybe(actionParams, is.Record);
   const avoid = maybe(
     params?.avoid,
@@ -153,30 +152,32 @@ async function putAny<T extends BaseActionParams>(
       is.LiteralOf("printable"),
     ]),
   );
-  const value = action[property];
-  if (!value) {
-    return ActionFlags.None;
+  let nl = "";
+  for (const item of items) {
+    const action = item.action as IssueLike;
+    const value = property == "repository"
+      ? action[property]?.full_name
+      : action[property];
+    if (!value) {
+      continue;
+    }
+    await putWithSpacing(denops, `${nl}${value}`, after, avoid);
+    nl = "\n";
   }
-  await putWithSpacing(denops, value.toString(), after, avoid);
   return ActionFlags.None;
 }
 
 export async function yank<T extends BaseActionParams>(
   { denops, items, actionParams }: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
-  const item = await ensureOnlyOneItem(denops, items);
-  if (!item) {
-    return ActionFlags.None;
-  }
   const params = maybe(actionParams, is.Record);
   const format = maybe(params?.format, is.String) ||
     await fn.input(denops, "Format: ");
-  const action = item.action as IssueLike;
-  const value = evalFormat(action, format);
-  if (!value) {
-    return ActionFlags.None;
-  }
-  await yankCore(denops, value);
+  const text = items.map((item) => {
+    const action = item.action as IssueLike;
+    return evalFormat(action, format);
+  }).filter((value) => !!value).join("\n");
+  await yankCore(denops, text);
   return ActionFlags.None;
 }
 
@@ -202,12 +203,13 @@ async function yankAny<T extends BaseActionParams>(
   property: keyof IssueLike,
   { denops, items }: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
-  const action = (await ensureOnlyOneItem(denops, items))?.action as IssueLike;
-  const value = action[property];
-  if (!value) {
-    return ActionFlags.None;
-  }
-  await yankCore(denops, value.toString());
+  const text = items.map((item) => {
+    const action = item.action as IssueLike;
+    return property == "repository"
+      ? action[property]?.full_name
+      : action[property];
+  }).filter((value) => !!value).join("\n");
+  await yankCore(denops, text);
   return ActionFlags.None;
 }
 
