@@ -2,7 +2,7 @@ import {
   type Actions,
   BaseKind,
 } from "https://deno.land/x/ddu_vim@v4.1.1/types.ts";
-import type { Issue } from "../ddu-source-github/github/types.ts";
+import type { IssueLike } from "../ddu-source-github/github/types.ts";
 import {
   append,
   appendNumber,
@@ -22,7 +22,7 @@ import {
 import { openUrl } from "../ddu-kind-github/browsable.ts";
 import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v4.1.1/base/kind.ts";
 
-export type ActionData = Issue;
+export type ActionData = IssueLike;
 
 type Params = Record<PropertyKey, never>;
 
