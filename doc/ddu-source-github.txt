@@ -235,13 +235,13 @@ https://docs.github.com/en/search-github/searching-on-github/searching-for-repos
 
 
 github_search_issue
-                                               *ddu-source-github_search_issue*
+                                              *ddu-source-github_search_issue*
 
 	A source to search issues from GitHub.
 	It returns items for the kind |ddu-kind-github_issue|.
 
 	Parameters:
-                                        *ddu-source-github_search_issue-params*
+                                       *ddu-source-github_search_issue-params*
 
 	hostname
 		(string)
@@ -253,6 +253,30 @@ github_search_issue
 		(string)
 		Search query.
 		But the "is:issue" is always put in there.
+
+		See "Searching for issues and pull requests" in the GitHub Docs:
+
+https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests
+
+github_search_pull
+                                               *ddu-source-github_search_pull*
+
+	A source to search pull requests from GitHub.
+	It returns items for the kind |ddu-kind-github_pull|.
+
+	Parameters:
+                                        *ddu-source-github_search_pull-params*
+
+	hostname
+		(string)
+		A hostname of GitHub you searches pull requests from.
+
+		Default: "github.com"
+
+	query
+		(string)
+		Search query.
+		But the "is:pr" is always put in there.
 
 		See "Searching for issues and pull requests" in the GitHub Docs:
 
