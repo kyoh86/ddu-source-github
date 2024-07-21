@@ -3,8 +3,8 @@ import type {
 } from "https://deno.land/x/ddu_vim@v4.1.1/types.ts";
 import type { ActionData } from "../@ddu-kinds/github_issue.ts";
 import { GithubBaseColumn } from "./github_base.ts";
-import type { Denops } from "https://deno.land/x/denops_std@v6.5.0/mod.ts";
-import { strwidth } from "https://deno.land/x/denops_std@v6.5.0/function/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v6.5.1/mod.ts";
+import { strwidth } from "https://deno.land/x/denops_std@v6.5.1/function/mod.ts";
 
 export class Column extends GithubBaseColumn {
   override async getAttr(

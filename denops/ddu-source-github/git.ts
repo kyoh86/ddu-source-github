@@ -1,6 +1,6 @@
 import { dirname, join } from "https://deno.land/std@0.224.0/path/mod.ts";
-import { getcwd } from "https://deno.land/x/denops_std@v6.5.0/function/mod.ts";
-import type { Denops } from "https://deno.land/x/denops_std@v6.5.0/mod.ts";
+import { getcwd } from "https://deno.land/x/denops_std@v6.5.1/function/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v6.5.1/mod.ts";
 import { decode } from "https://deno.land/x/ini@v2.1.0/mod.ts";
 import { is, maybe } from "https://deno.land/x/unknownutil@v3.18.1/mod.ts";
 
