@@ -1,10 +1,6 @@
-import type { Denops } from "https://deno.land/x/denops_std@v6.5.1/mod.ts";
-import {
-  ensure,
-  is,
-  maybe,
-} from "https://deno.land/x/unknownutil@v3.18.1/mod.ts";
-import { systemopen } from "https://deno.land/x/systemopen@v1.0.0/mod.ts";
+import type { Denops } from "jsr:@denops/std@7.0.0";
+import { ensure, is, maybe } from "jsr:@core/unknownutil@3.18.1";
+import { systemopen } from "jsr:@lambdalisue/systemopen@1.0.0";
 
 export function main(denops: Denops) {
   denops.dispatcher = {

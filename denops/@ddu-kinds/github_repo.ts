@@ -1,7 +1,4 @@
-import {
-  type Actions,
-  BaseKind,
-} from "https://deno.land/x/ddu_vim@v4.1.1/types.ts";
+import { type Actions, BaseKind } from "jsr:@shougo/ddu-vim@5.0.0/types";
 import type { Repository } from "../ddu-source-github/github/types.ts";
 import { openUrl } from "../ddu-kind-github/browsable.ts";
 

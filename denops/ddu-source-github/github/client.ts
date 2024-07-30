@@ -10,7 +10,7 @@ import {
   createOAuthDeviceAuth,
   type GitHubAppStrategyOptions,
 } from "https://esm.sh/@octokit/auth-oauth-device@7.1.1";
-import { systemopen } from "https://deno.land/x/systemopen@v1.0.0/mod.ts";
+import { systemopen } from "jsr:@lambdalisue/systemopen@1.0.0";
 
 async function getOptions(hostname: string, options: GitHubAppStrategyOptions) {
   const stored = await restoreAuthentication(hostname);

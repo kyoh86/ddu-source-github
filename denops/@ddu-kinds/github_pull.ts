@@ -3,9 +3,9 @@ import {
   ActionFlags,
   type Actions,
   BaseKind,
-} from "https://deno.land/x/ddu_vim@v4.1.1/types.ts";
+} from "jsr:@shougo/ddu-vim@5.0.0/types";
 import type { PullRequest } from "../ddu-source-github/github/types.ts";
-import { TextLineStream } from "https://deno.land/std@0.224.0/streams/text_line_stream.ts";
+import { TextLineStream } from "jsr:@std/streams@1.0.0";
 import {
   append,
   appendNumber,
@@ -24,19 +24,19 @@ import {
   yankUrl,
 } from "../ddu-kind-github/issue_like.ts";
 import { openUrl } from "../ddu-kind-github/browsable.ts";
-import type { Denops } from "https://deno.land/x/denops_std@v6.5.1/mod.ts";
-import { getcwd } from "https://deno.land/x/denops_std@v6.5.1/function/mod.ts";
+import type { Denops } from "jsr:@denops/std@7.0.0";
+import { getcwd } from "jsr:@denops/std@7.0.0/function";
 import {
   echoallCommand,
   echoerrCommand,
-} from "https://denopkg.com/kyoh86/denops-util@master/command.ts";
+} from "jsr:@kyoh86/denops-util@0.1.0/command";
 
 import {
   findRemoteByRepo,
   gitdir,
   parseGitHubURLLike,
 } from "../ddu-source-github/git.ts";
-import type { GetPreviewerArguments } from "https://deno.land/x/ddu_vim@v4.1.1/base/kind.ts";
+import type { GetPreviewerArguments } from "jsr:@shougo/ddu-vim@5.0.0/kind";
 
 export type ActionData = PullRequest & {
   cwd?: string;

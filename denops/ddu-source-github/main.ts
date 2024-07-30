@@ -1,4 +1,4 @@
-import type { Denops } from "https://deno.land/x/denops_std@v6.5.1/mod.ts";
+import type { Denops } from "jsr:@denops/std@7.0.0";
 
 import { main as mainGitHub } from "./command/github/main.ts";
 
