@@ -1,9 +1,9 @@
-import type { Denops } from "jsr:@denops/std@7.0.0";
-import * as buffer from "jsr:@denops/std@7.0.0/buffer";
-import * as fn from "jsr:@denops/std@7.0.0/function";
-import * as option from "jsr:@denops/std@7.0.0/option";
-import * as autocmd from "jsr:@denops/std@7.0.0/autocmd";
-import { batch } from "jsr:@denops/std@7.0.0/batch";
+import type { Denops } from "jsr:@denops/std@7.0.1";
+import * as buffer from "jsr:@denops/std@7.0.1/buffer";
+import * as fn from "jsr:@denops/std@7.0.1/function";
+import * as option from "jsr:@denops/std@7.0.1/option";
+import * as autocmd from "jsr:@denops/std@7.0.1/autocmd";
+import { batch } from "jsr:@denops/std@7.0.1/batch";
 import type { IssueLike } from "../ddu-source-github/github/types.ts";
 import { ensure, is, maybe } from "jsr:@core/unknownutil@3.18.1";
 import {
