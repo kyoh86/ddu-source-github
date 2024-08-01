@@ -1,5 +1,5 @@
 import { assertEquals } from "jsr:@std/assert@1.0.1";
-import { test } from "jsr:@denops/test@3.0.1";
+import { test } from "jsr:@denops/test@3.0.2";
 import * as testtarget from "./issue_like.ts";
 
 test({
