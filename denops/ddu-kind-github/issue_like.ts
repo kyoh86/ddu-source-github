@@ -5,7 +5,7 @@ import * as option from "jsr:@denops/std@~7.0.1/option";
 import * as autocmd from "jsr:@denops/std@~7.0.1/autocmd";
 import { batch } from "jsr:@denops/std@~7.0.1/batch";
 import type { IssueLike } from "../ddu-source-github/github/types.ts";
-import { ensure, is, maybe } from "jsr:@core/unknownutil@~3.18.1";
+import { ensure, is, maybe } from "jsr:@core/unknownutil@~4.0.0";
 import {
   type ActionArguments,
   ActionFlags,

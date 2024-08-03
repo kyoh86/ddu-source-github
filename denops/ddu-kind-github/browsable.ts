@@ -1,4 +1,4 @@
-import { ensure, is, maybe } from "jsr:@core/unknownutil@~3.18.1";
+import { ensure, is, maybe } from "jsr:@core/unknownutil@~4.0.0";
 import type { Browsable } from "../ddu-source-github/github/types.ts";
 import {
   type ActionArguments,
