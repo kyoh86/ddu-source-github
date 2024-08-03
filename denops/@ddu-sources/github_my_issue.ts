@@ -1,5 +1,5 @@
-import type { GatherArguments } from "jsr:@shougo/ddu-vim@5.0.0/source";
-import { BaseSource, type Item } from "jsr:@shougo/ddu-vim@5.0.0/types";
+import type { GatherArguments } from "jsr:@shougo/ddu-vim@~5.0.0/source";
+import { BaseSource, type Item } from "jsr:@shougo/ddu-vim@~5.0.0/types";
 import { getClient } from "../ddu-source-github/github/client.ts";
 import type { ActionData } from "../@ddu-kinds/github_issue.ts";
 

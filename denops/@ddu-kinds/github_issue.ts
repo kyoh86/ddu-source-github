@@ -1,4 +1,4 @@
-import { type Actions, BaseKind } from "jsr:@shougo/ddu-vim@5.0.0/types";
+import { type Actions, BaseKind } from "jsr:@shougo/ddu-vim@~5.0.0/types";
 import type { IssueLike } from "../ddu-source-github/github/types.ts";
 import {
   append,
@@ -17,7 +17,7 @@ import {
   yankUrl,
 } from "../ddu-kind-github/issue_like.ts";
 import { openUrl } from "../ddu-kind-github/browsable.ts";
-import type { GetPreviewerArguments } from "jsr:@shougo/ddu-vim@5.0.0/kind";
+import type { GetPreviewerArguments } from "jsr:@shougo/ddu-vim@~5.0.0/kind";
 
 export type ActionData = IssueLike;
 
