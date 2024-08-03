@@ -2,7 +2,7 @@ import { dirname, join } from "jsr:@std/path@~1.0.2";
 import { getcwd } from "jsr:@denops/std@~7.0.1/function";
 import type { Denops } from "jsr:@denops/std@~7.0.1";
 import { decode } from "https://deno.land/x/ini@v2.1.0/mod.ts";
-import { is, maybe } from "jsr:@core/unknownutil@~3.18.1";
+import { is, maybe } from "jsr:@core/unknownutil@~4.0.0";
 
 export type RepoParams = {
   source: "cwd";
