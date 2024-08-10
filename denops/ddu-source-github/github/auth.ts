@@ -3,7 +3,7 @@ import { join } from "jsr:@std/path@~1.0.2";
 import { ensureDir } from "jsr:@std/fs@~1.0.0";
 import type {
   GitHubAppAuthentication,
-} from "https://esm.sh/@octokit/auth-oauth-device@~7.1.1";
+} from "https://esm.sh/@octokit/auth-oauth-device@7.1.1";
 
 type Format = {
   [hostname: string]: GitHubAppAuthentication | undefined;
