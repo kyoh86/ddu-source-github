@@ -20,7 +20,6 @@ function starter(
         "is:pr",
         ...(sourceParams.query ? [sourceParams.query] : []),
       ].join(" ");
-      console.log(q);
       const iterator = client.paginate.iterator(
         client.rest.search.issuesAndPullRequests,
         { q },

@@ -13,7 +13,7 @@ export async function openUrl<T extends BaseActionParams, U extends Browsable>(
   const opener = maybe(params.opener, is.String);
   for (const item of items) {
     const action = item?.action as U;
-    await denops.call("denops#notify", "ddu-kind-github", "open", [
+    await denops.call("denops#notify", "ddu-source-github", "browse", [
       action.html_url,
       opener,
     ]);

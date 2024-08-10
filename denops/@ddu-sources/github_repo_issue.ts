@@ -46,6 +46,8 @@ export class Source extends BaseSource<Params, ActionData> {
               }),
             );
           }
+        } catch (e) {
+          console.error(e);
         } finally {
           controller.close();
         }

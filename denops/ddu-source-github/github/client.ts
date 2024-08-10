@@ -12,17 +12,32 @@ import {
 } from "https://esm.sh/@octokit/auth-oauth-device@7.1.1";
 import { systemopen } from "jsr:@lambdalisue/systemopen@~1.0.0";
 
-async function getOptions(hostname: string, options: GitHubAppStrategyOptions) {
+export async function authenticate(
+  hostname: string,
+  force?: boolean,
+) {
+  const options: GitHubAppStrategyOptions = {
+    clientType: "github-app",
+    clientId: ClientID,
+    onVerification: (verification) => {
+      console.info("Open", verification.verification_uri);
+      console.info("Enter code:", verification.user_code);
+      systemopen(verification.verification_uri);
+      // TODO: If it does not inistalled, ddu-source-github should be installed.
+      // https://github.com/settings/apps/ddu-source-github/installations
+    },
+  };
   const stored = await restoreAuthentication(hostname);
-  if (stored) {
+  if (!force && stored) {
     return {
       ...options,
       authentication: stored,
     };
   }
-  const auth = createOAuthDeviceAuth(options);
 
+  const auth = createOAuthDeviceAuth(options);
   const newone = await auth({ type: "oauth" });
+
   storeAuthentication(hostname, newone);
   return {
     ...options,
@@ -35,16 +50,6 @@ const ClientID = "Iv1.784dcbad252102e3";
 export async function getClient(hostname: string) {
   return new Octokit({
     authStrategy: createOAuthDeviceAuth,
-    auth: await getOptions(hostname, {
-      clientType: "github-app",
-      clientId: ClientID,
-      onVerification: (verification) => {
-        console.info("Open", verification.verification_uri);
-        console.info("Enter code:", verification.user_code);
-        systemopen(verification.verification_uri);
-        // TODO: If it does not inistalled, ddu-source-github should be installed.
-        // https://github.com/settings/apps/ddu-source-github/installations
-      },
-    }),
+    auth: await authenticate(hostname),
   });
 }

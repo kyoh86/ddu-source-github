@@ -4,6 +4,7 @@ import { ensureDir } from "jsr:@std/fs@~1.0.0";
 import type {
   GitHubAppAuthentication,
 } from "https://esm.sh/@octokit/auth-oauth-device@7.1.1";
+import { is, type Predicate } from "jsr:@core/unknownutil@~4.0.0";
 
 type Format = {
   [hostname: string]: GitHubAppAuthentication | undefined;
@@ -46,3 +47,15 @@ export async function storeAuthentication(
     JSON.stringify(stored),
   );
 }
+
+const isGitHubAppAuthentication = is.ObjectOf({
+  clientType: is.LiteralOf("github-app"),
+  clientId: is.String,
+  type: is.LiteralOf("token"),
+  tokenType: is.LiteralOf("oauth"),
+  token: is.String,
+}) satisfies Predicate<
+  GitHubAppAuthentication
+>;
+
+export { isGitHubAppAuthentication };

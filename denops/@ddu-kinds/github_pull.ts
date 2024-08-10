@@ -115,7 +115,7 @@ async function checkoutCore(
 ) {
   const remoteName = await findRemoteByRepo(gitdir, repo) ||
     await (async () => {
-      console.log(`create remote ${repo.owner} for ${repo.hostname}`);
+      console.info(`create remote ${repo.owner} for ${repo.hostname}`);
       await echoallCommand(denops, "git", {
         args: ["remote", "add", "--fetch", repo.owner, url],
         cwd,
@@ -127,7 +127,7 @@ async function checkoutCore(
       return repo.owner;
     })();
 
-  console.log(`chekcout from ${remoteName}`);
+  console.info(`chekcout from ${remoteName}`);
 
   const localBranch = pr.head.ref;
   const remoteBranch = `${remoteName}/${localBranch}`;
