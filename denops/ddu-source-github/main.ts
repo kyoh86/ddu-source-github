@@ -38,10 +38,9 @@ export function main(denops: Denops): void {
       return await authenticate(hostname || "github.com", force);
     },
 
-    async ensure_login(uHostname, uAuthentication) {
-      const hostname = ensure(uHostname, is.String);
+    async ensure_login(uAuthentication) {
       const authentication = ensure(uAuthentication, isGitHubAppAuthentication);
-      await storeAuthentication(hostname, authentication);
+      await storeAuthentication(authentication);
     },
 
     async browse(uUrl: unknown, uOpener?: unknown) {
