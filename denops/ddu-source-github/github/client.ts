@@ -8,17 +8,17 @@ export const Octokit = OctokitCore.plugin(restEndpointMethods).plugin(
 );
 import {
   createOAuthDeviceAuth,
-  type GitHubAppStrategyOptions,
 } from "https://esm.sh/@octokit/auth-oauth-device@7.1.1";
 import { systemopen } from "jsr:@lambdalisue/systemopen@~1.0.0";
+import type { OnVerificationCallback } from "https://esm.sh/v135/@octokit/auth-oauth-device@7.1.1/dist-types/types.d.ts";
 
 export async function authenticate(
   hostname: string,
   force?: boolean,
 ) {
-  const options: GitHubAppStrategyOptions = {
-    clientType: "github-app",
-    clientId: ClientID,
+  const options: {
+    onVerification: OnVerificationCallback;
+  } = {
     onVerification: (verification) => {
       console.info("Open", verification.verification_uri);
       console.info("Enter code:", verification.user_code);
@@ -27,19 +27,26 @@ export async function authenticate(
       // https://github.com/settings/apps/ddu-source-github/installations
     },
   };
+
   const stored = await restoreAuthentication(hostname);
   if (!force && stored) {
     return {
+      ...stored, // Set stored clientType and clientId
       ...options,
       authentication: stored,
     };
   }
 
-  const auth = createOAuthDeviceAuth(options);
+  const auth = createOAuthDeviceAuth({
+    clientType: "github-app",
+    clientId: ClientID,
+    ...options,
+  });
   const newone = await auth({ type: "oauth" });
 
   storeAuthentication(hostname, newone);
   return {
+    ...newone, // Set got clientType and clientId
     ...options,
     authentication: newone,
   };
