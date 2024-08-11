@@ -1,0 +1,4 @@
+highlight default link dduColumnGithubIssueState Keyword
+highlight default link dduColumnGithubIssueFullName Normal
+highlight default link dduColumnGithubIssueNumber LineNr
+highlight default link dduColumnGithubIssueTitle Normal
