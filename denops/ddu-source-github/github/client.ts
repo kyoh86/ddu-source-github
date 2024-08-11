@@ -13,7 +13,6 @@ import { systemopen } from "jsr:@lambdalisue/systemopen@~1.0.0";
 import type { OnVerificationCallback } from "https://esm.sh/v135/@octokit/auth-oauth-device@7.1.1/dist-types/types.d.ts";
 
 export async function authenticate(
-  hostname: string,
   force?: boolean,
 ) {
   const options: {
@@ -28,7 +27,7 @@ export async function authenticate(
     },
   };
 
-  const stored = await restoreAuthentication(hostname);
+  const stored = await restoreAuthentication();
   if (!force && stored) {
     return {
       ...stored, // Set stored clientType and clientId
@@ -44,7 +43,7 @@ export async function authenticate(
   });
   const newone = await auth({ type: "oauth" });
 
-  storeAuthentication(hostname, newone);
+  storeAuthentication(newone);
   return {
     ...newone, // Set got clientType and clientId
     ...options,
@@ -54,9 +53,9 @@ export async function authenticate(
 
 const ClientID = "Iv1.784dcbad252102e3";
 
-export async function getClient(hostname: string) {
+export async function getClient() {
   return new Octokit({
     authStrategy: createOAuthDeviceAuth,
-    auth: await authenticate(hostname),
+    auth: await authenticate(),
   });
 }

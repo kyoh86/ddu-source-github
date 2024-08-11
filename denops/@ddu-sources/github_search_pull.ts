@@ -15,7 +15,7 @@ function starter(
 ) {
   return async function () {
     try {
-      const client = await getClient(sourceParams.hostname);
+      const client = await getClient();
       const q = [
         "is:pr",
         ...(sourceParams.query ? [sourceParams.query] : []),

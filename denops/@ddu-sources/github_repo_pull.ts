@@ -22,7 +22,7 @@ export class Source extends BaseSource<Params, ActionData> {
             console.error(`invalid param: ${JSON.stringify(sourceParams)}`);
             return;
           }
-          const client = await getClient(repo.hostname);
+          const client = await getClient();
           const iterator = client.paginate.iterator(
             client.rest.pulls.list,
             {

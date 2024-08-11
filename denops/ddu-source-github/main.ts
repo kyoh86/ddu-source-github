@@ -21,8 +21,7 @@ export function main(denops: Denops): void {
       });
 
       const bodyLines = await getbufline(denops, bufnr, 1, "$");
-      const u = new URL(url);
-      const client = await getClient(u.hostname);
+      const client = await getClient();
       await client.request({
         url,
         method: "patch",
@@ -32,10 +31,9 @@ export function main(denops: Denops): void {
       return url;
     },
 
-    async login(uHostname, uForce) {
-      const hostname = ensure(uHostname, is.UnionOf([is.String, is.Undefined]));
+    async login(uForce) {
       const force = ensure(uForce, is.UnionOf([is.Boolean, is.Undefined]));
-      return await authenticate(hostname || "github.com", force);
+      return await authenticate(force);
     },
 
     async ensure_login(uAuthentication) {

@@ -18,7 +18,7 @@ export class Source extends BaseSource<Params, ActionData> {
     return new ReadableStream({
       async start(controller) {
         try {
-          const client = await getClient(sourceParams.hostname);
+          const client = await getClient();
           const iterator = client.paginate.iterator(
             client.rest.issues.list,
             {
