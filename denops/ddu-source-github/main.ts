@@ -1,5 +1,5 @@
 import type { Denops } from "jsr:@denops/std@~7.0.1";
-import { ensure, is } from "jsr:@core/unknownutil@~4.0.0";
+import { ensure, is } from "jsr:@core/unknownutil@~4.1.0";
 import { authenticate, getClient } from "./github/client.ts";
 import { getbufline, setbufvar } from "jsr:@denops/std@~7.0.1/function";
 import { systemopen } from "jsr:@lambdalisue/systemopen@~1.0.0";

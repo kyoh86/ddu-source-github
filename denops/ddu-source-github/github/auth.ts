@@ -4,7 +4,7 @@ import { ensureDir } from "jsr:@std/fs@~1.0.0";
 import type {
   GitHubAppAuthentication,
 } from "https://esm.sh/@octokit/auth-oauth-device@7.1.1";
-import { is, type Predicate } from "jsr:@core/unknownutil@~4.0.0";
+import { is, type Predicate } from "jsr:@core/unknownutil@~4.1.0";
 
 async function ensureSessionFilePath() {
   const dir = join(xdg.state(), "ddu-source-github");
