@@ -162,6 +162,7 @@ async function checkoutCore(
 export class Kind extends BaseKind<Params> {
   override actions: Actions<Params> = {
     open: openUrl<Params, ActionData>,
+    browse: openUrl<Params, ActionData>,
     edit: editContent<Params>,
     checkout,
     yank: yank<Params>,

@@ -295,6 +295,7 @@ kind: github_issue, github_pull
                                          *ddu-kind-github-actions_github_pull*
 	open
 		Open the issue/pull-request in your browser.
+		Alias: browse
 		Parameters:
 			opener
 				An external command name to open it.
@@ -364,6 +365,7 @@ kind: github_repo
                                          *ddu-kind-github-actions_github_repo*
 	open
 		Open the repository in your browser.
+		Alias: browse
 		Parameters:
 			opener
 				An external command name to open it.

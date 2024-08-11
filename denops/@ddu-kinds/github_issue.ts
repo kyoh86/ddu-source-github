@@ -26,6 +26,7 @@ type Params = Record<PropertyKey, never>;
 export class Kind extends BaseKind<Params> {
   override actions: Actions<Params> = {
     open: openUrl<Params, ActionData>,
+    browse: openUrl<Params, ActionData>,
     edit: editContent<Params>,
     yank: yank<Params>,
     yankNumber: yankNumber<Params>,
