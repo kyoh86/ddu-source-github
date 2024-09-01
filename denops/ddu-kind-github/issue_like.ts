@@ -1,20 +1,20 @@
-import type { Denops } from "jsr:@denops/std@~7.0.1";
-import * as buffer from "jsr:@denops/std@~7.0.1/buffer";
-import * as fn from "jsr:@denops/std@~7.0.1/function";
-import * as option from "jsr:@denops/std@~7.0.1/option";
-import * as autocmd from "jsr:@denops/std@~7.0.1/autocmd";
-import { batch } from "jsr:@denops/std@~7.0.1/batch";
+import type { Denops } from "jsr:@denops/std@~7.1.0";
+import * as buffer from "jsr:@denops/std@~7.1.0/buffer";
+import * as fn from "jsr:@denops/std@~7.1.0/function";
+import * as option from "jsr:@denops/std@~7.1.0/option";
+import * as autocmd from "jsr:@denops/std@~7.1.0/autocmd";
+import { batch } from "jsr:@denops/std@~7.1.0/batch";
 import type { IssueLike } from "../ddu-source-github/github/types.ts";
 import { ensure, is, maybe } from "jsr:@core/unknownutil@~4.3.0";
 import {
   type ActionArguments,
   ActionFlags,
   type ActionResult,
-  type BaseActionParams,
+  type BaseParams,
   type DduItem,
   type Previewer,
-} from "jsr:@shougo/ddu-vim@~5.0.0/types";
-import type { GetPreviewerArguments } from "jsr:@shougo/ddu-vim@~5.0.0/kind";
+} from "jsr:@shougo/ddu-vim@~6.0.0/types";
+import type { GetPreviewerArguments } from "jsr:@shougo/ddu-vim@~6.0.0/kind";
 import { yank as yankCore } from "jsr:@kyoh86/denops-util@~0.1.0/yank";
 import { putWithSpacing } from "jsr:@kyoh86/denops-util@~0.1.0/put";
 
@@ -31,49 +31,49 @@ export async function ensureOnlyOneItem(denops: Denops, items: DduItem[]) {
   return items[0];
 }
 
-export async function append<T extends BaseActionParams>(
+export async function append<T extends BaseParams>(
   args: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   return await putFormat(true, args);
 }
 
-export async function appendNumber<T extends BaseActionParams>(
+export async function appendNumber<T extends BaseParams>(
   args: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   return await putAny(true, "number", args);
 }
 
-export async function appendUrl<T extends BaseActionParams>(
+export async function appendUrl<T extends BaseParams>(
   args: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   return await putAny(true, "html_url", args);
 }
 
-export async function appendTitle<T extends BaseActionParams>(
+export async function appendTitle<T extends BaseParams>(
   args: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   return await putAny(true, "title", args);
 }
 
-export async function insert<T extends BaseActionParams>(
+export async function insert<T extends BaseParams>(
   args: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   return await putFormat(false, args);
 }
 
-export async function insertNumber<T extends BaseActionParams>(
+export async function insertNumber<T extends BaseParams>(
   args: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   return await putAny(false, "number", args);
 }
 
-export async function insertUrl<T extends BaseActionParams>(
+export async function insertUrl<T extends BaseParams>(
   args: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   return await putAny(false, "html_url", args);
 }
 
-export async function insertTitle<T extends BaseActionParams>(
+export async function insertTitle<T extends BaseParams>(
   args: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   return await putAny(false, "title", args);
@@ -95,7 +95,7 @@ export function evalFormat(context: Record<string, unknown>, format: string) {
  * @param {unknown} obj.actionParams The parameters for the action.
  * @returns The result of the action.
  */
-async function putFormat<T extends BaseActionParams>(
+async function putFormat<T extends BaseParams>(
   after: boolean,
   { denops, items, actionParams }: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
@@ -133,7 +133,7 @@ async function putFormat<T extends BaseActionParams>(
  * @param {DduItem[]} obj.items The items to act on.
  * @returns The result of the action.
  */
-async function putAny<T extends BaseActionParams>(
+async function putAny<T extends BaseParams>(
   after: boolean,
   property: keyof IssueLike,
   { denops, items, actionParams }: ActionArguments<T>,
@@ -163,7 +163,7 @@ async function putAny<T extends BaseActionParams>(
   return ActionFlags.None;
 }
 
-export async function yank<T extends BaseActionParams>(
+export async function yank<T extends BaseParams>(
   { denops, items, actionParams }: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   const params = maybe(actionParams, is.Record);
@@ -177,25 +177,25 @@ export async function yank<T extends BaseActionParams>(
   return ActionFlags.None;
 }
 
-export async function yankNumber<T extends BaseActionParams>(
+export async function yankNumber<T extends BaseParams>(
   args: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   return await yankAny("number", args);
 }
 
-export async function yankUrl<T extends BaseActionParams>(
+export async function yankUrl<T extends BaseParams>(
   args: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   return await yankAny("html_url", args);
 }
 
-export async function yankTitle<T extends BaseActionParams>(
+export async function yankTitle<T extends BaseParams>(
   args: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   return await yankAny("title", args);
 }
 
-async function yankAny<T extends BaseActionParams>(
+async function yankAny<T extends BaseParams>(
   property: keyof IssueLike,
   { denops, items }: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
@@ -209,7 +209,7 @@ async function yankAny<T extends BaseActionParams>(
   return ActionFlags.None;
 }
 
-export async function editContent<T extends BaseActionParams>(
+export async function editContent<T extends BaseParams>(
   { denops, items, actionParams }: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   const item = await ensureOnlyOneItem(denops, items);

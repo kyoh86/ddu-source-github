@@ -3,10 +3,10 @@ import type { Browsable } from "../ddu-source-github/github/types.ts";
 import {
   type ActionArguments,
   ActionFlags,
-  type BaseActionParams,
-} from "jsr:@shougo/ddu-vim@~5.0.0/types";
+  type BaseParams,
+} from "jsr:@shougo/ddu-vim@~6.0.0/types";
 
-export async function openUrl<T extends BaseActionParams, U extends Browsable>(
+export async function openUrl<T extends BaseParams, U extends Browsable>(
   { denops, items, actionParams }: ActionArguments<T>,
 ) {
   const params = ensure(actionParams, is.Record);
