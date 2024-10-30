@@ -1,22 +1,26 @@
 import { restoreAuthentication, storeAuthentication } from "./auth.ts";
-import { Octokit as OctokitCore } from "https://esm.sh/@octokit/core@6.1.2";
-import { restEndpointMethods } from "https://esm.sh/@octokit/plugin-rest-endpoint-methods@13.2.4";
-import { paginateRest } from "https://esm.sh/@octokit/plugin-paginate-rest@11.3.3";
+import { Octokit as OctokitCore } from "npm:@octokit/core@6.1.2";
+import { restEndpointMethods } from "npm:@octokit/plugin-rest-endpoint-methods@13.2.6";
+import { paginateRest } from "npm:@octokit/plugin-paginate-rest@11.3.5";
 
 export const Octokit = OctokitCore.plugin(restEndpointMethods).plugin(
   paginateRest,
 );
-import {
-  createOAuthDeviceAuth,
-} from "https://esm.sh/@octokit/auth-oauth-device@7.1.1";
+import { createOAuthDeviceAuth } from "npm:@octokit/auth-oauth-device@7.1.1";
 import { systemopen } from "jsr:@lambdalisue/systemopen@~1.0.0";
-import type { OnVerificationCallback } from "https://esm.sh/v135/@octokit/auth-oauth-device@7.1.1/dist-types/types.d.ts";
+type Verification = {
+  device_code: string;
+  user_code: string;
+  verification_uri: string;
+  expires_in: number;
+  interval: number;
+};
 
 export async function authenticate(
   force?: boolean,
 ) {
   const options: {
-    onVerification: OnVerificationCallback;
+    onVerification: (verification: Verification) => void;
   } = {
     onVerification: (verification) => {
       console.info("Open", verification.verification_uri);

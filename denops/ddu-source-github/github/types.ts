@@ -1,4 +1,4 @@
-import type { components } from "https://raw.githubusercontent.com/octokit/openapi-types.ts/v22.1.0/packages/openapi-types/types.d.ts";
+import type { components } from "npm:@octokit/openapi-types@22.2.0";
 
 export type Repository = components["schemas"]["repo-search-result-item"];
 export type PullRequest =
