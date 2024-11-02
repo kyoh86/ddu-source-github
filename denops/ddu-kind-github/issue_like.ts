@@ -13,8 +13,8 @@ import {
   type BaseParams,
   type DduItem,
   type Previewer,
-} from "jsr:@shougo/ddu-vim@~6.2.0/types";
-import type { GetPreviewerArguments } from "jsr:@shougo/ddu-vim@~6.2.0/kind";
+} from "jsr:@shougo/ddu-vim@~6.4.0/types";
+import type { GetPreviewerArguments } from "jsr:@shougo/ddu-vim@~6.4.0/kind";
 import { yank as yankCore } from "jsr:@kyoh86/denops-util@~0.1.0/yank";
 import { putWithSpacing } from "jsr:@kyoh86/denops-util@~0.1.0/put";
 
