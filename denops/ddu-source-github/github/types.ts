@@ -11,6 +11,10 @@ export type SimpleUser =
   | components["schemas"]["private-user"]
   | components["schemas"]["public-user"];
 
+type UserLike = {
+  login: string;
+};
+
 export type IssueLike =
   & {
     number: number;
@@ -21,6 +25,12 @@ export type IssueLike =
     repository?: {
       full_name: string;
     };
+    labels: {
+      name: string;
+    }[];
+    user: UserLike | null;
+    assignee: UserLike | null;
+    assignees?: UserLike[] | null;
   }
   & Browsable;
 export type Browsable = { html_url: string };

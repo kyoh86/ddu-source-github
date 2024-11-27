@@ -40,8 +40,15 @@ export class Source extends BaseSource<Params, ActionData> {
           for await (const { data: issues } of iterator) {
             controller.enqueue(
               issues.filter((issue) => !issue.pull_request).map((issue) => {
+                const labels = issue.labels.map((l) => (typeof l == "string"
+                  ? { name: l ?? "" }
+                  : { ...l, name: l.name ?? "" })
+                );
                 return {
-                  action: issue,
+                  action: {
+                    ...issue,
+                    labels,
+                  },
                   word: `${issue.number} ${issue.title}`,
                 };
               }),
