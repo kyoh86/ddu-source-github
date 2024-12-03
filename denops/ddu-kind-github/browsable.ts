@@ -4,7 +4,7 @@ import {
   type ActionArguments,
   ActionFlags,
   type BaseParams,
-} from "jsr:@shougo/ddu-vim@~7.0.0/types";
+} from "jsr:@shougo/ddu-vim@~8.0.0/types";
 
 export async function openUrl<T extends BaseParams, U extends Browsable>(
   { denops, items, actionParams }: ActionArguments<T>,
