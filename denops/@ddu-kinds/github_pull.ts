@@ -2,8 +2,8 @@ import {
   type ActionArguments,
   ActionFlags,
   type Actions,
-} from "jsr:@shougo/ddu-vim@~9.0.0/types";
-import { BaseKind } from "jsr:@shougo/ddu-vim@~9.0.0/kind";
+} from "jsr:@shougo/ddu-vim@~9.1.0/types";
+import { BaseKind } from "jsr:@shougo/ddu-vim@~9.1.0/kind";
 import type { PullRequest } from "../ddu-source-github/github/types.ts";
 import { TextLineStream } from "jsr:@std/streams@~1.0.0";
 import {
@@ -36,7 +36,7 @@ import {
   gitdir,
   parseGitHubURLLike,
 } from "../ddu-source-github/git.ts";
-import type { GetPreviewerArguments } from "jsr:@shougo/ddu-vim@~9.0.0/kind";
+import type { GetPreviewerArguments } from "jsr:@shougo/ddu-vim@~9.1.0/kind";
 
 export type ActionData = PullRequest & {
   cwd?: string;
