@@ -2,7 +2,7 @@ import type { GatherArguments } from "jsr:@shougo/ddu-vim@~9.1.0/source";
 import type { Item } from "jsr:@shougo/ddu-vim@~9.1.0/types";
 import { BaseSource } from "jsr:@shougo/ddu-vim@~9.1.0/source";
 import { getClient } from "../ddu-source-github/github/client.ts";
-import type { ActionData } from "../@ddu-kinds/github_issue.ts"; // NOTE: Search results forms like issue
+import type { ActionData } from "../@ddu-kinds/github_issue.ts";
 import { debounce } from "jsr:@std/async@~1.0.1";
 import {
   ControllerClosed,
@@ -12,24 +12,26 @@ import {
 
 type Params = { hostname: string };
 
-async function searchPullRequests(
+async function searchIssues(
   input: string,
   controller: ReadableStreamDefaultController<Item<ActionData>[]>,
 ) {
   const client = await getClient();
   const iterator = client.paginate.iterator(
     client.rest.search.issuesAndPullRequests,
-    { q: `is:pull-request ${input}` },
+    { q: input },
   );
 
   // iterate through each response
-  for await (const { data: prs } of iterator) {
+  for await (const { data: issues } of iterator) {
     try {
       controller.enqueue(
-        prs.filter((pr) => !pr.pull_request).map((pr) => ({
-          action: { ...pr, labels: ingestLabels(pr.labels) },
-          word: `${pr.repository?.full_name}#${pr.number} ${pr.title}`,
-        })),
+        issues.filter((issue) => !issue.pull_request).map(
+          (issue) => ({
+            action: { ...issue, labels: ingestLabels(issue.labels) },
+            word: `${issue.number} ${issue.title}`,
+          }),
+        ),
       );
     } catch (e) {
       if (maybeControlleClosed(e)) {
@@ -48,7 +50,7 @@ function starter(
 ) {
   return async function () {
     try {
-      await searchPullRequests(input, controller);
+      await searchIssues(input, controller);
     } catch (e) {
       console.error(e);
     } finally {
@@ -58,7 +60,7 @@ function starter(
 }
 
 export class Source extends BaseSource<Params, ActionData> {
-  override kind = "github_issue"; // NOTE: Search results forms like issue
+  override kind = "github_issue";
 
   override gather(
     args: GatherArguments<Params>,

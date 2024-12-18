@@ -4,41 +4,51 @@ import { BaseSource } from "jsr:@shougo/ddu-vim@~9.1.0/source";
 import { getClient } from "../ddu-source-github/github/client.ts";
 import type { ActionData } from "../@ddu-kinds/github_issue.ts";
 import { debounce } from "jsr:@std/async@~1.0.1";
+import {
+  ControllerClosed,
+  ingestLabels,
+  maybeControlleClosed,
+} from "../ddu-source-github/github/types.ts";
 
-type Params = {
-  hostname: string;
-  query: string;
-};
+type Params = { hostname: string };
+
+async function searchIssues(
+  input: string,
+  controller: ReadableStreamDefaultController<Item<ActionData>[]>,
+) {
+  const client = await getClient();
+  const iterator = client.paginate.iterator(
+    client.rest.search.issuesAndPullRequests,
+    { q: `is:issue ${input}` },
+  );
+
+  // iterate through each response
+  for await (const { data: issues } of iterator) {
+    try {
+      controller.enqueue(
+        issues.filter((issue) => !issue.pull_request).map((issue) => ({
+          action: { ...issue, labels: ingestLabels(issue.labels) },
+          word: `${issue.repository?.full_name}#${issue.number} ${issue.title}`,
+        })),
+      );
+    } catch (e) {
+      if (maybeControlleClosed(e)) {
+        console.debug(ControllerClosed);
+      } else {
+        console.warn(e);
+      }
+      break;
+    }
+  }
+}
 
 function starter(
-  { sourceParams }: GatherArguments<Params>,
+  { input }: GatherArguments<Params>,
   controller: ReadableStreamDefaultController,
 ) {
   return async function () {
     try {
-      const client = await getClient();
-      const q = [
-        "is:issue",
-        ...(sourceParams.query ? [sourceParams.query] : []),
-      ].join(" ");
-      const iterator = client.paginate.iterator(
-        client.rest.search.issuesAndPullRequests,
-        { q },
-      );
-
-      // iterate through each response
-      for await (const { data: issues } of iterator) {
-        controller.enqueue(
-          issues.filter((issue) => !issue.pull_request).map(
-            (issue) => {
-              return {
-                action: issue,
-                word: `${issue.number} ${issue.title}`,
-              };
-            },
-          ),
-        );
-      }
+      await searchIssues(input, controller);
     } catch (e) {
       console.error(e);
     } finally {
@@ -62,6 +72,6 @@ export class Source extends BaseSource<Params, ActionData> {
   }
 
   override params(): Params {
-    return { hostname: "github.com", query: "" };
+    return { hostname: "github.com" };
   }
 }

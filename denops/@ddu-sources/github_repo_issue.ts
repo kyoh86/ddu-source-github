@@ -1,42 +1,22 @@
 import type { GatherArguments } from "jsr:@shougo/ddu-vim@~9.1.0/source";
 import type { Item } from "jsr:@shougo/ddu-vim@~9.1.0/types";
 import { BaseSource } from "jsr:@shougo/ddu-vim@~9.1.0/source";
-import { is, maybe } from "jsr:@core/unknownutil@4.3";
 import { getClient } from "../ddu-source-github/github/client.ts";
 import { githubRepo, type RepoParams } from "../ddu-source-github/git.ts";
 import type { ActionData } from "../@ddu-kinds/github_issue.ts";
+import {
+  ControllerClosed,
+  ingestLabels,
+  type IssueLikeState,
+  maybeControlleClosed,
+} from "../ddu-source-github/github/types.ts";
 
-type State = "open" | "closed" | "all";
-type Params = RepoParams & { state: State };
-
-type RawLabel = string | {
-  name?: string;
-};
-
-function convertLabels(labels: RawLabel[]) {
-  return labels.map((
-    l,
-  ) => (typeof l == "string"
-    ? { name: l ?? "" }
-    : { ...l, name: l.name ?? "" })
-  );
-}
-
-const ControllerClosed =
-  "The stream controller cannot close or enqueue" as const;
-
-function maybeControlleClosed(e: unknown) {
-  const err = maybe(e, is.ObjectOf({ message: is.String }));
-  if (err && err.message === ControllerClosed) {
-    return ControllerClosed;
-  }
-  return undefined;
-}
+type Params = RepoParams & { state: IssueLikeState };
 
 async function fetchItems(
   owner: string,
   name: string,
-  state: State,
+  state: IssueLikeState,
   controller: ReadableStreamDefaultController<Item<ActionData>[]>,
 ) {
   const client = await getClient();
@@ -55,7 +35,7 @@ async function fetchItems(
     try {
       controller.enqueue(
         issues.filter((issue) => !issue.pull_request).map((issue) => ({
-          action: { ...issue, labels: convertLabels(issue.labels) },
+          action: { ...issue, labels: ingestLabels(issue.labels) },
           word: `${issue.number} ${issue.title}`,
         })),
       );
@@ -74,20 +54,20 @@ export class Source extends BaseSource<Params, ActionData> {
   override kind = "github_issue";
 
   override gather(
-    { denops, sourceParams }: GatherArguments<Params>,
+    { denops, sourceParams: params }: GatherArguments<Params>,
   ): ReadableStream<Item<ActionData>[]> {
     return new ReadableStream({
       async start(controller) {
         try {
-          const repo = await githubRepo(denops, sourceParams);
+          const repo = await githubRepo(denops, params);
           if (repo === undefined) {
-            console.error(`invalid param: ${JSON.stringify(sourceParams)}`);
+            console.error(`invalid param: ${JSON.stringify(params)}`);
             return;
           }
           await fetchItems(
             repo.owner,
             repo.name,
-            sourceParams.state,
+            params.state,
             controller,
           );
         } catch (e) {

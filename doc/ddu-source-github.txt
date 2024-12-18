@@ -90,6 +90,35 @@ github_my_issue
 
 		Default: "open"
 
+github_my_pull
+                                                   *ddu-source-github_my_pull*
+	A source to collect your pulls from GitHub.
+	It returns items for the kind |ddu-kind-github_pull|.
+	You can specify your role on pulls.
+
+	Parameter:
+                                            *ddu-source-github_my_pull-params*
+
+	hostname
+		(string)
+		A GitHub hostname.
+
+		Default: "github.com"
+
+	role
+		(string)
+		A your role on pulls.
+		You can set "created", "assigned" or "mentioned".
+
+		Default: "assigned"
+	
+	state
+		(string)
+		A state of pulls.
+		You can set "open", "closed" or "all".
+
+		Default: "open"
+
 github_repo_issue
                                                 *ddu-source-github_repo_issue*
 
@@ -213,7 +242,7 @@ github_repo_pull
 github_search_repo
                                                *ddu-source-github_search_repo*
 
-	A source to search repositories from GitHub.
+	A source to search repositories from GitHub by input.
 	It returns items for the kind |ddu-kind-github_repo|.
 
 	Parameters:
@@ -221,23 +250,16 @@ github_search_repo
 
 	hostname
 		(string)
-		A hostname of GitHub you searches repositories from.
+		A hostname of GitHub you search repositories from.
 
 		Default: "github.com"
 
-	query
-		(string)
-		Search query.
-
-		See "Searching for repositories" in the GitHub Docs:
-
 https://docs.github.com/en/search-github/searching-on-github/searching-for-repositories
-
 
 github_search_issue
                                               *ddu-source-github_search_issue*
 
-	A source to search issues from GitHub.
+	A source to search issues from GitHub by input.
 	It returns items for the kind |ddu-kind-github_issue|.
 
 	Parameters:
@@ -245,43 +267,29 @@ github_search_issue
 
 	hostname
 		(string)
-		A hostname of GitHub you searches issues from.
+		A hostname of GitHub you search issues from.
 
 		Default: "github.com"
-
-	query
-		(string)
-		Search query.
-		But the "is:issue" is always put in there.
-
-		See "Searching for issues and pull requests" in the GitHub Docs:
 
 https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests
 
 github_search_pull
                                                *ddu-source-github_search_pull*
 
-	A source to search pull requests from GitHub.
-	It returns items for the kind |ddu-kind-github_pull|.
+	A source to search pull requests from GitHub by input.
+	It returns items for the kind |ddu-kind-github_issue|.
+	NOTE: it never returns items for the kind |ddu-kind-github_pull|.
 
 	Parameters:
                                         *ddu-source-github_search_pull-params*
 
 	hostname
 		(string)
-		A hostname of GitHub you searches pull requests from.
+		A hostname of GitHub you search pull requests from.
 
 		Default: "github.com"
 
-	query
-		(string)
-		Search query.
-		But the "is:pr" is always put in there.
-
-		See "Searching for issues and pull requests" in the GitHub Docs:
-
 https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests
-
 
 ==============================================================================
 Actions ~
@@ -303,7 +311,7 @@ kind: github_issue, github_pull
 	edit
 		Edit the issue/pull-request.
 	append
-		Place the contents of an issue/pull_request after the cursor
+		Place the contents of an issue/pull request after the cursor
 		as per the format.
 		Parameters:
 			format
