@@ -4,6 +4,7 @@ import { BaseSource } from "jsr:@shougo/ddu-vim@~9.1.0/source";
 import { getClient } from "../ddu-source-github/github/client.ts";
 import { githubRepo, type RepoParams } from "../ddu-source-github/git.ts";
 import type { ActionData } from "../@ddu-kinds/github_issue.ts";
+import { is, maybe } from "jsr:@core/unknownutil@4.3";
 
 type Params = RepoParams & {
   state: "open" | "closed" | "all";
@@ -38,23 +39,43 @@ export class Source extends BaseSource<Params, ActionData> {
 
           // iterate through each response
           for await (const { data: issues } of iterator) {
-            controller.enqueue(
-              issues.filter((issue) => !issue.pull_request).map((issue) => {
-                const labels = issue.labels.map((
-                  l,
-                ) => (typeof l == "string"
-                  ? { name: l ?? "" }
-                  : { ...l, name: l.name ?? "" })
-                );
-                return {
-                  action: {
-                    ...issue,
-                    labels,
+            try {
+              controller.enqueue(
+                issues.filter((issue) => !issue.pull_request).map(
+                  (issue) => {
+                    const labels = issue.labels.map((
+                      l,
+                    ) => (typeof l == "string"
+                      ? { name: l ?? "" }
+                      : { ...l, name: l.name ?? "" })
+                    );
+                    return {
+                      action: {
+                        ...issue,
+                        labels,
+                      },
+                      word: `${issue.number} ${issue.title}`,
+                    };
                   },
-                  word: `${issue.number} ${issue.title}`,
-                };
-              }),
-            );
+                ),
+              );
+            } catch (e) {
+              const err = maybe(
+                e,
+                is.ObjectOf({
+                  message: is.String,
+                }),
+              );
+              if (
+                err &&
+                err.message === "The stream controller cannot close or enqueue"
+              ) {
+                console.log(err.message);
+              } else {
+                console.warn(e);
+              }
+              break;
+            }
           }
         } catch (e) {
           console.error(e);
