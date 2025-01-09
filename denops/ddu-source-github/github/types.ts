@@ -1,5 +1,5 @@
 import { is, maybe } from "jsr:@core/unknownutil@^4.3.0";
-import type { components } from "npm:@octokit/openapi-types@22.2.0";
+import type { components } from "npm:@octokit/openapi-types@23.0.1";
 
 export type IssueLikeState = "open" | "closed" | "all";
 export type Repository = components["schemas"]["repo-search-result-item"];
