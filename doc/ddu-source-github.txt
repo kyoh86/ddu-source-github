@@ -380,7 +380,7 @@ kind: github_pull
         (string)
 
 kind: github_repo
-                                                 *ddu-kind-github-repo-action*
+                                                        *ddu-kind-github-repo*
     {name}
         (string)
     {full_name}
