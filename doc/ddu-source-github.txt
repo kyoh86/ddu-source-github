@@ -420,6 +420,9 @@ kind: github_issue, github_pull
     append
         Place the contents of an issue/pull request after the cursor
         as per the format.
+        If both of the "format" and "formatter" are not specified, it
+        puts the title of the issue/pull request.
+
         Parameters:
             format
                 The format string. You can place some values
@@ -427,13 +430,18 @@ kind: github_issue, github_pull
                 `this` should be specified as an action value.
                 Example: `"${this.number}: ${this.title}"`
 
+            formatter
+                A function to format the issue/pull request.
+                It recives a dictionary holding below properties.
+                And it should return a string.
+
+                Example: `{issue -> issue.number .. ": " .. issue.title}`
+
                 Supported properties:
                 - number
                 - title
                 - html_url
                 - body
-
-                If it's not specified, prompts for user input. 
 
             avoid
                 Avoid direct adjacency with characters of the
@@ -456,7 +464,7 @@ kind: github_issue, github_pull
         call ddu#ui#do_action("itemAction", {
           \   "name": "append",
           \   "params": {
-          \     "format": "${this.number}: ${this.title}"
+          \     "formatter": {issue -> issue.number .. ": " .. issue.title}
           \   }
           \ })
 <

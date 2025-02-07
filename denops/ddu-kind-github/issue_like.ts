@@ -1,6 +1,5 @@
 import type { Denops } from "jsr:@denops/std@~7.4.0";
 import * as buffer from "jsr:@denops/std@~7.4.0/buffer";
-import * as fn from "jsr:@denops/std@~7.4.0/function";
 import * as option from "jsr:@denops/std@~7.4.0/option";
 import * as autocmd from "jsr:@denops/std@~7.4.0/autocmd";
 import { batch } from "jsr:@denops/std@~7.4.0/batch";
@@ -16,7 +15,7 @@ import {
 } from "jsr:@shougo/ddu-vim@~9.5.0/types";
 import type { GetPreviewerArguments } from "jsr:@shougo/ddu-vim@~9.5.0/kind";
 import { yank as yankCore } from "jsr:@kyoh86/denops-util@~0.1.0/yank";
-import { putWithSpacing } from "jsr:@kyoh86/denops-util@~0.1.0/put";
+import { putWithSpacing } from "./put.ts";
 
 export async function ensureOnlyOneItem(denops: Denops, items: DduItem[]) {
   if (items.length != 1) {
@@ -79,11 +78,24 @@ export async function insertTitle<T extends BaseParams>(
   return await putAny(false, "title", args);
 }
 
-export function evalFormat(context: Record<string, unknown>, format: string) {
-  const render: () => string = new Function("return `" + format + "`").bind(
-    context,
-  );
-  return render();
+function makeFormatter(
+  denops: Denops,
+  params: Record<PropertyKey, unknown> | undefined,
+) {
+  if (params && "formatter" in params) {
+    return async (action: IssueLike) =>
+      ensure(
+        await denops.call("denops#callback#call", params.formatter, action),
+        is.String,
+      );
+  } else if (params && "format" in params) {
+    return (action: IssueLike) =>
+      Promise.resolve(
+        (new Function("return `" + params.format + "`").bind(action))(),
+      );
+  } else {
+    return (action: IssueLike) => Promise.resolve(action.title);
+  }
 }
 
 /**
@@ -99,13 +111,12 @@ async function putFormat<T extends BaseParams>(
   after: boolean,
   { denops, items, actionParams }: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
-  const params = maybe(actionParams, is.Record);
-  const format = maybe(params?.format, is.String) ||
-    await fn.input(denops, "Format: ");
+  const params = ensure(actionParams, is.UnionOf([is.Record, is.Undefined]));
+  const formatter = makeFormatter(denops, params);
   let nl = "";
   for (const item of items) {
     const action = item.action as IssueLike;
-    const value = evalFormat(action, format);
+    const value = await formatter(action);
     if (!value) {
       continue;
     }
@@ -167,12 +178,13 @@ export async function yank<T extends BaseParams>(
   { denops, items, actionParams }: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   const params = maybe(actionParams, is.Record);
-  const format = maybe(params?.format, is.String) ||
-    await fn.input(denops, "Format: ");
-  const text = items.map((item) => {
-    const action = item.action as IssueLike;
-    return evalFormat(action, format);
-  }).filter((value) => !!value).join("\n");
+  const formatter = makeFormatter(denops, params);
+  const text = (
+    await Promise.all(items.map(async (item) => {
+      const action = item.action as IssueLike;
+      return await formatter(action);
+    }))
+  ).filter((value) => !!value).join("\n");
   await yankCore(denops, text);
   return ActionFlags.None;
 }
