@@ -7,7 +7,7 @@ import type { ActionData } from "../@ddu-kinds/github_pull.ts";
 import {
   ControllerClosed,
   type IssueLikeState,
-  maybeControlleClosed,
+  maybeControllerClosed,
 } from "../ddu-source-github/github/types.ts";
 
 type Params = RepoParams & {
@@ -40,7 +40,7 @@ async function fetchPulls(
         word: `${pull.number} ${pull.title}`,
       })));
     } catch (e) {
-      if (maybeControlleClosed(e)) {
+      if (maybeControllerClosed(e)) {
         console.debug(ControllerClosed);
       } else {
         console.warn(e);

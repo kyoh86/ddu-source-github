@@ -65,7 +65,7 @@ export type Browsable = { html_url: string };
 export const ControllerClosed =
   "The stream controller cannot close or enqueue" as const;
 
-export function maybeControlleClosed(e: unknown) {
+export function maybeControllerClosed(e: unknown) {
   const err = maybe(e, is.ObjectOf({ message: is.String }));
   if (err && err.message === ControllerClosed) {
     return ControllerClosed;

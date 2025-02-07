@@ -6,7 +6,7 @@ import { getClient } from "../ddu-source-github/github/client.ts";
 import type { ActionData } from "../@ddu-kinds/github_repo.ts";
 import {
   ControllerClosed,
-  maybeControlleClosed,
+  maybeControllerClosed,
 } from "../ddu-source-github/github/types.ts";
 
 type Params = { hostname: string };
@@ -31,7 +31,7 @@ async function searchRepos(
       });
       controller.enqueue(chunk);
     } catch (e) {
-      if (maybeControlleClosed(e)) {
+      if (maybeControllerClosed(e)) {
         console.debug(ControllerClosed);
       } else {
         console.warn(e);

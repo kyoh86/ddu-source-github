@@ -8,7 +8,7 @@ import {
   ControllerClosed,
   ingestLabels,
   type IssueLikeState,
-  maybeControlleClosed,
+  maybeControllerClosed,
 } from "../ddu-source-github/github/types.ts";
 
 type Params = RepoParams & { state: IssueLikeState };
@@ -40,7 +40,7 @@ async function fetchItems(
         })),
       );
     } catch (e) {
-      if (maybeControlleClosed(e)) {
+      if (maybeControllerClosed(e)) {
         console.debug(ControllerClosed);
       } else {
         console.warn(e);

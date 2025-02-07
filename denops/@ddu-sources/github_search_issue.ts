@@ -7,7 +7,7 @@ import { debounce } from "jsr:@std/async@~1.0.1";
 import {
   ControllerClosed,
   ingestLabels,
-  maybeControlleClosed,
+  maybeControllerClosed,
 } from "../ddu-source-github/github/types.ts";
 
 type Params = { hostname: string };
@@ -32,7 +32,7 @@ async function searchIssues(
         })),
       );
     } catch (e) {
-      if (maybeControlleClosed(e)) {
+      if (maybeControllerClosed(e)) {
         console.debug(ControllerClosed);
       } else {
         console.warn(e);
