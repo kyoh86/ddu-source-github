@@ -13,59 +13,51 @@ type Params = { hostname: string };
 
 async function searchRepos(
   input: string,
-  controller: ReadableStreamDefaultController<Item<ActionData>[]>,
+  controller: ReadableStreamDefaultController,
 ) {
-  const client = await getClient();
-  const iterator = client.paginate.iterator(client.rest.search.repos, {
-    q: input,
-  });
+  try {
+    const client = await getClient();
+    const iterator = client.paginate.iterator(client.rest.search.repos, {
+      q: input,
+    });
 
-  // iterate through each response
-  for await (const { data: repos } of iterator) {
-    try {
-      const chunk = repos.map((repo) => {
-        return {
-          action: repo,
-          word: `${repo.full_name}`,
-        };
-      });
-      controller.enqueue(chunk);
-    } catch (e) {
-      if (maybeControllerClosed(e)) {
-        console.debug(ControllerClosed);
-      } else {
-        console.warn(e);
+    // iterate through each response
+    for await (const { data: repos } of iterator) {
+      try {
+        const chunk = repos.map((repo) => {
+          return {
+            action: repo,
+            word: `${repo.full_name}`,
+          };
+        });
+        controller.enqueue(chunk);
+      } catch (e) {
+        if (maybeControllerClosed(e)) {
+          console.debug(ControllerClosed);
+        } else {
+          console.warn(e);
+        }
+        break;
       }
-      break;
     }
+  } catch (e) {
+    console.error(e);
+  } finally {
+    controller.close();
   }
 }
 
-function starter(
-  { input }: GatherArguments<Params>,
-  controller: ReadableStreamDefaultController,
-) {
-  return async function () {
-    try {
-      await searchRepos(input, controller);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      controller.close();
-    }
-  };
-}
+const starter = debounce(searchRepos, 1000);
 
 export class Source extends BaseSource<Params, ActionData> {
   override kind = "github_repo";
 
   override gather(
-    args: GatherArguments<Params>,
+    { input }: GatherArguments<Params>,
   ): ReadableStream<Item<ActionData>[]> {
     return new ReadableStream({
       start(controller) {
-        const f = debounce(starter(args, controller), 1000);
-        f();
+        starter(input, controller);
       },
     });
   }
