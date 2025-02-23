@@ -57,6 +57,7 @@ function starter(
   };
 }
 
+const start = debounce(starter, 1000);
 export class Source extends BaseSource<Params, ActionData> {
   override kind = "github_issue";
 
@@ -65,8 +66,7 @@ export class Source extends BaseSource<Params, ActionData> {
   ): ReadableStream<Item<ActionData>[]> {
     return new ReadableStream({
       start(controller) {
-        const f = debounce(starter(args, controller), 1000);
-        f();
+        start(args, controller);
       },
     });
   }
