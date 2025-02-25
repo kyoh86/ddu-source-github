@@ -502,4 +502,4 @@ There's no params for all |ddu-kind-github-kinds|.
 
 
 ==============================================================================
-vim:tw=78:nosi:sts=4:ts=4:sw=4:et:ft=help:norl:
+" vim:tw=78:nosi:sts=4:ts=4:sw=4:et:ft=help:norl:
