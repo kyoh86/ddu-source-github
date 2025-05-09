@@ -1,5 +1,5 @@
 import type { Denops } from "jsr:@denops/std@~7.5.0";
-// import { batch } from "jsr:@denops/std@~7.4.0/batch";
+import { ensure } from "jsr:@denops/std@~7.5.0/buffer";
 import {
   charcol,
   getline,
@@ -15,13 +15,20 @@ import {
  * @param text Text to put
  * @param after If true, put text after the cursor
  */
-export async function put(denops: Denops, text: string, after: boolean) {
+export async function put(
+  denops: Denops,
+  bufnr: number,
+  text: string,
+  after: boolean,
+) {
   // await batch(denops, async (denops) => {
   const oldReg = await getreginfo(denops, '"');
 
   await setreg(denops, '"', text, "v");
   try {
-    await denops.cmd(`normal! ""${after ? "p" : "P"}`);
+    await ensure(denops, bufnr, async () => {
+      await denops.cmd(`normal! ""${after ? "p" : "P"}`);
+    });
   } finally {
     if (oldReg) {
       await setreg(denops, '"', oldReg);
@@ -94,6 +101,7 @@ async function getNeighboringChars(
  */
 export async function putWithSpacing(
   denops: Denops,
+  bufnr: number,
   text: string,
   after: boolean,
   avoid?: AvoidClass,
@@ -104,7 +112,7 @@ export async function putWithSpacing(
   // Create a regex pattern based on the class to avoid
   const pattern = getPatternForClass(avoid);
   if (!pattern || reginfo.regtype != "v") {
-    return put(denops, text, after);
+    return put(denops, bufnr, text, after);
   }
 
   // Get the appropriate characters based on the cursor position
@@ -123,7 +131,9 @@ export async function putWithSpacing(
 
   // Paste the text at the appropriate position
   await setreg(denops, '"', textToPaste, "c");
-  await denops.cmd(after ? "normal! p" : "normal! P");
+  await ensure(denops, bufnr, async () => {
+    await denops.cmd(after ? "normal! p" : "normal! P");
+  });
 
   // Restore the register's original content
   await setreg(denops, '"', reginfo.regcontents, reginfo.regtype);

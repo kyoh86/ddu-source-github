@@ -109,7 +109,7 @@ function makeFormatter(
  */
 async function putFormat<T extends BaseParams>(
   after: boolean,
-  { denops, items, actionParams }: ActionArguments<T>,
+  { denops, items, actionParams, context }: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   const params = ensure(actionParams, is.UnionOf([is.Record, is.Undefined]));
   const formatter = makeFormatter(denops, params);
@@ -129,7 +129,7 @@ async function putFormat<T extends BaseParams>(
         is.LiteralOf("printable"),
       ]),
     );
-    await putWithSpacing(denops, `${nl}${value}`, after, avoid);
+    await putWithSpacing(denops, context.bufNr, `${nl}${value}`, after, avoid);
     nl = "\n";
   }
   return ActionFlags.None;
@@ -147,7 +147,7 @@ async function putFormat<T extends BaseParams>(
 async function putAny<T extends BaseParams>(
   after: boolean,
   property: keyof IssueLike,
-  { denops, items, actionParams }: ActionArguments<T>,
+  { denops, items, actionParams, context }: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   const params = maybe(actionParams, is.Record);
   const avoid = maybe(
@@ -168,7 +168,7 @@ async function putAny<T extends BaseParams>(
     if (!value) {
       continue;
     }
-    await putWithSpacing(denops, `${nl}${value}`, after, avoid);
+    await putWithSpacing(denops, context.bufNr, `${nl}${value}`, after, avoid);
     nl = "\n";
   }
   return ActionFlags.None;
