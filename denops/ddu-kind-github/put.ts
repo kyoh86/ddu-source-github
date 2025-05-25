@@ -1,5 +1,5 @@
-import type { Denops } from "jsr:@denops/std@~7.5.0";
-import { ensure } from "jsr:@denops/std@~7.5.0/buffer";
+import type { Denops } from "jsr:@denops/std@7.5.0";
+import { ensure } from "jsr:@denops/std@7.5.0/buffer";
 import {
   charcol,
   getline,
@@ -7,7 +7,7 @@ import {
   match,
   setreg,
   strcharpart,
-} from "jsr:@denops/std@~7.5.0/function";
+} from "jsr:@denops/std@7.5.0/function";
 
 /**
  * Put text to the current cursor position.
