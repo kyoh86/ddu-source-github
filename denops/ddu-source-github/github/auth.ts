@@ -1,5 +1,5 @@
 import xdg from "https://deno.land/x/xdg@v10.6.0/src/mod.deno.ts";
-import { join } from "jsr:@std/path@1.0.9";
+import { join } from "jsr:@std/path@1.1.0";
 import { ensureDir } from "jsr:@std/fs@1.0.17";
 import type {
   GitHubAppAuthentication,
