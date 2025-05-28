@@ -1,4 +1,4 @@
-import { dirname, join } from "jsr:@std/path@1.0.9";
+import { dirname, join } from "jsr:@std/path@1.1.0";
 import { getcwd } from "jsr:@denops/std@7.5.0/function";
 import type { Denops } from "jsr:@denops/std@7.5.0";
 import { decode } from "https://deno.land/x/ini@v2.1.0/mod.ts";
