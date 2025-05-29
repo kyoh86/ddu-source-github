@@ -278,8 +278,8 @@ github_search_pull
                                                *ddu-source-github-search-pull*
 
     A source to search pull requests from GitHub by input.
-    It returns items for the kind |ddu-kind-github-issue|.
-    NOTE: it never returns items for the kind |ddu-kind-github-pull|.
+    NOTE: It returns items with the kind |ddu-kind-github-issue|, not 
+          |ddu-kind-github-pull|, due to how GitHub search API works.
 
     Parameters:
                                         *ddu-source-github-search-pull-params*
@@ -425,9 +425,9 @@ kind: github_issue, github_pull
 
         Parameters:
             format
-                The format string. You can place some values
-                like literal string of the Type Script.
-                `this` should be specified as an action value.
+                The format string for structuring the output. You can use 
+                TypeScript-like string interpolation with properties of the 
+                issue/pull request.
                 Example: `"${this.number}: ${this.title}"`
 
             formatter
@@ -444,21 +444,35 @@ kind: github_issue, github_pull
                 - body
 
             avoid
-                Avoid direct adjacency with characters of the
-                specified class. 
+                DEPRECATED: Use `spacingType or `spacingFunc` instead.
+
+            spacing
+                Controls how spaces are inserted between the appended/inserted
+                text and surrounding content based on predefined patterns.
 
                 Supported values:
-                - "identifier"
-                - "keyword"
-                - "filename"
-                - "printable"
+                - identifier: if adjacent to identifier characters
+                - keyword: if adjacent to keyword characters
+                - filename: if adjacent to filename characters
+                - printable: if adjacent to any printable characters
 
-                Pastes text with optional spacing based on
-                the neighboring characters and a specified
-                class to avoid direct adjacency with
-                characters of that class. 
+                Default: (null) that means no automatic spacing.
 
-                Default: (null) that means no avoidance.
+            spacer
+                A custom function that determines whether spaces should be
+                added before or after the inserted text.
+
+                The function should accept two parameters:
+
+                - char: The character adjacent to insertion point
+                - position: Either "before" or "after" indicating position
+
+                The function should return true if a space should be added.
+
+                Example: {char, pos -> char =~ '\w' && pos == "after"}
+
+                This parameter takes precedence over spacing when both
+                are specified.
 
         Example: >
         call ddu#ui#do_action("itemAction", {

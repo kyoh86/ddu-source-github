@@ -15,7 +15,8 @@ import {
 } from "jsr:@shougo/ddu-vim@10.3.0/types";
 import type { GetPreviewerArguments } from "jsr:@shougo/ddu-vim@10.3.0/kind";
 import { yank as yankCore } from "jsr:@kyoh86/denops-util@0.1.1/yank";
-import { putWithSpacing } from "./put.ts";
+import { putWithSpacing, type Spacer, type SpacingType } from "./put.ts";
+import { match } from "jsr:@denops/std@7.5/function";
 
 export async function ensureOnlyOneItem(denops: Denops, items: DduItem[]) {
   if (items.length != 1) {
@@ -83,11 +84,16 @@ function makeFormatter(
   params: Record<PropertyKey, unknown> | undefined,
 ) {
   if (params && "formatter" in params) {
-    return async (action: IssueLike) =>
-      ensure(
-        await denops.call("denops#callback#call", params.formatter, action),
+    return async (action: IssueLike) => {
+      return ensure(
+        await denops.call(
+          "denops#callback#call",
+          params.formatter,
+          action,
+        ),
         is.String,
       );
+    };
   } else if (params && "format" in params) {
     return (action: IssueLike) =>
       Promise.resolve(
@@ -98,6 +104,65 @@ function makeFormatter(
   }
 }
 
+/**
+ * Creates a regex pattern based on the given spacing pattern.
+ * @param spacing The class to create a pattern for.
+ * @returns The regex pattern as a string.
+ */
+function getSpacingPattern(
+  spacing: SpacingType | undefined,
+): string | undefined {
+  switch (spacing) {
+    case "identifier":
+      return "\\i";
+    case "keyword":
+      return "\\k";
+    case "filename":
+      return "\\f";
+    case "printable":
+      return "\\p";
+  }
+  return undefined;
+}
+
+function makeSpacer(
+  denops: Denops,
+  params: Record<PropertyKey, unknown> | undefined,
+): Spacer | undefined {
+  if (params && "spacer" in params) {
+    return async (char: string, after: boolean) =>
+      ensure(
+        await denops.call(
+          "denops#callback#call",
+          params.spacer,
+          char,
+          after,
+        ),
+        is.Number,
+      );
+  } else if (params && ("spacing" in params || "avoid" in params)) {
+    const method = maybe(
+      params.spacing ?? params.avoid,
+      is.UnionOf([
+        is.LiteralOf("identifier"),
+        is.LiteralOf("keyword"),
+        is.LiteralOf("filename"),
+        is.LiteralOf("printable"),
+      ]),
+    );
+    if (method) {
+      return undefined;
+    }
+    const pattern = getSpacingPattern(method);
+    if (!pattern) {
+      return undefined;
+    }
+    return async (char: string, _: boolean) => {
+      return (await match(denops, char, pattern) >= 0) ? 1 : 0;
+    };
+  }
+  return undefined;
+}
 /**
  * Puts the formatted issue after the cursor.
  * @param after If true, put text after the cursor
@@ -113,6 +178,7 @@ async function putFormat<T extends BaseParams>(
 ): Promise<ActionFlags | ActionResult> {
   const params = ensure(actionParams, is.UnionOf([is.Record, is.Undefined]));
   const formatter = makeFormatter(denops, params);
+  const spacer = makeSpacer(denops, params);
   let nl = "";
   for (const item of items) {
     const action = item.action as IssueLike;
@@ -120,16 +186,13 @@ async function putFormat<T extends BaseParams>(
     if (!value) {
       continue;
     }
-    const avoid = maybe(
-      params?.avoid,
-      is.UnionOf([
-        is.LiteralOf("identifier"),
-        is.LiteralOf("keyword"),
-        is.LiteralOf("filename"),
-        is.LiteralOf("printable"),
-      ]),
+    await putWithSpacing(
+      denops,
+      context.bufNr,
+      `${nl}${value}`,
+      after,
+      spacer,
     );
-    await putWithSpacing(denops, context.bufNr, `${nl}${value}`, after, avoid);
     nl = "\n";
   }
   return ActionFlags.None;
@@ -150,15 +213,7 @@ async function putAny<T extends BaseParams>(
   { denops, items, actionParams, context }: ActionArguments<T>,
 ): Promise<ActionFlags | ActionResult> {
   const params = maybe(actionParams, is.Record);
-  const avoid = maybe(
-    params?.avoid,
-    is.UnionOf([
-      is.LiteralOf("identifier"),
-      is.LiteralOf("keyword"),
-      is.LiteralOf("filename"),
-      is.LiteralOf("printable"),
-    ]),
-  );
+  const spacer = makeSpacer(denops, params);
   let nl = "";
   for (const item of items) {
     const action = item.action as IssueLike;
@@ -168,7 +223,13 @@ async function putAny<T extends BaseParams>(
     if (!value) {
       continue;
     }
-    await putWithSpacing(denops, context.bufNr, `${nl}${value}`, after, avoid);
+    await putWithSpacing(
+      denops,
+      context.bufNr,
+      `${nl}${value}`,
+      after,
+      spacer,
+    );
     nl = "\n";
   }
   return ActionFlags.None;

@@ -1,10 +1,9 @@
 import type { Denops } from "jsr:@denops/std@7.5.0";
-import { ensure } from "jsr:@denops/std@7.5.0/buffer";
+import * as buffer from "jsr:@denops/std@7.5.0/buffer";
 import {
   charcol,
   getline,
   getreginfo,
-  match,
   setreg,
   strcharpart,
 } from "jsr:@denops/std@7.5.0/function";
@@ -26,7 +25,7 @@ export async function put(
 
   await setreg(denops, '"', text, "v");
   try {
-    await ensure(denops, bufnr, async () => {
+    await buffer.ensure(denops, bufnr, async () => {
       await denops.cmd(`normal! ""${after ? "p" : "P"}`);
     });
   } finally {
@@ -37,29 +36,10 @@ export async function put(
   // });
 }
 
-// Define a type for avoidable character classes
-export type AvoidClass = "identifier" | "keyword" | "filename" | "printable";
+// Define a type for spacing
+export type SpacingType = "identifier" | "keyword" | "filename" | "printable";
 
-/**
- * Creates a regex pattern based on the given avoid class.
- * @param avoidClass The class to create a pattern for.
- * @returns The regex pattern as a string.
- */
-function getPatternForClass(
-  avoidClass: AvoidClass | undefined,
-): string | undefined {
-  switch (avoidClass) {
-    case "identifier":
-      return "\\i";
-    case "keyword":
-      return "\\k";
-    case "filename":
-      return "\\f";
-    case "printable":
-      return "\\p";
-  }
-  return undefined;
-}
+export type Spacer = (char: string, after: boolean) => Promise<number>;
 
 /**
  * Get the characters before and after the cursor based on the `after` flag.
@@ -90,28 +70,26 @@ async function getNeighboringChars(
 }
 
 /**
- * Pastes text with optional spacing based on the neighboring characters and a specified class
- * to avoid direct adjacency with characters of that class. The position relative to the cursor
- * is determined by the `after` parameter.
+ * Pastes text with optional spacing inserted between the appended text and the surrounding characters.
+ * The position relative to the cursor is determined by the `after` parameter.
  *
  * @param denops The Denops instance to interact with Vim/Neovim.
  * @param text The text to be pasted.
  * @param after A boolean indicating whether to paste after the cursor (true) or before (false).
- * @param avoid The character class to check for spacing.
+ * @param spacing The character class to check for spacing.
  */
 export async function putWithSpacing(
   denops: Denops,
   bufnr: number,
   text: string,
   after: boolean,
-  avoid?: AvoidClass,
+  spacer?: Spacer | undefined,
 ): Promise<void> {
   // Save the current state of the register
   const reginfo = await getreginfo(denops, '"');
 
-  // Create a regex pattern based on the class to avoid
-  const pattern = getPatternForClass(avoid);
-  if (!pattern || reginfo.regtype != "v") {
+  // Create a regex pattern based on the spacing type
+  if (!spacer) {
     return put(denops, bufnr, text, after);
   }
 
@@ -120,18 +98,16 @@ export async function putWithSpacing(
 
   // Conditionally add spaces to the text to be pasted
   let textToPaste = text;
-  if (reginfo.regtype === "v" && pattern) {
-    if (await match(denops, charBefore, pattern) >= 0) {
-      textToPaste = " " + textToPaste;
-    }
-    if (await match(denops, charAfter, pattern) >= 0) {
-      textToPaste += " ";
-    }
+  if (await spacer(charBefore, false) > 0) {
+    textToPaste = " " + textToPaste;
+  }
+  if (await spacer(charAfter, true) > 0) {
+    textToPaste += " ";
   }
 
   // Paste the text at the appropriate position
   await setreg(denops, '"', textToPaste, "c");
-  await ensure(denops, bufnr, async () => {
+  await buffer.ensure(denops, bufnr, async () => {
     await denops.cmd(after ? "normal! p" : "normal! P");
   });
 
