@@ -5,7 +5,7 @@ import {
 } from "jsr:@shougo/ddu-vim@10.3.0/types";
 import { BaseKind } from "jsr:@shougo/ddu-vim@10.3.0/kind";
 import type { PullRequest } from "../ddu-source-github/github/types.ts";
-import { TextLineStream } from "jsr:@std/streams@1.0.9";
+import { TextLineStream } from "jsr:@std/streams@1.0.10";
 import {
   append,
   appendNumber,
