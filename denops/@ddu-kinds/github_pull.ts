@@ -5,7 +5,7 @@ import {
 } from "jsr:@shougo/ddu-vim@10.3.0/types";
 import { BaseKind } from "jsr:@shougo/ddu-vim@10.3.0/kind";
 import type { PullRequest } from "../ddu-source-github/github/types.ts";
-import { TextLineStream } from "jsr:@std/streams@1.0.9";
+import { TextLineStream } from "jsr:@std/streams@1.0.10";
 import {
   append,
   appendNumber,
@@ -24,8 +24,8 @@ import {
   yankUrl,
 } from "../ddu-kind-github/issue_like.ts";
 import { openUrl } from "../ddu-kind-github/browsable.ts";
-import type { Denops } from "jsr:@denops/std@7.5.1";
-import { getcwd } from "jsr:@denops/std@7.5.1/function";
+import type { Denops } from "jsr:@denops/std@7.6.0";
+import { getcwd } from "jsr:@denops/std@7.6.0/function";
 import {
   echoallCommand,
   echoerrCommand,

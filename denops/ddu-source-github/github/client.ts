@@ -1,7 +1,7 @@
 import { restoreAuthentication, storeAuthentication } from "./auth.ts";
-import { Octokit as OctokitCore } from "npm:@octokit/core@7.0.2";
+import { Octokit as OctokitCore } from "npm:@octokit/core@7.0.3";
 import { restEndpointMethods } from "npm:@octokit/plugin-rest-endpoint-methods@16.0.0";
-import { paginateRest } from "npm:@octokit/plugin-paginate-rest@13.0.1";
+import { paginateRest } from "npm:@octokit/plugin-paginate-rest@13.1.1";
 
 export const Octokit = OctokitCore.plugin(restEndpointMethods).plugin(
   paginateRest,
