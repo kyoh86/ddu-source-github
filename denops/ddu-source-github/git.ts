@@ -4,6 +4,8 @@ import type { Denops } from "jsr:@denops/std@7.6.0";
 import { decode } from "https://deno.land/x/ini@v2.1.0/mod.ts";
 import { is, maybe } from "jsr:@core/unknownutil@4.3.0";
 
+import { failure, type Result, success } from "./result.ts";
+
 export type RepoParams = {
   source: "cwd";
   remoteName: string;
@@ -15,26 +17,33 @@ export type RepoParams = {
   name: string;
 };
 
-export async function githubRepo(denops: Denops, params: RepoParams) {
+export type RepoProfile =
+  | { hostname: string; owner: string; name: string; cwd: string }
+  | { hostname: string; owner: string; name: string };
+
+export async function githubRepo(
+  denops: Denops,
+  params: RepoParams,
+): Promise<Result<RepoProfile, unknown>> {
   switch (params.source) {
     case "cwd": {
       const cwd = params.path ?? await getcwd(denops);
       const dir = await gitdir(cwd);
       if (dir === undefined) {
-        return;
+        return failure("it's not a git directory");
       }
       const repo = await parseGitHubRepo(dir.gitdir, params.remoteName);
       if (repo === undefined) {
-        return;
+        return failure("failed to find a URL for the GitHub repository");
       }
-      return { cwd, ...repo };
+      return success({ cwd, ...repo });
     }
     case "repo":
-      return {
+      return success({
         hostname: params.hostname,
         owner: params.owner,
         name: params.name,
-      };
+      });
   }
 }
 

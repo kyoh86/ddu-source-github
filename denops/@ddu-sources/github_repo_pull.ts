@@ -60,14 +60,14 @@ export class Source extends BaseSource<Params, ActionData> {
       async start(controller) {
         try {
           const repo = await githubRepo(denops, params);
-          if (repo === undefined) {
-            console.error(`invalid param: ${JSON.stringify(params)}`);
+          if (!repo.ok) {
+            console.error(`${repo.error}: ${JSON.stringify(params)}`);
             return;
           }
           await fetchPulls(
-            repo.owner,
-            repo.name,
-            ("cwd" in repo) ? { cwd: repo.cwd } : {},
+            repo.value.owner,
+            repo.value.name,
+            ("cwd" in repo.value) ? { cwd: repo.value.cwd } : {},
             params.state,
             controller,
           );
