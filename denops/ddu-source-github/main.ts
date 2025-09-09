@@ -1,7 +1,7 @@
-import type { Denops } from "jsr:@denops/std@7.6.0";
+import type { Denops } from "jsr:@denops/std@8.0.0";
 import { ensure, is } from "jsr:@core/unknownutil@4.3.0";
 import { authenticate, getClient } from "./github/client.ts";
-import { getbufline, setbufvar } from "jsr:@denops/std@7.6.0/function";
+import { getbufline, setbufvar } from "jsr:@denops/std@8.0.0/function";
 import { systemopen } from "jsr:@lambdalisue/systemopen@1.0.0";
 import {
   isGitHubAppAuthentication,
