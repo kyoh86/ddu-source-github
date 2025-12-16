@@ -1,4 +1,4 @@
-import { assertEquals } from "jsr:@std/assert@1.0.14";
+import { assertEquals } from "@std/assert";
 import { parseQuery } from "../denops/@ddu-filters/matcher_github_issue_like.ts";
 
 Deno.test("parse query", () => {

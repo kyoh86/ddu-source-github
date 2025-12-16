@@ -1,8 +1,8 @@
-import type { Actions } from "jsr:@shougo/ddu-vim@11.1.0/types";
+import type { Actions } from "@shougo/ddu-vim/types";
 import {
   BaseKind,
   type GetPreviewerArguments,
-} from "jsr:@shougo/ddu-vim@11.1.0/kind";
+} from "@shougo/ddu-vim/kind";
 import type { IssueLike } from "../ddu-source-github/github/types.ts";
 import {
   append,

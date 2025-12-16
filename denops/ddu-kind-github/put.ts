@@ -1,12 +1,12 @@
-import type { Denops } from "jsr:@denops/std@8.0.0";
-import * as buffer from "jsr:@denops/std@8.0.0/buffer";
+import type { Denops } from "@denops/std";
+import * as buffer from "@denops/std/buffer";
 import {
   charcol,
   getline,
   getreginfo,
   setreg,
   strcharpart,
-} from "jsr:@denops/std@8.0.0/function";
+} from "@denops/std/function";
 
 /**
  * Put text to the current cursor position.

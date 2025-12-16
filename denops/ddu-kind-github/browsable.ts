@@ -1,10 +1,10 @@
-import { ensure, is, maybe } from "jsr:@core/unknownutil@4.3.0";
+import { ensure, is, maybe } from "@core/unknownutil";
 import type { Browsable } from "../ddu-source-github/github/types.ts";
 import {
   type ActionArguments,
   ActionFlags,
   type BaseParams,
-} from "jsr:@shougo/ddu-vim@11.1.0/types";
+} from "@shougo/ddu-vim/types";
 
 export async function openUrl<T extends BaseParams, U extends Browsable>(
   { denops, items, actionParams }: ActionArguments<T>,

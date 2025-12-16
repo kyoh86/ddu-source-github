@@ -2,10 +2,10 @@ import {
   type ActionArguments,
   ActionFlags,
   type Actions,
-} from "jsr:@shougo/ddu-vim@11.1.0/types";
-import { BaseKind } from "jsr:@shougo/ddu-vim@11.1.0/kind";
+} from "@shougo/ddu-vim/types";
+import { BaseKind } from "@shougo/ddu-vim/kind";
 import type { PullRequest } from "../ddu-source-github/github/types.ts";
-import { TextLineStream } from "jsr:@std/streams@1.0.12";
+import { TextLineStream } from "@std/streams";
 import {
   append,
   appendNumber,
@@ -24,19 +24,19 @@ import {
   yankUrl,
 } from "../ddu-kind-github/issue_like.ts";
 import { openUrl } from "../ddu-kind-github/browsable.ts";
-import type { Denops } from "jsr:@denops/std@8.0.0";
-import { getcwd } from "jsr:@denops/std@8.0.0/function";
+import type { Denops } from "@denops/std";
+import { getcwd } from "@denops/std/function";
 import {
   echoallCommand,
   echoerrCommand,
-} from "jsr:@kyoh86/denops-util@0.1.1/command";
+} from "@kyoh86/denops-util/command";
 
 import {
   findRemoteByRepo,
   gitdir,
   parseGitHubURLLike,
 } from "../ddu-source-github/git.ts";
-import type { GetPreviewerArguments } from "jsr:@shougo/ddu-vim@11.1.0/kind";
+import type { GetPreviewerArguments } from "@shougo/ddu-vim/kind";
 
 export type ActionData = PullRequest & {
   cwd?: string;
@@ -101,7 +101,7 @@ async function checkout(args: ActionArguments<Params>) {
     return ActionFlags.None;
   }
 
-  checkoutCore(args.denops, cwd, dir.gitdir, repo, url, pr);
+  checkoutCore(args.denops, cwd, dir.gitdir, {hostname:repo[0],owner:repo[1],name:repo[2]}, url, pr);
   return ActionFlags.None;
 }
 

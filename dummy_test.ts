@@ -1,5 +1,5 @@
-import { test } from "jsr:@denops/test@3.0.4";
-import { assert } from "jsr:@std/assert@1.0.14";
+import { test } from "@denops/test";
+import { assert } from "@std/assert";
 
 test({
   mode: "all",

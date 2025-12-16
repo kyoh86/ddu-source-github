@@ -1,7 +1,7 @@
-import type { GatherArguments } from "jsr:@shougo/ddu-vim@11.1.0/source";
-import type { Item } from "jsr:@shougo/ddu-vim@11.1.0/types";
-import { BaseSource } from "jsr:@shougo/ddu-vim@11.1.0/source";
-import { debounce } from "jsr:@std/async@1.0.14";
+import type { GatherArguments } from "@shougo/ddu-vim/source";
+import type { Item } from "@shougo/ddu-vim/types";
+import { BaseSource } from "@shougo/ddu-vim/source";
+import { debounce } from "@std/async";
 import { getClient } from "../ddu-source-github/github/client.ts";
 import type { ActionData } from "../@ddu-kinds/github_repo.ts";
 import {

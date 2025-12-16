@@ -1,10 +1,10 @@
-import type { Denops } from "jsr:@denops/std@8.0.0";
-import * as buffer from "jsr:@denops/std@8.0.0/buffer";
-import * as option from "jsr:@denops/std@8.0.0/option";
-import * as autocmd from "jsr:@denops/std@8.0.0/autocmd";
-import { batch } from "jsr:@denops/std@8.0.0/batch";
+import type { Denops } from "@denops/std";
+import * as buffer from "@denops/std/buffer";
+import * as option from "@denops/std/option";
+import * as autocmd from "@denops/std/autocmd";
+import { batch } from "@denops/std/batch";
 import type { IssueLike } from "../ddu-source-github/github/types.ts";
-import { ensure, is, maybe } from "jsr:@core/unknownutil@4.3.0";
+import { ensure, is, maybe } from "@core/unknownutil";
 import {
   type ActionArguments,
   ActionFlags,
@@ -12,11 +12,11 @@ import {
   type BaseParams,
   type DduItem,
   type Previewer,
-} from "jsr:@shougo/ddu-vim@11.1.0/types";
-import type { GetPreviewerArguments } from "jsr:@shougo/ddu-vim@11.1.0/kind";
-import { yank as yankCore } from "jsr:@kyoh86/denops-util@0.1.1/yank";
+} from "@shougo/ddu-vim/types";
+import type { GetPreviewerArguments } from "@shougo/ddu-vim/kind";
+import { yank as yankCore } from "@kyoh86/denops-util/yank";
 import { putWithSpacing, type Spacer, type SpacingType } from "./put.ts";
-import { match } from "jsr:@denops/std@8.0.0/function";
+import { match } from "@denops/std/function";
 
 export async function ensureOnlyOneItem(denops: Denops, items: DduItem[]) {
   if (items.length != 1) {
@@ -325,8 +325,8 @@ export async function editContent<T extends BaseParams>(
             "BufWriteCmd",
             "<buffer>",
             "call ddu#kind#github#request#patch_body(" +
-              `${newBuffer.bufnr},` +
-              `"${content.url}",` +
+              `${newBuffer.bufnr},
+              "${content.url}",` +
               ")",
             {
               nested: true,
@@ -356,3 +356,4 @@ export function getPreviewer<T extends IssueLike>(
     });
   }
 }
+

@@ -1,4 +1,4 @@
-import { assertEquals } from "jsr:@std/assert@1.0.14";
+import { assertEquals } from "@std/assert";
 import { parseGitHubURLLike } from "./git.ts";
 
 Deno.test("parse GitHub URL #1 - undefined", () => {
@@ -8,32 +8,32 @@ Deno.test("parse GitHub URL #1 - undefined", () => {
 Deno.test("parse GitHub URL #2 - https welformed", () => {
   assertEquals(
     parseGitHubURLLike("https://github.com/kyoh86/ddu-source-github.git"),
-    {
-      hostname: "github.com",
-      owner: "kyoh86",
-      name: "ddu-source-github",
-    },
+    [
+      "github.com",
+      "kyoh86",
+      "ddu-source-github",
+    ],
   );
 });
 
 Deno.test("parse GitHub URL #3 - git welformed", () => {
   assertEquals(
     parseGitHubURLLike("git@github.com:kyoh86/ddu-source-github.git"),
-    {
-      hostname: "github.com",
-      owner: "kyoh86",
-      name: "ddu-source-github",
-    },
+    [
+      "github.com",
+      "kyoh86",
+      "ddu-source-github",
+    ],
   );
 });
 
 Deno.test("parse GitHub URL #4 - ssh welformed", () => {
   assertEquals(
     parseGitHubURLLike("ssh://git@github.com/kyoh86/ddu-source-github.git"),
-    {
-      hostname: "github.com",
-      owner: "kyoh86",
-      name: "ddu-source-github",
-    },
+    [
+      "github.com",
+      "kyoh86",
+      "ddu-source-github",
+    ],
   );
 });

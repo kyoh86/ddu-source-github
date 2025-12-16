@@ -1,10 +1,10 @@
-import xdg from "https://deno.land/x/xdg@v10.6.0/src/mod.deno.ts";
-import { join } from "jsr:@std/path@1.1.2";
-import { ensureDir } from "jsr:@std/fs@1.0.19";
+import xdg from "xdg";
+import { join } from "@std/path";
+import { ensureDir } from "@std/fs";
 import type {
   GitHubAppAuthentication,
-} from "npm:@octokit/auth-oauth-device@8.0.1";
-import { is, type Predicate } from "jsr:@core/unknownutil@4.3.0";
+} from "@octokit/auth-oauth-device";
+import { is, type Predicate } from "@core/unknownutil";
 
 async function ensureSessionFilePath() {
   const dir = join(xdg.state(), "ddu-source-github");

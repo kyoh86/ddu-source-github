@@ -1,8 +1,8 @@
 import {
   BaseFilter,
   type FilterArguments,
-} from "jsr:@shougo/ddu-vim@11.1.0/filter";
-import type { DduFilterItems } from "jsr:@shougo/ddu-vim@11.1.0/types";
+} from "@shougo/ddu-vim/filter";
+import type { DduFilterItems } from "@shougo/ddu-vim/types";
 import type { IssueLike } from "../ddu-source-github/github/types.ts";
 
 export type ActionData = Record<PropertyKey, never>;

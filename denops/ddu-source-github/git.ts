@@ -1,8 +1,8 @@
-import { dirname, join } from "jsr:@std/path@1.1.2";
-import { getcwd } from "jsr:@denops/std@8.0.0/function";
-import type { Denops } from "jsr:@denops/std@8.0.0";
-import { decode } from "https://deno.land/x/ini@v2.1.0/mod.ts";
-import { is, maybe } from "jsr:@core/unknownutil@4.3.0";
+import { dirname, join } from "@std/path";
+import { getcwd } from "@denops/std/function";
+import type { Denops } from "@denops/std";
+import { parse } from "@std/ini";
+import { is, maybe } from "@core/unknownutil";
 
 import { failure, type Result, success } from "./result.ts";
 
@@ -36,7 +36,7 @@ export async function githubRepo(
       if (repo === undefined) {
         return failure("failed to find a URL for the GitHub repository");
       }
-      return success({ cwd, ...repo });
+      return success({ cwd, hostname: repo[0], owner: repo[1], name: repo[2] });
     }
     case "repo":
       return success({
@@ -117,7 +117,7 @@ export async function parseHeadRef(gitdir: string) {
 
 export async function parseConfig(gitdir: string) {
   const conftext = await Deno.readTextFile(join(gitdir, "config"));
-  const config = decode(conftext) as Record<string, Record<string, unknown>>;
+  const config = parse(conftext) as Record<string, Record<string, unknown>>;
   const keys = Object.keys(config);
   for (const key of keys) {
     const m = /(\w+) "([^"]+)"/.exec(key);
@@ -134,22 +134,6 @@ export async function parseConfig(gitdir: string) {
 }
 
 export function parseGitHubURLLike(urlLike?: string) {
-  const repo = splitGitHubURLLike(urlLike);
-  if (
-    !repo || repo.length != 3 ||
-    repo[0] == "" || repo[1] == "" || repo[2] == "" ||
-    !URL.canParse(`https://${repo[0]}/${repo[1]}/${repo[2]}`)
-  ) {
-    return;
-  }
-  return {
-    hostname: repo[0],
-    owner: repo[1],
-    name: repo[2],
-  };
-}
-
-function splitGitHubURLLike(urlLike?: string) {
   if (!urlLike) {
     return;
   }
@@ -195,12 +179,13 @@ export async function findRemoteByRepo(
     const cand = parseGitHubURLLike(url);
     if (
       cand &&
-      repo.hostname === cand.hostname &&
-      repo.owner == cand.owner &&
-      repo.name && cand.name
+      repo.hostname === cand[0] &&
+      repo.owner == cand[1] &&
+      repo.name && cand[2]
     ) {
       return name;
     }
   }
   return;
 }
+

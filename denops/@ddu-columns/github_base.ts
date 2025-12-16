@@ -1,11 +1,11 @@
-import type { DduItem, ItemHighlight } from "jsr:@shougo/ddu-vim@11.1.0/types";
-import { BaseColumn } from "jsr:@shougo/ddu-vim@11.1.0/column";
+import type { DduItem, ItemHighlight } from "@shougo/ddu-vim/types";
+import { BaseColumn } from "@shougo/ddu-vim/column";
 import type {
   GetTextArguments,
   GetTextResult,
-} from "jsr:@shougo/ddu-vim@11.1.0/column";
-import type { Denops } from "jsr:@denops/std@8.0.0";
-import * as fn from "jsr:@denops/std@8.0.0/function";
+} from "@shougo/ddu-vim/column";
+import type { Denops } from "@denops/std";
+import * as fn from "@denops/std/function";
 import type { ActionData } from "../@ddu-kinds/github_issue.ts";
 
 type Params = {
