@@ -18,6 +18,6 @@
     "@std/ini": "jsr:@std/ini@^0.225.2",
     "@std/path": "jsr:@std/path@^1.1.3",
     "@std/streams": "jsr:@std/streams@^1.0.14",
-    "xdg": "https://deno.land/x/xdg@v10.6.0/src/mod.deno.ts"
+    "@404wolf/xdg-portable": "jsr:@404wolf/xdg-portable@^0.1.0"
   }
 }
