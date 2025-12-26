@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "exports": {},
   "description": "A source for ddu.vim to manipulate GitHub",
-  "fmt": { "include": [ "denops/**/*.ts", "deno.jsonc" ] },
-  "lint": { "include": [ "denops/**/*.ts", "deno.jsonc" ] },
-  "test": { "include": [ "denops/**/*_test.ts" ] },
+  "fmt": { "include": ["denops/**/*.ts", "deno.jsonc"] },
+  "lint": { "include": ["denops/**/*.ts", "deno.jsonc"] },
+  "test": { "include": ["denops/**/*_test.ts"] },
   "tasks": {
     "update": "deno outdated --update",
     "fmt": "deno fmt",
