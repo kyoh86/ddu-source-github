@@ -1,9 +1,6 @@
 import type { DduItem, ItemHighlight } from "@shougo/ddu-vim/types";
 import { BaseColumn } from "@shougo/ddu-vim/column";
-import type {
-  GetTextArguments,
-  GetTextResult,
-} from "@shougo/ddu-vim/column";
+import type { GetTextArguments, GetTextResult } from "@shougo/ddu-vim/column";
 import type { Denops } from "@denops/std";
 import * as fn from "@denops/std/function";
 import type { ActionData } from "../@ddu-kinds/github_issue.ts";

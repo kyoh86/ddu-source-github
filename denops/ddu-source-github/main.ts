@@ -59,4 +59,3 @@ export function main(denops: Denops): void {
     },
   };
 }
-

@@ -356,4 +356,3 @@ export function getPreviewer<T extends IssueLike>(
     });
   }
 }
-

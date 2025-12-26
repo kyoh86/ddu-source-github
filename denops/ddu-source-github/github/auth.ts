@@ -1,9 +1,7 @@
 import xdg from "@404wolf/xdg-portable";
 import { join } from "@std/path";
 import { ensureDir } from "@std/fs";
-import type {
-  GitHubAppAuthentication,
-} from "@octokit/auth-oauth-device";
+import type { GitHubAppAuthentication } from "@octokit/auth-oauth-device";
 import { is, type Predicate } from "@core/unknownutil";
 
 async function ensureSessionFilePath() {

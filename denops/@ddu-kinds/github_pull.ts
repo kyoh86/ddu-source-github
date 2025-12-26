@@ -26,10 +26,7 @@ import {
 import { openUrl } from "../ddu-kind-github/browsable.ts";
 import type { Denops } from "@denops/std";
 import { getcwd } from "@denops/std/function";
-import {
-  echoallCommand,
-  echoerrCommand,
-} from "@kyoh86/denops-util/command";
+import { echoallCommand, echoerrCommand } from "@kyoh86/denops-util/command";
 
 import {
   findRemoteByRepo,
@@ -101,7 +98,14 @@ async function checkout(args: ActionArguments<Params>) {
     return ActionFlags.None;
   }
 
-  checkoutCore(args.denops, cwd, dir.gitdir, {hostname:repo[0],owner:repo[1],name:repo[2]}, url, pr);
+  checkoutCore(
+    args.denops,
+    cwd,
+    dir.gitdir,
+    { hostname: repo[0], owner: repo[1], name: repo[2] },
+    url,
+    pr,
+  );
   return ActionFlags.None;
 }
 
