@@ -1,22 +1,18 @@
+// $schema: https://raw.githubusercontent.com/denoland/deno/refs/heads/main/cli/schemas/config-file.v1.json
 {
   "name": "ddu-source-github",
   "version": "0.0.1",
-  "exports": {},
   "description": "A source for ddu.vim to manipulate GitHub",
-  "fmt": { "include": ["denops/**/*.ts", "deno.jsonc"] },
-  "lint": { "include": ["denops/**/*.ts", "deno.jsonc"] },
-  "test": { "include": ["denops/**/*_test.ts"] },
+  "exports": {},
+  "lock": false,
+  "fmt": { "include": ["./**/*.ts", "deno.jsonc"] },
+  "lint": { "include": ["./**/*.ts", "deno.jsonc"] },
+  "test": { "include": ["./**/*_test.ts"] },
   "tasks": {
     "update": "deno outdated --update",
-    "fmt": "deno fmt",
-    "check": "deno check ./denops/**/*.ts",
-    "lint": "deno lint",
     "test": "deno test --check --permit-no-files --allow-env=DENOPS_TEST_CONNECT_TIMEOUT,DENOPS_TEST_DENOPS_PATH,DENOPS_TEST_VERBOSE,DENOPS_TEST_VIM_EXECUTABLE,DENOPS_TEST_NVIM_EXECUTABLE,MSGPACKR_NATIVE_ACCELERATION_DISABLED --allow-run=vim,nvim --allow-net=127.0.0.1:0 --allow-read"
   },
   "workspace": [
-    "./denops/ddu-kind-github",
-    "./denops/ddu-source-github",
-    "./denops/ddu-source-github/github",
     "./denops/@ddu-sources",
     "./denops/@ddu-filters",
     "./denops/@ddu-columns",
