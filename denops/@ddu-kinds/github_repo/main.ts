@@ -1,7 +1,7 @@
 import type { Actions } from "@shougo/ddu-vim/types";
 import { BaseKind } from "@shougo/ddu-vim/kind";
-import type { Repository } from "../ddu-source-github/github/types.ts";
-import { openUrl } from "../ddu-kind-github/browsable.ts";
+import type { Repository } from "../../ddu-source-github/github/types.ts";
+import { openUrl } from "../../ddu-kind-github/browsable.ts";
 
 export type ActionData = Repository;
 

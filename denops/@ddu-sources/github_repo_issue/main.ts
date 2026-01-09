@@ -1,15 +1,15 @@
 import type { GatherArguments } from "@shougo/ddu-vim/source";
 import type { Item } from "@shougo/ddu-vim/types";
 import { BaseSource } from "@shougo/ddu-vim/source";
-import { getClient } from "../ddu-source-github/github/client.ts";
-import { githubRepo, type RepoParams } from "../ddu-source-github/git.ts";
-import type { ActionData } from "../@ddu-kinds/github_issue.ts";
+import { getClient } from "../../ddu-source-github/github/client.ts";
+import { githubRepo, type RepoParams } from "../../ddu-source-github/git.ts";
+import type { ActionData } from "../../@ddu-kinds/github_issue/main.ts";
 import {
   ControllerClosed,
   ingestLabels,
   type IssueLikeState,
   maybeControllerClosed,
-} from "../ddu-source-github/github/types.ts";
+} from "../../ddu-source-github/github/types.ts";
 
 type Params = RepoParams & { state: IssueLikeState };
 

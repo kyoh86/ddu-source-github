@@ -1,25 +1,33 @@
 import type { GatherArguments } from "@shougo/ddu-vim/source";
 import type { Item } from "@shougo/ddu-vim/types";
 import { BaseSource } from "@shougo/ddu-vim/source";
-import { getClient } from "../ddu-source-github/github/client.ts";
-import type { ActionData } from "../@ddu-kinds/github_issue.ts";
-import { debounce } from "@std/async";
+import { getClient } from "../../ddu-source-github/github/client.ts";
+import type { ActionData } from "../../@ddu-kinds/github_issue/main.ts";
 import {
   ControllerClosed,
   ingestLabels,
+  type IssueLikeState,
   maybeControllerClosed,
-} from "../ddu-source-github/github/types.ts";
+} from "../../ddu-source-github/github/types.ts";
 
-type Params = { hostname: string };
+type Params = {
+  hostname: string;
+  role: "created" | "assigned" | "mentioned";
+  state: IssueLikeState;
+};
 
-async function searchIssues(
-  input: string,
+async function fetchItems(
+  params: Params,
   controller: ReadableStreamDefaultController<Item<ActionData>[]>,
 ) {
   const client = await getClient();
   const iterator = client.paginate.iterator(
-    client.rest.search.issuesAndPullRequests,
-    { q: `is:issue ${input}` },
+    client.rest.issues.list,
+    {
+      filter: params.role,
+      per_page: 100,
+      state: params.state,
+    },
   );
 
   // iterate through each response
@@ -42,36 +50,24 @@ async function searchIssues(
   }
 }
 
-function starter(
-  { input }: GatherArguments<Params>,
-  controller: ReadableStreamDefaultController,
-) {
-  return async function () {
-    try {
-      await searchIssues(input, controller);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      controller.close();
-    }
-  };
-}
-
-const start = debounce(starter, 1000);
 export class Source extends BaseSource<Params, ActionData> {
   override kind = "github_issue";
 
   override gather(
-    args: GatherArguments<Params>,
+    { sourceParams: params }: GatherArguments<Params>,
   ): ReadableStream<Item<ActionData>[]> {
     return new ReadableStream({
-      start(controller) {
-        start(args, controller);
+      async start(controller) {
+        try {
+          await fetchItems(params, controller);
+        } finally {
+          controller.close();
+        }
       },
     });
   }
 
   override params(): Params {
-    return { hostname: "github.com" };
+    return { hostname: "github.com", role: "assigned", state: "open" };
   }
 }

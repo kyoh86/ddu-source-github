@@ -4,7 +4,7 @@ import {
   type Actions,
 } from "@shougo/ddu-vim/types";
 import { BaseKind } from "@shougo/ddu-vim/kind";
-import type { PullRequest } from "../ddu-source-github/github/types.ts";
+import type { PullRequest } from "../../ddu-source-github/github/types.ts";
 import { TextLineStream } from "@std/streams";
 import {
   append,
@@ -22,8 +22,8 @@ import {
   yankNumber,
   yankTitle,
   yankUrl,
-} from "../ddu-kind-github/issue_like.ts";
-import { openUrl } from "../ddu-kind-github/browsable.ts";
+} from "../../ddu-kind-github/issue_like.ts";
+import { openUrl } from "../../ddu-kind-github/browsable.ts";
 import type { Denops } from "@denops/std";
 import { getcwd } from "@denops/std/function";
 import { echoallCommand, echoerrCommand } from "@kyoh86/denops-util/command";
@@ -32,7 +32,7 @@ import {
   findRemoteByRepo,
   gitdir,
   parseGitHubURLLike,
-} from "../ddu-source-github/git.ts";
+} from "../../ddu-source-github/git.ts";
 import type { GetPreviewerArguments } from "@shougo/ddu-vim/kind";
 
 export type ActionData = PullRequest & {

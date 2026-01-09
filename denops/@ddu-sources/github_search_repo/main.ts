@@ -2,12 +2,12 @@ import type { GatherArguments } from "@shougo/ddu-vim/source";
 import type { Item } from "@shougo/ddu-vim/types";
 import { BaseSource } from "@shougo/ddu-vim/source";
 import { debounce } from "@std/async";
-import { getClient } from "../ddu-source-github/github/client.ts";
-import type { ActionData } from "../@ddu-kinds/github_repo.ts";
+import { getClient } from "../../ddu-source-github/github/client.ts";
+import type { ActionData } from "../../@ddu-kinds/github_repo/main.ts";
 import {
   ControllerClosed,
   maybeControllerClosed,
-} from "../ddu-source-github/github/types.ts";
+} from "../../ddu-source-github/github/types.ts";
 
 type Params = { hostname: string };
 

@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert";
-import { parseQuery } from "../denops/@ddu-filters/matcher_github_issue_like.ts";
+import { parseQuery } from "../denops/@ddu-filters/matcher_github_issue_like/main.ts";
 
 Deno.test("parse query", () => {
   const query = parseQuery(
