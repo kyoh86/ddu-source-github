@@ -8,12 +8,13 @@ License: MIT
 Contents ~
                                                   *ddu-source-github-contents*
 
-Introduction                |ddu-source-github-introduction|
-Install                    |ddu-source-github-install|
-Examples                |ddu-source-github-examples|
-Sources                    |ddu-source-github-sources|
-Kind Body                |ddu-kind-github-body|
-Kind Actions                |ddu-kind-github-actions|
+Introduction                              |ddu-source-github-introduction|
+Install                                   |ddu-source-github-install|
+Examples                                  |ddu-source-github-examples|
+Sources                                   |ddu-source-github-sources|
+Filters                                   |ddu-source-github-filters|
+Kind Body                                 |ddu-kind-github-body|
+Kind Actions                              |ddu-kind-github-actions|
 
 
 ==============================================================================
@@ -291,6 +292,28 @@ github_search_pull
         Default: "github.com"
 
 https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests
+
+==============================================================================
+Filters ~
+                                                   *ddu-source-github-filters*
+                                             *ddu-source-github-filter-params*
+
+matcher_github_issue_like
+                                 *ddu-source-github-matcher_github_issue_like*
+
+    A matcher to select issue like objects with special query.
+    It supports some query expression described below in user input.
+
+        label:...
+        state:open
+        state:close
+        body:...
+        user:...
+        assignee:...
+
+    Each field value can be enclosed in double quotes (e.g., "example").
+    However, currently escaping double quotes within a value is not supported.
+
 
 ==============================================================================
 Kind Body ~
