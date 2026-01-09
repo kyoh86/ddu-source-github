@@ -14,7 +14,7 @@
   },
   "workspace": [
     "./denops/@ddu-sources",
-    "./denops/@ddu-filters",
+    "./denops/@ddu-filters/matcher_github_issue_like",
     "./denops/@ddu-columns",
     "./denops/@ddu-kinds"
   ],
