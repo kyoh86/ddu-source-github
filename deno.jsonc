@@ -43,7 +43,8 @@
     "./denops/@ddu-sources/github_search_issue",
     "./denops/@ddu-sources/github_search_pull",
     "./denops/@ddu-sources/github_search_pull_request",
-    "./denops/@ddu-sources/github_search_repo"
+    "./denops/@ddu-sources/github_search_repo",
+    "./denops/ddu-source-github"
   ],
   "imports": {
     "@denops/std": "jsr:@denops/std@^8.2.0",
