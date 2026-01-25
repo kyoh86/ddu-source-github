@@ -11,6 +11,7 @@ Contents ~
 Introduction                              |ddu-source-github-introduction|
 Install                                   |ddu-source-github-install|
 Examples                                  |ddu-source-github-examples|
+Functions                                 |ddu-source-github-functions|
 Sources                                   |ddu-source-github-sources|
 Filters                                   |ddu-source-github-filters|
 Kind Body                                 |ddu-kind-github-body|
@@ -32,14 +33,16 @@ It depends on "|ddu|.vim", "|denops.vim|" and "|ddu-kind-file|".
 https://github.com/Shougo/ddu.vim
 https://github.com/vim-denops/denops.vim
 
-And you should install the GitHub App for your user and your organizations if
-you need:
-https://github.com/apps/ddu-source-github
-
-If you do not install it, you cannot do below with this plugin.
+And if you want to do below with this plugin:
 
 - Read something in the private repositories
-- Update something
+- Write something to the GitHub
+
+; you have to do:
+
+1. Install the GitHub App for your user and your organizations
+    https://github.com/apps/ddu-source-github
+2. Login with |ddu#source#github#login()|
 
 ==============================================================================
 Examples ~
@@ -56,6 +59,34 @@ Examples ~
       \    }
       \ })
 <
+
+
+==============================================================================
+Functions ~
+                                                 *ddu-source-github-functions*
+
+                                                   *ddu#source#github#login()*
+ddu#source#github#login({force})
+
+    Login to GitHub with your account.
+    It shows a code like `1234-5678` in the message line and opens browser.
+    So you should put the code to authenticate.
+
+    `{force}` : set 1 if you want to ignore that has already login. default: 0
+
+                                            *ddu#source#github#ensure_login()*
+ddu#source#github#ensure_login({auth})
+
+    For advance. Not recommended. Use |ddu#source#github#login()| instead. ~
+
+    If you have GitHub app auth, you can set it instead of login.
+
+    `{auth}` : Auth structure. It is a dictionary with the fields like below.
+        - clientType
+        - clientId
+        - type
+        - tokenType
+        - token
 
 
 ==============================================================================
