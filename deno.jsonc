@@ -60,10 +60,10 @@
     "@core/unknownutil": "jsr:@core/unknownutil@^4.3.0",
     "@lambdalisue/systemopen": "jsr:@lambdalisue/systemopen@^1.0.0",
     "@std/assert": "jsr:@std/assert@^1.0.19",
-    "@std/async": "jsr:@std/async@^1.4.0",
+    "@std/async": "jsr:@std/async@^1.5.0",
     "@std/fs": "jsr:@std/fs@^1.0.24",
     "@std/ini": "jsr:@std/ini@^0.225.2",
-    "@std/path": "jsr:@std/path@^1.1.5",
+    "@std/path": "jsr:@std/path@^1.1.6",
     "@std/streams": "jsr:@std/streams@^1.1.1",
     "@404wolf/xdg-portable": "jsr:@404wolf/xdg-portable@^0.1.0"
   }
