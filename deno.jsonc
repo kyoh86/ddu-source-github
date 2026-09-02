@@ -50,8 +50,8 @@
     "@denops/std": "jsr:@denops/std@^8.2.0",
     "@denops/test": "jsr:@denops/test@^4.0.0",
     "@kyoh86/denops-util": "jsr:@kyoh86/denops-util@^0.1.4",
-    "@octokit/auth-oauth-device": "npm:@octokit/auth-oauth-device@^8.0.3",
-    "@octokit/core": "npm:@octokit/core@^7.0.6",
+    "@octokit/auth-oauth-device": "npm:@octokit/auth-oauth-device@^8.0.5",
+    "@octokit/core": "npm:@octokit/core@^7.0.8",
     "@octokit/openapi-types": "npm:@octokit/openapi-types@^27.0.0",
     "@octokit/plugin-paginate-rest": "npm:@octokit/plugin-paginate-rest@^14.0.0",
     "@octokit/plugin-rest-endpoint-methods": "npm:@octokit/plugin-rest-endpoint-methods@^17.0.0",
@@ -64,7 +64,7 @@
     "@std/fs": "jsr:@std/fs@^1.0.24",
     "@std/ini": "jsr:@std/ini@^0.225.2",
     "@std/path": "jsr:@std/path@^1.1.6",
-    "@std/streams": "jsr:@std/streams@^1.1.1",
+    "@std/streams": "jsr:@std/streams@^1.1.2",
     "@404wolf/xdg-portable": "jsr:@404wolf/xdg-portable@^0.1.0"
   }
 }
